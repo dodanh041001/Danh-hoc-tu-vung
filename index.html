@@ -1,0 +1,1753 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sổ từ vựng Hàn – Anh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1F5F2; --surface:#FFFFFF; --ink:#1C272B; --muted:#5A696C; --line:#D3DED8;
+  --grid:#8FC2A3; --ko:#AE2F3A; --en:#1C5C8C; --on-acc:#FFFFFF;
+  --ok:#2A7849; --warn:#9E6A0C; --bad:#AE2F3A;
+  --sheet-line:#D2DFEA; --margin:#E39BA1;
+  --acc:var(--ko);
+  --sans:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --kr:'Gowun Batang','Noto Serif KR','AppleMyungjo','Batang','Apple SD Gothic Neo','Malgun Gothic',serif;
+  --r-sm:7px; --r-md:14px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111A1C; --surface:#182326; --ink:#E3ECE8; --muted:#97A8A7; --line:#2A393C;
+    --grid:#3E7657; --ko:#E86F7A; --en:#74B0DF; --on-acc:#111A1C;
+    --ok:#5DBC84; --warn:#E2A94B; --bad:#E86F7A;
+    --sheet-line:#283A47; --margin:#7B3E45; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111A1C; --surface:#182326; --ink:#E3ECE8; --muted:#97A8A7; --line:#2A393C;
+  --grid:#3E7657; --ko:#E86F7A; --en:#74B0DF; --on-acc:#111A1C;
+  --ok:#5DBC84; --warn:#E2A94B; --bad:#E86F7A;
+  --sheet-line:#283A47; --margin:#7B3E45; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+body[data-lang="en"]{--acc:var(--en)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2.5px solid var(--acc);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+.kr{font-family:var(--kr)}
+[hidden]{display:none!important}
+
+/* Header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.row1{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px}
+.lang{display:flex;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{border:0;background:none;padding:6px 15px;border-radius:999px;font-weight:600;font-size:15px;color:var(--muted)}
+.lang button[data-l="ko"]{font-family:var(--kr);font-weight:700}
+.lang button[aria-pressed="true"][data-l="ko"]{background:var(--ko);color:var(--on-acc)}
+.lang button[aria-pressed="true"][data-l="en"]{background:var(--en);color:var(--on-acc)}
+.sync{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);border:0;background:none;padding:4px 0}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
+.sync[data-s="ok"] i{background:var(--ok)}
+.sync[data-s="saving"] i{background:var(--warn)}
+.sync[data-s="err"] i{background:var(--bad)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 0 8px}
+.stat b{display:block;font-size:21px;line-height:1.15;font-weight:700;font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--muted);line-height:1.3;display:block}
+.stat.due b{color:var(--acc)}
+.stat .of{font-style:normal;font-size:13px;font-weight:500;color:var(--muted)}
+.tabs{display:flex;gap:2px}
+.tabs button{flex:1;border:0;background:none;padding:10px 4px 11px;font-size:14.5px;font-weight:500;color:var(--muted);border-bottom:2.5px solid transparent}
+.tabs button[aria-current="page"]{color:var(--ink);border-bottom-color:var(--acc);font-weight:600}
+main.wrap{padding-top:6px;padding-bottom:48px}
+@media (max-width:719px){
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding:0 4px env(safe-area-inset-bottom,0px)}
+  .tabs button{border-bottom:0;border-top:2.5px solid transparent;padding:11px 2px 13px;font-size:13.5px}
+  .tabs button[aria-current="page"]{border-top-color:var(--acc)}
+  main.wrap{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  html{scroll-padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+  #view button,#view input,#fb{scroll-margin-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .stat b{font-size:19px}
+  .stats{gap:8px}
+  .stat span{font-size:12px}
+}
+
+/* Shared controls */
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:14px 0 4px}
+.tsel{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);flex:1 1 220px;min-width:0}
+.sel,.inp{border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--surface);padding:9px 11px;font-size:15px;min-width:0}
+.tsel .sel{flex:1}
+.inp{width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:var(--r-sm);background:var(--acc);color:var(--on-acc);padding:13px 18px;font-weight:600;font-size:16px}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.danger{background:transparent;color:var(--bad);border:1.5px solid var(--bad);width:auto}
+.btn.auto{width:auto}
+.btns{display:grid;gap:10px;margin-top:14px}
+kbd{font:500 11.5px var(--sans);padding:1px 6px;border:1px solid currentColor;border-radius:4px;opacity:.7}
+@media (hover:none){kbd{display:none}}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+h2{font-size:22px;line-height:1.3;margin:22px 0 6px;font-weight:700;letter-spacing:-.01em}
+h3{font-size:17px;margin:0 0 10px;font-weight:600}
+.say{flex:none;width:38px;height:38px;display:inline-grid;place-items:center;border:1.5px solid var(--line);border-radius:50%;background:var(--surface);color:var(--ink);vertical-align:middle}
+.say:hover{border-color:var(--acc);color:var(--acc)}
+.say.sm{width:32px;height:32px}
+.linkbtn{border:0;background:none;padding:0;color:var(--acc);font-weight:500;text-decoration:underline;text-underline-offset:3px;font-size:14px}
+
+/* Review counts */
+.counts{display:flex;gap:16px;font-size:14px;color:var(--muted);margin:12px 0 0}
+.counts b{font-variant-numeric:tabular-nums;margin-right:3px}
+.c-new b{color:var(--acc)} .c-learn b{color:var(--warn)} .c-rev b{color:var(--ok)}
+
+/* Card */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:20px 18px 18px;margin:12px 0 14px;min-height:250px;display:flex;flex-direction:column}
+.topicline{font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.front{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:18px 0 10px;text-align:center}
+.grid{display:flex;flex-wrap:wrap;justify-content:center;padding-left:1.5px;max-width:100%}
+.cell{--s:clamp(48px,14vw,68px);width:var(--s);height:var(--s);border:1.5px solid var(--grid);margin:0 0 -1.5px -1.5px;display:grid;place-items:center;font-family:var(--kr);font-weight:700;font-size:calc(var(--s)*.58);line-height:1;color:var(--ink);background:var(--surface)}
+.grid.long .cell{--s:clamp(34px,9.5vw,50px)}
+.cell.sp{background:transparent}
+.sheet{width:100%;padding:0 10px 2px 40px;text-align:left;background-image:linear-gradient(to right,transparent 26px,var(--margin) 26px,var(--margin) 28px,transparent 28px),repeating-linear-gradient(to bottom,transparent 0,transparent 43px,var(--sheet-line) 43px,var(--sheet-line) 44px)}
+.eword{font-size:clamp(26px,7.4vw,36px);font-weight:600;letter-spacing:-.015em;line-height:44px;word-break:break-word}
+.pos{font-style:italic;color:var(--muted);font-size:15px;margin-left:6px}
+.vn-front{font-size:clamp(22px,6vw,28px);font-weight:600;line-height:1.35;max-width:26ch}
+.hint{margin:0;font-size:13.5px;color:var(--muted)}
+.back{border-top:1px dashed var(--line);margin-top:6px;padding-top:16px;display:grid;gap:12px;animation:rise .2s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.back{animation:none}}
+.ansrow{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.meaning{font-size:21px;font-weight:600;line-height:1.35}
+.meta{font-size:14.5px;line-height:1.5}
+.meta span{display:inline-block;font-size:12px;font-weight:600;color:var(--acc);border:1px solid currentColor;border-radius:4px;padding:0 6px;margin-right:8px;vertical-align:1px}
+.ex{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.ex p{margin:0;font-size:17.5px;line-height:1.55}
+.ex p[lang="ko"]{font-family:var(--kr);font-size:18.5px}
+.hl{color:var(--acc);font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+.exv{color:var(--muted);font-size:14.5px;margin:-6px 0 0}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.grades button{border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:10px 2px 8px;font-weight:600;font-size:15.5px;color:var(--g)}
+.grades button:hover{border-color:var(--g)}
+.grades small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:1px}
+.g0{--g:var(--bad)} .g1{--g:var(--warn)} .g2{--g:var(--ok)} .g3{--g:var(--en)}
+.done{text-align:center;padding:26px 6px 6px}
+.done .grid{margin:0 auto 4px}
+.done .sheet{max-width:280px;margin:0 auto;text-align:center;padding-left:40px}
+.done p{max-width:38ch;margin:6px auto 0}
+
+/* Quiz */
+.types{display:grid;gap:8px;margin:14px 0}
+.type{display:flex;gap:12px;align-items:flex-start;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:12px 14px}
+.type[aria-pressed="true"]{border-color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
+.type b{display:block;font-weight:600}
+.type small{color:var(--muted);font-size:13.5px}
+.radio{flex:none;width:18px;height:18px;border:2px solid var(--line);border-radius:50%;margin-top:3px}
+.type[aria-pressed="true"] .radio{border-color:var(--acc);background:radial-gradient(circle,var(--acc) 0 4px,transparent 5px)}
+.qhead{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin:16px 0 6px}
+.bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);transition:width .25s}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:20px 18px;margin:12px 0;text-align:center}
+.ask{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.qword{font-size:clamp(28px,8vw,40px);font-weight:700;line-height:1.25;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.qword.kr{font-weight:700}
+.qmean{font-size:22px;font-weight:600}
+.qsent{font-size:18.5px;line-height:1.6;text-align:left}
+.qsent.kr{font-size:20px}
+.blank{display:inline-block;min-width:4em;border-bottom:2px solid var(--acc);color:transparent;line-height:1.1}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;align-items:baseline;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:12px 14px;font-size:16px;line-height:1.45}
+.opt .n{flex:none;font-size:12.5px;color:var(--muted);font-weight:600;width:1em}
+.opt.kr{font-family:var(--kr);font-size:18px}
+.opt:not(:disabled):hover{border-color:var(--acc)}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 13%,var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 13%,var(--surface))}
+.opt:disabled{cursor:default;color:var(--ink)}
+.fb{margin-top:14px;border-left:3px solid var(--ok);padding:4px 0 4px 14px;display:grid;gap:6px}
+.fb.no{border-left-color:var(--bad)}
+.fb .verdict{font-weight:700;color:var(--ok)}
+.fb.no .verdict{color:var(--bad)}
+.fb p{margin:0}
+.fb .ex p{font-size:16px}
+.fb .ex p[lang="ko"]{font-size:17px}
+.play{display:flex;flex-direction:column;align-items:center;gap:12px}
+.playbtn{width:96px;height:96px;border-radius:50%;border:0;background:var(--acc);color:var(--on-acc);display:grid;place-items:center}
+.typed{display:flex;gap:8px;margin-top:4px}
+.typed .inp{font-size:18px}
+.typed .btn{width:auto;flex:none}
+.score{font-size:56px;font-weight:700;line-height:1;margin-top:24px;font-variant-numeric:tabular-nums}
+.score span{font-size:24px;color:var(--muted);font-weight:500}
+.misslist{list-style:none;padding:0;margin:14px 0 0;border-top:1px solid var(--line)}
+.misslist li{padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:baseline}
+.misslist b{font-weight:600}
+
+/* Word list */
+.chips{display:flex;flex-wrap:wrap;gap:14px;font-size:14px;color:var(--muted);margin:10px 0}
+.chips b{color:var(--ink)}
+.wl{border-top:1px solid var(--line);margin-top:10px}
+.wl details{border-bottom:1px solid var(--line)}
+.wl summary{display:flex;align-items:baseline;gap:12px;padding:12px 2px;cursor:pointer;list-style:none}
+.wl summary::-webkit-details-marker{display:none}
+.w-word{font-weight:600;flex:none;max-width:48%}
+.w-word.kr{font-size:18px;font-weight:700}
+.w-m{color:var(--muted);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}
+.tag{flex:none;font-size:12px;padding:1px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.tag.learning{color:var(--warn);border-color:currentColor}
+.tag.known{color:var(--ok);border-color:currentColor}
+.w-body{padding:2px 2px 16px;display:grid;gap:10px}
+.w-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13.5px;color:var(--muted)}
+.empty{padding:28px 4px;color:var(--muted);text-align:center}
+.formbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-top:12px;display:grid;gap:12px}
+.field label{display:block;font-size:13.5px;font-weight:500;margin-bottom:4px}
+.field .inp{font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.msg{font-size:14px;margin:0}
+.msg.ok{color:var(--ok)} .msg.no{color:var(--bad)}
+.notice{border-left:3px solid var(--warn);background:var(--surface);padding:10px 12px;font-size:14px;margin:12px 0;border-radius:0 var(--r-sm) var(--r-sm) 0}
+
+/* Settings */
+.set{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin:14px 0}
+.set label.line .sel{min-width:96px}
+.set label.line{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+.set .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.set .seg button{border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:10px 8px;font-size:14.5px}
+.set .seg button[aria-pressed="true"]{border-color:var(--acc);color:var(--acc);font-weight:600}
+.set p{margin:6px 0 0;font-size:14px}
+/* sync */
+.gsteps{padding-left:20px;margin:12px 0;font-size:14px;line-height:1.55}
+.gsteps li{margin:6px 0}
+.set a{color:var(--acc);font-weight:600}
+code{font-size:13px;background:var(--paper);border:1px solid var(--line);padding:0 5px;border-radius:4px}
+/* voice */
+.vrow{padding:6px 0 10px}
+.vrow label{display:block;margin-bottom:6px}
+.vsel{display:flex;gap:8px;align-items:center}
+.vsel .sel{flex:1;min-width:0;width:100%}
+.vq{font-size:13.5px;margin:6px 0 0}
+.vq.good{color:var(--ok)} .vq.basic{color:var(--warn)}
+.tips{margin-top:6px;border-top:1px solid var(--line)}
+.tips summary{cursor:pointer;font-weight:600;color:var(--acc);padding:12px 0 2px}
+.tips p{margin:10px 0 0;font-size:14px;line-height:1.55}
+.tips b{font-weight:600}
+input[type="checkbox"]{width:20px;height:20px;accent-color:var(--acc)}
+</style>
+</head>
+<body data-lang="ko">
+<header class="top">
+  <div class="wrap">
+    <div class="row1">
+      <div class="lang" role="group" aria-label="Ngôn ngữ đang học">
+        <button data-l="ko" aria-pressed="true" lang="ko">한국어</button>
+        <button data-l="en" aria-pressed="false" lang="en">English</button>
+      </div>
+      <button class="sync" id="sync" data-s="local" type="button"><i></i><span>Lưu trên máy này</span></button>
+    </div>
+    <div class="stats" id="stats"></div>
+    <nav class="tabs" aria-label="Chế độ học">
+      <button data-v="review">Ôn thẻ</button>
+      <button data-v="quiz">Kiểm tra</button>
+      <button data-v="listen">Nghe</button>
+      <button data-v="list">Từ vựng</button>
+      <button data-v="settings">Cài đặt</button>
+    </nav>
+  </div>
+</header>
+<main class="wrap" id="view" aria-live="polite"></main>
+
+<script>
+// [từ, nghĩa, Hán-Việt, câu ví dụ có [dạng dùng], dịch câu]
+const KO = [
+{t:"Chào hỏi & lịch sự", w:[
+["안녕하세요","xin chào","","[안녕하세요]? 처음 뵙겠습니다.","Xin chào? Rất vui được gặp lần đầu."],
+["감사합니다","cảm ơn (trang trọng)","감사 感謝 · cảm tạ","도와주셔서 정말 [감사합니다].","Thật sự cảm ơn vì đã giúp tôi."],
+["미안해요","xin lỗi (lịch sự, gần gũi)","미안 未安 · vị an","늦어서 [미안해요].","Xin lỗi vì đến muộn."],
+["괜찮아요","không sao, ổn mà","","[괜찮아요]. 걱정하지 마세요.","Không sao đâu. Đừng lo."],
+["반갑습니다","rất vui được gặp","","만나서 [반갑습니다].","Rất vui được gặp bạn."],
+["잘 지내요","sống tốt, khỏe (hỏi thăm)","","요즘 [잘 지내요]?","Dạo này bạn khỏe không?"],
+["수고하셨습니다","anh/chị vất vả rồi (nói khi xong việc)","","오늘 하루 [수고하셨습니다].","Hôm nay anh/chị vất vả rồi."],
+["실례합니다","xin phép, làm phiền chút","실례 失禮 · thất lễ","[실례합니다], 화장실이 어디예요?","Xin lỗi cho hỏi, nhà vệ sinh ở đâu ạ?"],
+["잠깐만요","đợi một chút","","[잠깐만요], 같이 가요!","Đợi chút, đi cùng nhau nào!"],
+["알겠습니다","tôi hiểu rồi, vâng ạ","","네, [알겠습니다].","Vâng, tôi hiểu rồi."],
+["다시 말해 주세요","xin nói lại giúp tôi","","죄송한데요, [다시 말해 주세요].","Xin lỗi, nói lại giúp tôi với."],
+["이름","tên","","[이름]이 뭐예요?","Bạn tên là gì?"],
+["친구","bạn bè","친구 親舊 · thân cựu","제 [친구]는 한국 사람이에요.","Bạn tôi là người Hàn Quốc."],
+["사람","người","","저는 베트남 [사람]이에요.","Tôi là người Việt Nam."],
+["나라","đất nước","","어느 [나라] 사람이에요?","Bạn là người nước nào?"],
+["소개하다","giới thiệu","소개 紹介 · thiệu giới (đảo của giới thiệu)","제 친구를 [소개할게요].","Tôi sẽ giới thiệu bạn của tôi."]
+]},
+{t:"Ăn uống", w:[
+["음식","đồ ăn, món ăn","음식 飲食 · ẩm thực","저는 한국 [음식]을 좋아해요.","Tôi thích đồ ăn Hàn Quốc."],
+["식당","nhà hàng, quán ăn","식당 食堂 · thực đường","이 근처에 맛있는 [식당] 있어요?","Gần đây có quán ăn nào ngon không?"],
+["메뉴","thực đơn","từ mượn: menu","[메뉴] 좀 주세요.","Cho tôi xem thực đơn với."],
+["주문하다","gọi món, đặt hàng","주문 注文 · chú văn","뭐 [주문할까요]?","Mình gọi món gì nhé?"],
+["맛있다","ngon","","이 김치찌개 정말 [맛있어요].","Món canh kimchi này ngon thật."],
+["맛없다","không ngon","","솔직히 좀 [맛없어요].","Nói thật là hơi dở."],
+["맵다","cay","","너무 [매워요]! 물 주세요.","Cay quá! Cho tôi nước."],
+["짜다","mặn","","국이 좀 [짜요].","Canh hơi mặn."],
+["달다","ngọt","","이 케이크는 너무 [달아요].","Cái bánh này ngọt quá."],
+["배고프다","đói bụng","","[배고파요]. 밥 먹으러 가요.","Đói quá. Đi ăn cơm thôi."],
+["배부르다","no bụng","","많이 먹어서 [배불러요].","Ăn nhiều nên no rồi."],
+["물","nước","","[물] 한 잔 주세요.","Cho tôi một cốc nước."],
+["밥","cơm; bữa ăn","","같이 [밥] 먹을래요?","Đi ăn cơm cùng nhau không?"],
+["고기","thịt","","저는 [고기]를 안 먹어요.","Tôi không ăn thịt."],
+["채소","rau","채소 菜蔬 · thái sơ","[채소]를 많이 드세요.","Hãy ăn nhiều rau vào."],
+["과일","trái cây","","어떤 [과일]을 좋아해요?","Bạn thích loại trái cây nào?"],
+["계산하다","tính tiền, thanh toán","계산 計算 · kế toán","여기 [계산해] 주세요.","Tính tiền cho tôi ở đây."],
+["포장","gói mang về","포장 包裝 · bao trang","남은 음식은 [포장]해 주세요.","Gói giúp tôi phần đồ ăn còn lại."],
+["배달","giao hàng (đồ ăn)","배달 配達 · phối đạt","치킨 [배달] 시킬까요?","Mình gọi giao gà rán nhé?"],
+["점심","bữa trưa","점심 點心 · điểm tâm (nhưng nghĩa là bữa trưa!)","[점심] 먹었어요?","Bạn ăn trưa chưa?"],
+["저녁","buổi tối; bữa tối","","[저녁]에 뭐 해요?","Buổi tối bạn làm gì?"],
+["맛집","quán ngon nổi tiếng","","이 동네 [맛집] 알아요?","Bạn biết quán ngon nào ở khu này không?"]
+]},
+{t:"Mua sắm", w:[
+["얼마","bao nhiêu (tiền)","","이거 [얼마]예요?","Cái này bao nhiêu tiền?"],
+["가격","giá cả","가격 價格 · giá cách","[가격]이 좀 비싸네요.","Giá hơi đắt nhỉ."],
+["비싸다","đắt","","너무 [비싸요].","Đắt quá."],
+["싸다","rẻ","","여기는 옷이 [싸요].","Ở đây quần áo rẻ."],
+["깎다","bớt giá; cắt (tóc, cỏ)","","좀 [깎아] 주세요.","Bớt cho tôi một chút nhé."],
+["할인","giảm giá","할인 割引 · cát dẫn","지금 30% [할인] 중이에요.","Hiện đang giảm giá 30%."],
+["사다","mua","","어제 신발을 [샀어요].","Hôm qua tôi đã mua giày."],
+["팔다","bán","","이 가게에서 우산 [팔아요]?","Cửa hàng này có bán ô không?"],
+["옷","quần áo","","주말에 [옷]을 사러 가요.","Cuối tuần tôi đi mua quần áo."],
+["입다","mặc","","이 옷 [입어] 봐도 돼요?","Tôi mặc thử áo này được không?"],
+["크다","to, lớn","","좀 [커요]. 작은 사이즈 있어요?","Hơi to. Có cỡ nhỏ hơn không?"],
+["작다","nhỏ","","신발이 좀 [작아요].","Giày hơi chật (nhỏ)."],
+["현금","tiền mặt","현금 現金 · hiện kim","[현금]으로 계산할게요.","Tôi sẽ trả bằng tiền mặt."],
+["카드","thẻ","từ mượn: card","[카드] 돼요?","Trả bằng thẻ được không?"],
+["영수증","hóa đơn, biên lai","영수증 領收證 · lĩnh thu chứng","[영수증] 주세요.","Cho tôi hóa đơn."],
+["교환","đổi hàng","교환 交換 · giao hoán","이거 [교환]할 수 있어요?","Cái này đổi được không?"],
+["환불","hoàn tiền","환불 還拂 · hoàn phất","[환불]해 주세요.","Hoàn tiền giúp tôi."],
+["편의점","cửa hàng tiện lợi","편의점 便宜店 · tiện nghi điếm","[편의점]에서 우유를 샀어요.","Tôi đã mua sữa ở cửa hàng tiện lợi."]
+]},
+{t:"Đi lại & chỉ đường", w:[
+["지하철","tàu điện ngầm","지하철 地下鐵 · địa hạ thiết","[지하철]로 가요.","Đi bằng tàu điện ngầm."],
+["버스","xe buýt","từ mượn: bus","[버스] 정류장이 어디예요?","Trạm xe buýt ở đâu?"],
+["택시","taxi","","[택시]를 탈까요?","Mình đi taxi nhé?"],
+["타다","đi (xe), lên (xe)","","몇 번 버스를 [타요]?","Đi xe buýt số mấy?"],
+["내리다","xuống (xe)","","다음 역에서 [내려요].","Xuống ở ga tiếp theo."],
+["갈아타다","chuyển tuyến, đổi xe","","시청역에서 2호선으로 [갈아타세요].","Hãy chuyển sang tuyến 2 ở ga Tòa thị chính."],
+["역","ga (tàu)","역 驛 · dịch","[역]까지 걸어서 10분이에요.","Đi bộ đến ga mất 10 phút."],
+["길","đường","","[길]을 잃었어요.","Tôi bị lạc đường."],
+["오른쪽","bên phải","","[오른쪽]으로 가세요.","Hãy đi sang bên phải."],
+["왼쪽","bên trái","","[왼쪽]에 은행이 있어요.","Bên trái có ngân hàng."],
+["똑바로","thẳng","","[똑바로] 가세요.","Hãy đi thẳng."],
+["근처","gần đây, lân cận","근처 近處 · cận xứ","이 [근처]에 약국 있어요?","Gần đây có hiệu thuốc không?"],
+["멀다","xa","","여기서 [멀어요]?","Có xa đây không?"],
+["가깝다","gần","","집이 회사에서 [가까워요].","Nhà gần công ty."],
+["걸리다","mất (thời gian)","","공항까지 얼마나 [걸려요]?","Đến sân bay mất bao lâu?"],
+["출구","lối ra","출구 出口 · xuất khẩu (nghĩa gốc: cửa ra)","3번 [출구]로 나오세요.","Hãy ra bằng lối ra số 3."],
+["교통카드","thẻ giao thông","교통 交通 · giao thông","[교통카드]를 충전해야 해요.","Tôi phải nạp tiền thẻ giao thông."],
+["공항","sân bay","공항 空港 · không cảng","[공항]에 몇 시에 도착해요?","Mấy giờ đến sân bay?"]
+]},
+{t:"Thời gian & hẹn gặp", w:[
+["오늘","hôm nay","","[오늘] 시간 있어요?","Hôm nay bạn có thời gian không?"],
+["내일","ngày mai","내일 來日 · lai nhật","[내일] 봐요!","Mai gặp nhé!"],
+["어제","hôm qua","","[어제] 뭐 했어요?","Hôm qua bạn đã làm gì?"],
+["주말","cuối tuần","주말 週末 · chu mạt","[주말]에 보통 뭐 해요?","Cuối tuần bạn thường làm gì?"],
+["약속","cuộc hẹn; lời hứa","약속 約束 · ước thúc","오늘 저녁에 [약속]이 있어요.","Tối nay tôi có hẹn."],
+["시간","thời gian; giờ","시간 時間 · thời gian","[시간] 있을 때 연락 주세요.","Khi nào rảnh thì liên lạc cho tôi."],
+["지금","bây giờ","지금 只今 · chỉ kim","[지금] 어디예요?","Bây giờ bạn đang ở đâu?"],
+["나중에","để sau, sau này","","[나중에] 다시 전화할게요.","Tôi sẽ gọi lại sau."],
+["아까","lúc nãy","","[아까] 전화했는데 안 받았어요.","Lúc nãy tôi gọi mà bạn không nghe máy."],
+["요즘","dạo này","","[요즘] 바빠요?","Dạo này bạn bận không?"],
+["매일","mỗi ngày","매일 每日 · mỗi nhật","[매일] 한국어를 공부해요.","Tôi học tiếng Hàn mỗi ngày."],
+["가끔","thỉnh thoảng","","[가끔] 영화를 봐요.","Thỉnh thoảng tôi xem phim."],
+["자주","thường xuyên","","여기 [자주] 와요?","Bạn hay đến đây không?"],
+["늦다","muộn, trễ","","죄송해요, 좀 [늦었어요].","Xin lỗi, tôi đến hơi muộn."],
+["일찍","sớm","","내일 [일찍] 일어나야 해요.","Mai tôi phải dậy sớm."],
+["만나다","gặp","","몇 시에 [만날까요]?","Mấy giờ mình gặp nhau?"],
+["기다리다","chờ đợi","","잠깐만 [기다려] 주세요.","Đợi tôi một chút."],
+["연락","liên lạc","연락 連絡 · liên lạc","도착하면 [연락]해 주세요.","Đến nơi thì liên lạc cho tôi nhé."]
+]},
+{t:"Công việc & học tập", w:[
+["회사","công ty","회사 會社 · hội xã","저는 무역 [회사]에 다녀요.","Tôi làm ở một công ty thương mại."],
+["회사원","nhân viên công ty","회사원 會社員 · hội xã viên","저는 [회사원]이에요.","Tôi là nhân viên công ty."],
+["일하다","làm việc","","어디에서 [일해요]?","Bạn làm việc ở đâu?"],
+["회의","cuộc họp","회의 會議 · hội nghị","3시에 [회의]가 있어요.","3 giờ có cuộc họp."],
+["출근하다","đi làm","출근 出勤 · xuất cần","보통 8시에 [출근해요].","Tôi thường đi làm lúc 8 giờ."],
+["퇴근하다","tan làm","퇴근 退勤 · thoái cần","몇 시에 [퇴근해요]?","Mấy giờ bạn tan làm?"],
+["바쁘다","bận","","요즘 일이 많아서 [바빠요].","Dạo này nhiều việc nên bận."],
+["쉬다","nghỉ ngơi","","주말에는 집에서 [쉬어요].","Cuối tuần tôi nghỉ ở nhà."],
+["공부하다","học","공부 工夫 · công phu","도서관에서 [공부해요].","Tôi học ở thư viện."],
+["숙제","bài tập về nhà","숙제 宿題 · túc đề","[숙제]를 다 했어요?","Bạn làm hết bài tập chưa?"],
+["시험","kỳ thi","시험 試驗 · thí nghiệm (nghĩa: thi cử)","다음 주에 [시험]이 있어요.","Tuần sau có kỳ thi."],
+["질문","câu hỏi","질문 質問 · chất vấn (nghĩa nhẹ hơn: hỏi)","[질문] 있어요!","Tôi có câu hỏi!"],
+["동료","đồng nghiệp","동료 同僚 · đồng liêu","[동료]들과 점심을 먹어요.","Tôi ăn trưa với đồng nghiệp."],
+["월급","lương tháng","월급 月給 · nguyệt cấp","[월급]날이 언제예요?","Ngày nhận lương là khi nào?"],
+["준비하다","chuẩn bị","준비 準備 · chuẩn bị","발표를 [준비하고] 있어요.","Tôi đang chuẩn bị bài thuyết trình."],
+["끝나다","kết thúc, xong","","수업이 언제 [끝나요]?","Khi nào lớp học kết thúc?"],
+["시작하다","bắt đầu","시작 始作 · thủy tác","회의를 [시작할게요].","Chúng ta bắt đầu cuộc họp nhé."]
+]},
+{t:"Nhà ở & sinh hoạt", w:[
+["집","nhà","","빨리 [집]에 가고 싶어요.","Tôi muốn về nhà nhanh."],
+["방","phòng","방 房 · phòng","제 [방]은 좀 작아요.","Phòng tôi hơi nhỏ."],
+["화장실","nhà vệ sinh","화장실 化粧室 · hóa trang thất","[화장실]이 어디예요?","Nhà vệ sinh ở đâu?"],
+["청소하다","dọn dẹp","청소 淸掃 · thanh tảo","주말에 집을 [청소해요].","Cuối tuần tôi dọn nhà."],
+["빨래","việc giặt giũ; đồ giặt","","오늘 [빨래]를 해야 돼요.","Hôm nay tôi phải giặt đồ."],
+["요리하다","nấu ăn","요리 料理 · liệu lý","저는 [요리하는] 걸 좋아해요.","Tôi thích nấu ăn."],
+["자다","ngủ","","어제 늦게 [잤어요].","Hôm qua tôi ngủ muộn."],
+["일어나다","thức dậy","","보통 몇 시에 [일어나요]?","Bạn thường dậy lúc mấy giờ?"],
+["씻다","rửa, tắm rửa","","밥 먹기 전에 손을 [씻으세요].","Hãy rửa tay trước khi ăn."],
+["이사하다","chuyển nhà","이사 移徙 · di tỉ","다음 달에 [이사해요].","Tháng sau tôi chuyển nhà."],
+["월세","tiền thuê nhà tháng","월세 月貰 · nguyệt thế","[월세]가 얼마예요?","Tiền thuê nhà mỗi tháng bao nhiêu?"],
+["냉장고","tủ lạnh","냉장고 冷藏庫 · lãnh tàng khố","[냉장고]에 우유가 있어요.","Trong tủ lạnh có sữa."],
+["쓰레기","rác","","[쓰레기]는 어디에 버려요?","Rác thì vứt ở đâu?"],
+["버리다","vứt bỏ","","여기에 쓰레기를 [버리지] 마세요.","Đừng vứt rác ở đây."],
+["열다","mở","","창문 좀 [열어] 주세요.","Mở cửa sổ giúp tôi."],
+["닫다","đóng","","문 좀 [닫아] 주세요.","Đóng cửa giúp tôi."],
+["켜다","bật","","에어컨 좀 [켜도] 돼요?","Tôi bật điều hòa được không?"],
+["끄다","tắt","","불 좀 [꺼] 주세요.","Tắt đèn giúp tôi."]
+]},
+{t:"Sức khỏe", w:[
+["아프다","đau, ốm","","머리가 [아파요].","Tôi đau đầu."],
+["병원","bệnh viện","병원 病院 · bệnh viện","[병원]에 가 봤어요?","Bạn đã đi bệnh viện chưa?"],
+["약","thuốc","약 藥 · dược","[약]을 먹었어요?","Bạn uống thuốc chưa? (tiếng Hàn dùng 먹다)"],
+["약국","hiệu thuốc","약국 藥局 · dược cục","[약국]은 몇 시에 문을 닫아요?","Hiệu thuốc mấy giờ đóng cửa?"],
+["감기","cảm cúm","감기 感氣 · cảm khí","[감기]에 걸렸어요.","Tôi bị cảm rồi."],
+["열","sốt; nhiệt","열 熱 · nhiệt","[열]이 많이 나요.","Tôi sốt cao."],
+["기침","ho","","[기침]을 많이 해요.","Tôi ho nhiều."],
+["피곤하다","mệt mỏi","피곤 疲困 · bì khốn","오늘 너무 [피곤해요].","Hôm nay mệt quá."],
+["건강","sức khỏe","건강 健康 · kiện khang","[건강]이 제일 중요해요.","Sức khỏe là quan trọng nhất."],
+["운동하다","tập thể dục","운동 運動 · vận động","매일 아침 [운동해요].","Sáng nào tôi cũng tập thể dục."],
+["다치다","bị thương","","다리를 [다쳤어요].","Tôi bị thương ở chân."],
+["낫다","khỏi bệnh","","빨리 [나으세요]!","Mau khỏi bệnh nhé!"],
+["배","bụng (cũng là: thuyền, quả lê)","","[배]가 아파요.","Tôi đau bụng."]
+]},
+{t:"Cảm xúc & tính cách", w:[
+["좋다","tốt, hay","","오늘 날씨가 [좋아요].","Hôm nay thời tiết đẹp."],
+["좋아하다","thích","","저는 커피를 [좋아해요].","Tôi thích cà phê."],
+["싫어하다","ghét, không thích","","저는 벌레를 [싫어해요].","Tôi ghét côn trùng."],
+["행복하다","hạnh phúc","행복 幸福 · hạnh phúc","요즘 정말 [행복해요].","Dạo này tôi thật sự hạnh phúc."],
+["기쁘다","vui mừng","","다시 만나서 [기뻐요].","Vui vì được gặp lại."],
+["슬프다","buồn","","그 영화는 너무 [슬퍼요].","Bộ phim đó buồn quá."],
+["화나다","tức giận","","왜 [화났어요]?","Sao bạn giận vậy?"],
+["걱정하다","lo lắng","","[걱정하지] 마세요.","Đừng lo lắng."],
+["심심하다","buồn chán (không có gì làm)","","주말에 [심심했어요].","Cuối tuần chán quá."],
+["재미있다","thú vị, vui","","한국 드라마가 [재미있어요].","Phim truyền hình Hàn thú vị."],
+["무섭다","sợ, đáng sợ","","공포 영화는 [무서워요].","Phim kinh dị đáng sợ."],
+["부끄럽다","ngại, xấu hổ","","노래하는 게 [부끄러워요].","Tôi ngại hát."],
+["친절하다","tử tế, niềm nở","친절 親切 · thân thiết (nghĩa: tử tế)","가게 직원이 아주 [친절해요].","Nhân viên cửa hàng rất niềm nở."],
+["착하다","hiền lành, tốt bụng","","제 동생은 정말 [착해요].","Em tôi thật sự rất hiền."],
+["외롭다","cô đơn","","혼자 살아서 가끔 [외로워요].","Sống một mình nên đôi khi cô đơn."],
+["스트레스","căng thẳng, stress","từ mượn: stress","요즘 [스트레스]를 많이 받아요.","Dạo này tôi bị căng thẳng nhiều."],
+["기분","tâm trạng","기분 氣分 · khí phân","오늘 [기분]이 어때요?","Hôm nay tâm trạng bạn thế nào?"]
+]},
+{t:"Thời tiết & mùa", w:[
+["날씨","thời tiết","","오늘 [날씨]가 어때요?","Hôm nay thời tiết thế nào?"],
+["덥다","nóng","","여름에는 너무 [더워요].","Mùa hè nóng quá."],
+["춥다","lạnh","","밖이 정말 [추워요].","Bên ngoài lạnh thật."],
+["비","mưa","","[비]가 와요. 우산 있어요?","Trời mưa. Bạn có ô không?"],
+["눈","tuyết (cũng là: mắt)","","[눈]이 많이 와요.","Tuyết rơi nhiều."],
+["우산","ô, dù","우산 雨傘 · vũ tản","[우산]을 가져가세요.","Mang theo ô đi nhé."],
+["바람","gió","","[바람]이 많이 불어요.","Gió thổi mạnh."],
+["맑다","trong, quang đãng","","하늘이 [맑아요].","Bầu trời trong xanh."],
+["봄","mùa xuân","","[봄]에는 꽃이 많이 피어요.","Mùa xuân hoa nở nhiều."],
+["여름","mùa hè","","베트남의 [여름]은 정말 더워요.","Mùa hè ở Việt Nam rất nóng."],
+["가을","mùa thu","","[가을] 날씨가 제일 좋아요.","Thời tiết mùa thu đẹp nhất."],
+["겨울","mùa đông","","한국의 [겨울]은 추워요.","Mùa đông Hàn Quốc lạnh."]
+]},
+{t:"Động từ thông dụng", w:[
+["가다","đi","","어디 [가요]?","Bạn đi đâu đấy?"],
+["오다","đến","","언제 한국에 [왔어요]?","Bạn đến Hàn Quốc khi nào?"],
+["먹다","ăn","","뭐 [먹고] 싶어요?","Bạn muốn ăn gì?"],
+["마시다","uống","","커피 [마실래요]?","Uống cà phê không?"],
+["보다","xem, nhìn","","같이 영화 [볼래요]?","Đi xem phim cùng không?"],
+["듣다","nghe","","저는 매일 음악을 [들어요].","Ngày nào tôi cũng nghe nhạc."],
+["말하다","nói","","천천히 [말해] 주세요.","Nói chậm giúp tôi."],
+["읽다","đọc","","자기 전에 책을 [읽어요].","Tôi đọc sách trước khi ngủ."],
+["쓰다","viết; dùng; đắng","","여기에 이름을 [쓰세요].","Hãy viết tên vào đây."],
+["알다","biết","","그 사람을 [알아요]?","Bạn biết người đó không?"],
+["모르다","không biết","","잘 [모르겠어요].","Tôi không rõ lắm."],
+["주다","cho, đưa","","물 좀 [주세요].","Cho tôi chút nước."],
+["받다","nhận","","생일 선물을 [받았어요].","Tôi đã nhận quà sinh nhật."],
+["만들다","làm, tạo ra","","김밥을 [만들었어요].","Tôi đã làm cơm cuộn."],
+["찾다","tìm","","지갑을 [찾고] 있어요.","Tôi đang tìm ví."],
+["잃어버리다","đánh mất","","휴대폰을 [잃어버렸어요].","Tôi làm mất điện thoại rồi."],
+["도와주다","giúp đỡ","","좀 [도와주세요].","Giúp tôi với."],
+["배우다","học (kỹ năng, từ ai đó)","","한국어를 [배우고] 있어요.","Tôi đang học tiếng Hàn."],
+["가르치다","dạy","","저는 영어를 [가르쳐요].","Tôi dạy tiếng Anh."],
+["살다","sống","","어디에 [살아요]?","Bạn sống ở đâu?"],
+["필요하다","cần","필요 必要 · tất yếu","도움이 [필요해요]?","Bạn có cần giúp không?"],
+["생각하다","nghĩ","","어떻게 [생각해요]?","Bạn nghĩ thế nào?"]
+]},
+{t:"Từ nối & từ để hỏi", w:[
+["그런데","nhưng mà; mà này","","[그런데] 내일 시간 있어요?","Mà này, mai bạn rảnh không?"],
+["그래서","vì vậy","","비가 왔어요. [그래서] 집에 있었어요.","Trời mưa. Vì vậy tôi ở nhà."],
+["그러면","vậy thì","","[그러면] 내일 만나요.","Vậy thì mai gặp nhé."],
+["진짜","thật sự (thân mật)","","[진짜]요? 대박!","Thật á? Đỉnh thật!"],
+["아마","có lẽ","","[아마] 좀 늦을 거예요.","Có lẽ tôi sẽ hơi muộn."],
+["같이","cùng nhau","","[같이] 가요!","Đi cùng nhau nào!"],
+["혼자","một mình","","저는 [혼자] 여행해요.","Tôi đi du lịch một mình."],
+["다","tất cả, hết","","[다] 먹었어요.","Tôi ăn hết rồi."],
+["조금","một chút (nói nhanh: 좀)","","[조금] 매워요.","Hơi cay một chút."],
+["많이","nhiều","","[많이] 드세요.","Ăn nhiều vào nhé."],
+["정말","thật sự","","[정말] 고마워요.","Thật sự cảm ơn bạn."],
+["별로","không… lắm (đi với phủ định)","","매운 음식은 [별로] 안 좋아해요.","Tôi không thích đồ cay lắm."],
+["물론","tất nhiên","물론 勿論 · vật luận","[물론]이죠!","Tất nhiên rồi!"],
+["어떻게","như thế nào","","거기 [어떻게] 가요?","Đến đó bằng cách nào?"],
+["왜","tại sao","","[왜] 안 왔어요?","Sao bạn không đến?"],
+["언제","khi nào","","[언제] 시간 있어요?","Khi nào bạn rảnh?"],
+["어디","ở đâu","","집이 [어디]예요?","Nhà bạn ở đâu?"],
+["누구","ai","","저 사람은 [누구]예요?","Người kia là ai?"]
+]}
+];
+
+// [từ, loại từ, nghĩa, collocation / ghi chú, câu ví dụ có [dạng dùng], dịch câu]
+const EN = [
+{t:"Giáo dục", w:[
+["curriculum","n","chương trình giảng dạy","school curriculum; a broad / rigid curriculum","Coding should be part of the school [curriculum].","Lập trình nên là một phần của chương trình học ở trường."],
+["tuition fees","n","học phí","pay / raise / abolish tuition fees","Rising [tuition fees] discourage many students from going to university.","Học phí tăng khiến nhiều học sinh nản lòng không vào đại học."],
+["vocational","adj","(thuộc) dạy nghề","vocational training / courses / skills","[Vocational] training prepares young people for practical jobs.","Đào tạo nghề chuẩn bị cho người trẻ những công việc thực tế."],
+["compulsory","adj","bắt buộc","compulsory education / subject; ≈ mandatory; ≠ optional","Physical education should be [compulsory] in all schools.","Thể dục nên là môn bắt buộc ở mọi trường."],
+["academic performance","n","kết quả học tập","improve / affect academic performance","Lack of sleep can harm students' [academic performance].","Thiếu ngủ có thể làm giảm kết quả học tập của học sinh."],
+["critical thinking","n","tư duy phản biện","develop / foster critical thinking","Debates help students develop [critical thinking].","Tranh biện giúp học sinh phát triển tư duy phản biện."],
+["rote learning","n","học vẹt","rely on rote learning","Many exams still reward [rote learning] rather than understanding.","Nhiều kỳ thi vẫn thưởng cho việc học vẹt hơn là sự hiểu bài."],
+["literacy","n","khả năng đọc viết","literacy rate; digital literacy (kỹ năng số)","Digital [literacy] is now as important as reading and writing.","Kỹ năng số giờ quan trọng ngang với đọc và viết."],
+["tertiary education","n","giáo dục đại học, sau phổ thông","access to tertiary education; ≈ higher education","Governments should make [tertiary education] more affordable.","Chính phủ nên làm cho giáo dục đại học vừa túi tiền hơn."],
+["acquire","v","tiếp thu, đạt được","acquire knowledge / skills; acquisition (n)","Children [acquire] languages faster than adults.","Trẻ em tiếp thu ngôn ngữ nhanh hơn người lớn."],
+["distance learning","n","học từ xa","≈ online learning","[Distance learning] gives rural students access to good teachers.","Học từ xa giúp học sinh nông thôn tiếp cận giáo viên giỏi."],
+["extracurricular","adj","ngoại khóa","extracurricular activities","[Extracurricular] activities build teamwork and confidence.","Hoạt động ngoại khóa xây dựng tinh thần đồng đội và sự tự tin."],
+["discipline","n","kỷ luật","maintain discipline; self-discipline (tính tự giác)","Online courses require a high level of self-[discipline].","Các khóa học trực tuyến đòi hỏi tính tự giác cao."],
+["enrol","v","ghi danh, nhập học","enrol in a course; enrolment (n)","More adults are [enrolling] in evening classes.","Ngày càng nhiều người lớn đăng ký học lớp buổi tối."],
+["qualification","n","bằng cấp, chứng chỉ","gain / obtain a qualification","Employers look for practical skills, not just [qualifications].","Nhà tuyển dụng tìm kỹ năng thực tế, không chỉ bằng cấp."],
+["peer","n","bạn đồng trang lứa","peer pressure (áp lực đồng trang lứa)","Teenagers are strongly influenced by their [peers].","Thanh thiếu niên bị bạn bè cùng lứa ảnh hưởng mạnh."],
+["well-rounded","adj","phát triển toàn diện","a well-rounded education / individual","Schools should aim to produce [well-rounded] individuals.","Trường học nên hướng tới đào tạo những cá nhân toàn diện."],
+["drop out","phr v","bỏ học","drop out of school; dropout rate","Financial problems force some students to [drop out] of university.","Khó khăn tài chính buộc một số sinh viên bỏ học đại học."]
+]},
+{t:"Môi trường", w:[
+["pollution","n","sự ô nhiễm","air / water pollution; pollute (v); pollutant (n)","Air [pollution] is a serious problem in many Asian cities.","Ô nhiễm không khí là vấn đề nghiêm trọng ở nhiều thành phố châu Á."],
+["emission","n","khí thải, sự phát thải","carbon emissions; cut / reduce emissions","Countries must cut carbon [emissions] to slow global warming.","Các nước phải cắt giảm khí thải carbon để làm chậm sự nóng lên toàn cầu."],
+["renewable energy","n","năng lượng tái tạo","invest in renewable energy; ≠ fossil fuels","Solar and wind are the most common forms of [renewable energy].","Mặt trời và gió là những dạng năng lượng tái tạo phổ biến nhất."],
+["fossil fuel","n","nhiên liệu hóa thạch","burn fossil fuels; reliance on fossil fuels","Our heavy reliance on [fossil fuels] is unsustainable.","Sự phụ thuộc nặng nề vào nhiên liệu hóa thạch là không bền vững."],
+["sustainable","adj","bền vững","sustainable development; sustainability (n)","Cities need more [sustainable] forms of transport.","Các thành phố cần những hình thức giao thông bền vững hơn."],
+["deforestation","n","nạn phá rừng","widespread / large-scale deforestation","[Deforestation] destroys the habitats of countless species.","Phá rừng hủy hoại môi trường sống của vô số loài."],
+["endangered species","n","loài có nguy cơ tuyệt chủng","protect endangered species; extinction (n)","Poaching pushes many [endangered species] closer to extinction.","Săn trộm đẩy nhiều loài nguy cấp đến gần sự tuyệt chủng."],
+["habitat","n","môi trường sống","natural habitat; habitat loss","Urban expansion causes serious [habitat] loss.","Mở rộng đô thị gây mất môi trường sống nghiêm trọng."],
+["conserve","v","bảo tồn, tiết kiệm","conserve energy / water; conservation (n)","Simple habits can help [conserve] water at home.","Những thói quen đơn giản có thể giúp tiết kiệm nước ở nhà."],
+["dispose of","phr v","xử lý, vứt bỏ","dispose of waste properly; disposal (n)","Factories must [dispose of] chemical waste safely.","Nhà máy phải xử lý chất thải hóa học an toàn."],
+["landfill","n","bãi chôn lấp rác","end up in landfill","Most plastic packaging ends up in [landfill].","Phần lớn bao bì nhựa kết thúc ở bãi chôn lấp."],
+["biodiversity","n","đa dạng sinh học","loss of biodiversity","Climate change is a major threat to [biodiversity].","Biến đổi khí hậu là mối đe dọa lớn đối với đa dạng sinh học."],
+["carbon footprint","n","lượng khí thải carbon (của một người, tổ chức)","reduce one's carbon footprint","Flying less is one way to reduce your [carbon footprint].","Bay ít hơn là một cách giảm lượng khí thải carbon của bạn."],
+["exacerbate","v","làm trầm trọng thêm","exacerbate a problem; ≈ worsen (từ band 7+)","Rapid urbanisation has [exacerbated] the pollution problem.","Đô thị hóa nhanh đã làm vấn đề ô nhiễm trầm trọng thêm."],
+["mitigate","v","giảm nhẹ","mitigate the effects / impact of","Planting trees can help [mitigate] the effects of climate change.","Trồng cây có thể giúp giảm nhẹ tác động của biến đổi khí hậu."],
+["environmentally friendly","adj","thân thiện với môi trường","≈ eco-friendly, green","Consumers are choosing more [environmentally friendly] products.","Người tiêu dùng đang chọn nhiều sản phẩm thân thiện với môi trường hơn."],
+["natural disaster","n","thiên tai","be hit by natural disasters","Vietnam is frequently hit by [natural disasters] such as floods.","Việt Nam thường xuyên hứng chịu thiên tai như lũ lụt."],
+["scarcity","n","sự khan hiếm","water scarcity; scarce (adj)","Water [scarcity] could lead to conflict in the future.","Khan hiếm nước có thể dẫn đến xung đột trong tương lai."]
+]},
+{t:"Công nghệ", w:[
+["innovation","n","sự đổi mới, cải tiến","technological innovation; innovative (adj)","Technological [innovation] drives economic growth.","Đổi mới công nghệ thúc đẩy tăng trưởng kinh tế."],
+["artificial intelligence","n","trí tuệ nhân tạo","AI-powered; develop artificial intelligence","[Artificial intelligence] may replace many routine jobs.","Trí tuệ nhân tạo có thể thay thế nhiều công việc lặp lại."],
+["automation","n","tự động hóa","automate (v); job losses due to automation","[Automation] has reduced the need for factory workers.","Tự động hóa đã giảm nhu cầu công nhân nhà máy."],
+["device","n","thiết bị","electronic / mobile devices","Children spend hours on electronic [devices] every day.","Trẻ em dành hàng giờ cho thiết bị điện tử mỗi ngày."],
+["access","n","sự tiếp cận","have access to (KHÔNG dùng: access to sth như động từ)","Millions of people still lack [access] to the internet.","Hàng triệu người vẫn chưa được tiếp cận internet."],
+["privacy","n","quyền riêng tư","invasion of privacy; online privacy","Social media raises serious concerns about [privacy].","Mạng xã hội gây lo ngại nghiêm trọng về quyền riêng tư."],
+["cyberbullying","n","bắt nạt qua mạng","victims of cyberbullying","[Cyberbullying] can seriously affect teenagers' mental health.","Bắt nạt qua mạng có thể ảnh hưởng nghiêm trọng đến sức khỏe tinh thần của thanh thiếu niên."],
+["addictive","adj","gây nghiện","highly addictive; addiction (n)","Many video games are designed to be highly [addictive].","Nhiều trò chơi điện tử được thiết kế để gây nghiện cao."],
+["obsolete","adj","lỗi thời","become obsolete; ≈ outdated","Smartphones become [obsolete] within a few years.","Điện thoại thông minh trở nên lỗi thời chỉ sau vài năm."],
+["breakthrough","n","bước đột phá","a major breakthrough in","The vaccine was a major medical [breakthrough].","Vắc-xin là một bước đột phá y học lớn."],
+["revolutionise","v","cách mạng hóa","revolutionise the way we…","The internet has [revolutionised] the way we communicate.","Internet đã cách mạng hóa cách chúng ta giao tiếp."],
+["rely on","v","phụ thuộc vào","rely heavily on; reliance (n); reliable (adj)","Many students [rely on] search engines instead of books.","Nhiều học sinh phụ thuộc vào công cụ tìm kiếm thay vì sách."],
+["user-friendly","adj","dễ sử dụng","a user-friendly interface","The app has a simple, [user-friendly] interface.","Ứng dụng có giao diện đơn giản, dễ dùng."],
+["misinformation","n","thông tin sai lệch","spread misinformation","Social media makes it easy to spread [misinformation].","Mạng xã hội khiến việc lan truyền tin sai lệch trở nên dễ dàng."],
+["digital divide","n","khoảng cách số","bridge the digital divide","Free internet in rural areas could help bridge the [digital divide].","Internet miễn phí ở nông thôn có thể giúp thu hẹp khoảng cách số."],
+["sedentary","adj","ít vận động","a sedentary lifestyle","Technology has encouraged a more [sedentary] lifestyle.","Công nghệ đã khuyến khích lối sống ít vận động hơn."],
+["remote working","n","làm việc từ xa","≈ working from home","[Remote working] became common after the pandemic.","Làm việc từ xa trở nên phổ biến sau đại dịch."],
+["surveillance","n","sự giám sát","surveillance cameras; mass surveillance","[Surveillance] cameras can help reduce crime in public places.","Camera giám sát có thể giúp giảm tội phạm ở nơi công cộng."]
+]},
+{t:"Sức khỏe", w:[
+["obesity","n","bệnh béo phì","childhood obesity; obese (adj)","Childhood [obesity] is rising in many countries.","Béo phì ở trẻ em đang tăng ở nhiều quốc gia."],
+["nutrition","n","dinh dưỡng","poor / good nutrition; nutritious (adj)","Good [nutrition] is essential for children's development.","Dinh dưỡng tốt rất cần thiết cho sự phát triển của trẻ."],
+["balanced diet","n","chế độ ăn cân bằng","maintain / follow a balanced diet","A [balanced diet] includes plenty of fruit and vegetables.","Chế độ ăn cân bằng có nhiều trái cây và rau."],
+["processed food","n","thực phẩm chế biến sẵn","consume processed food","[Processed food] often contains too much salt and sugar.","Thực phẩm chế biến sẵn thường chứa quá nhiều muối và đường."],
+["life expectancy","n","tuổi thọ trung bình","a rise in life expectancy","[Life expectancy] has risen thanks to better healthcare.","Tuổi thọ trung bình tăng nhờ chăm sóc y tế tốt hơn."],
+["healthcare","n","chăm sóc y tế","healthcare system; access to healthcare","Everyone should have access to affordable [healthcare].","Mọi người nên được tiếp cận dịch vụ y tế giá phải chăng."],
+["preventive","adj","phòng ngừa","preventive measures / medicine","Governments should invest more in [preventive] medicine.","Chính phủ nên đầu tư nhiều hơn vào y học dự phòng."],
+["chronic","adj","mãn tính","chronic disease / illness","Smoking increases the risk of [chronic] diseases.","Hút thuốc làm tăng nguy cơ mắc bệnh mãn tính."],
+["mental health","n","sức khỏe tinh thần","mental health problems; affect mental health","Long working hours can damage people's [mental health].","Làm việc nhiều giờ có thể hại sức khỏe tinh thần."],
+["well-being","n","sự khỏe mạnh, hạnh phúc toàn diện","physical and mental well-being","Regular exercise improves overall [well-being].","Tập thể dục đều đặn cải thiện sức khỏe tổng thể."],
+["consume","v","tiêu thụ, ăn uống","consumption (n); consumer (n)","People [consume] far more sugar than they need.","Mọi người tiêu thụ nhiều đường hơn mức cần thiết."],
+["epidemic","n","dịch bệnh (lan rộng)","an obesity epidemic","Some experts describe obesity as a global [epidemic].","Một số chuyên gia gọi béo phì là dịch bệnh toàn cầu."],
+["vulnerable","adj","dễ bị tổn thương","be vulnerable to","Elderly people are more [vulnerable] to infections.","Người cao tuổi dễ bị nhiễm trùng hơn."],
+["detrimental","adj","có hại","be detrimental to; ≈ harmful (từ band 7+)","Excessive screen time is [detrimental] to children's eyesight.","Dùng màn hình quá nhiều có hại cho thị lực của trẻ."],
+["beneficial","adj","có lợi","be beneficial to / for","Walking to work is [beneficial] for both health and the environment.","Đi bộ đi làm có lợi cho cả sức khỏe và môi trường."],
+["stress-related","adj","liên quan đến căng thẳng","stress-related illnesses","[Stress-related] illnesses are common among office workers.","Bệnh liên quan đến căng thẳng phổ biến ở dân văn phòng."],
+["sanitation","n","vệ sinh (hệ thống công cộng)","poor sanitation; improve sanitation","Poor [sanitation] spreads disease in developing areas.","Vệ sinh kém làm lây lan bệnh ở các khu vực đang phát triển."],
+["medication","n","thuốc men","take medication; be on medication","Some patients have to take [medication] for life.","Một số bệnh nhân phải dùng thuốc suốt đời."]
+]},
+{t:"Công việc & kinh tế", w:[
+["employment","n","việc làm","employment opportunities; ≠ unemployment","The new factory will create [employment] opportunities for locals.","Nhà máy mới sẽ tạo cơ hội việc làm cho người dân địa phương."],
+["unemployment rate","n","tỷ lệ thất nghiệp","a high / low unemployment rate","The [unemployment rate] fell to 3% last year.","Tỷ lệ thất nghiệp giảm xuống 3% năm ngoái."],
+["job satisfaction","n","sự hài lòng trong công việc","high / low job satisfaction","Salary is not the only factor in [job satisfaction].","Lương không phải yếu tố duy nhất tạo nên sự hài lòng trong công việc."],
+["work-life balance","n","cân bằng công việc – cuộc sống","achieve / maintain a healthy work-life balance","Flexible hours help employees achieve a better [work-life balance].","Giờ làm linh hoạt giúp nhân viên cân bằng công việc – cuộc sống tốt hơn."],
+["productivity","n","năng suất","increase / boost productivity; productive (adj)","Short breaks can actually boost [productivity].","Nghỉ ngắn thực ra có thể tăng năng suất."],
+["income","n","thu nhập","low-income families; disposable income","Low-[income] families struggle with rising living costs.","Các gia đình thu nhập thấp chật vật với chi phí sinh hoạt tăng."],
+["cost of living","n","chi phí sinh hoạt","the rising cost of living","The [cost of living] in big cities is extremely high.","Chi phí sinh hoạt ở thành phố lớn cực kỳ cao."],
+["inflation","n","lạm phát","high inflation; inflation rate","[Inflation] reduces the value of people's savings.","Lạm phát làm giảm giá trị tiền tiết kiệm."],
+["economic growth","n","tăng trưởng kinh tế","stimulate / boost economic growth","Tourism contributes significantly to [economic growth].","Du lịch đóng góp đáng kể vào tăng trưởng kinh tế."],
+["invest","v","đầu tư","invest in sth; investment (n)","The government should [invest] more in public transport.","Chính phủ nên đầu tư nhiều hơn vào giao thông công cộng."],
+["entrepreneur","n","doanh nhân khởi nghiệp","entrepreneurship (n)","Young [entrepreneurs] are creating innovative start-ups.","Các doanh nhân trẻ đang tạo ra những công ty khởi nghiệp sáng tạo."],
+["flexible","adj","linh hoạt","flexible working hours; flexibility (n)","Many employees prefer [flexible] working hours.","Nhiều nhân viên thích giờ làm việc linh hoạt."],
+["promotion","n","sự thăng chức","get / be offered a promotion","She got a [promotion] after only two years.","Cô ấy được thăng chức chỉ sau hai năm."],
+["skilled","adj","có tay nghề","skilled workers / labour; ≠ unskilled","There is a shortage of [skilled] workers in technology.","Ngành công nghệ đang thiếu lao động có tay nghề."],
+["workforce","n","lực lượng lao động","enter the workforce","Women make up almost half of the [workforce].","Phụ nữ chiếm gần một nửa lực lượng lao động."],
+["poverty","n","sự nghèo đói","live in poverty; reduce poverty","Education is the key to escaping [poverty].","Giáo dục là chìa khóa để thoát nghèo."],
+["consumerism","n","chủ nghĩa tiêu dùng","a consumerist society","Advertising encourages [consumerism] among young people.","Quảng cáo khuyến khích lối sống tiêu dùng ở giới trẻ."],
+["financial burden","n","gánh nặng tài chính","place / impose a financial burden on","An ageing population places a heavy [financial burden] on the state.","Dân số già hóa đặt gánh nặng tài chính lớn lên nhà nước."]
+]},
+{t:"Xã hội & đô thị", w:[
+["urbanisation","n","đô thị hóa","rapid urbanisation","Rapid [urbanisation] has led to housing shortages.","Đô thị hóa nhanh đã dẫn đến thiếu nhà ở."],
+["overcrowded","adj","quá đông đúc","overcrowded cities / schools","Public hospitals are often [overcrowded].","Bệnh viện công thường quá tải."],
+["infrastructure","n","cơ sở hạ tầng","improve / invest in infrastructure","Poor [infrastructure] slows economic development.","Hạ tầng yếu kém làm chậm phát triển kinh tế."],
+["traffic congestion","n","ùn tắc giao thông","ease / reduce traffic congestion","More buses could help ease [traffic congestion].","Thêm xe buýt có thể giúp giảm ùn tắc."],
+["public transport","n","giao thông công cộng","use / improve public transport","Cheap [public transport] encourages people to leave their cars at home.","Giao thông công cộng giá rẻ khuyến khích mọi người để xe ở nhà."],
+["housing","n","nhà ở","affordable housing; housing shortage","Young people cannot afford [housing] in the city centre.","Người trẻ không đủ tiền mua nhà ở trung tâm thành phố."],
+["ageing population","n","dân số già hóa","the challenges of an ageing population","Japan faces the challenges of an [ageing population].","Nhật Bản đối mặt với thách thức của dân số già hóa."],
+["community","n","cộng đồng","local community; sense of community","Volunteering strengthens the local [community].","Hoạt động tình nguyện gắn kết cộng đồng địa phương."],
+["inequality","n","sự bất bình đẳng","social / income / gender inequality","Income [inequality] has widened in many countries.","Bất bình đẳng thu nhập đã gia tăng ở nhiều nước."],
+["discrimination","n","sự phân biệt đối xử","discrimination against; gender discrimination","Laws exist to prevent [discrimination] in the workplace.","Có luật để ngăn phân biệt đối xử nơi làm việc."],
+["migrate","v","di cư","migrate from rural to urban areas; migration (n); migrant (n)","Many young people [migrate] to cities in search of work.","Nhiều người trẻ di cư lên thành phố tìm việc."],
+["rural","adj","(thuộc) nông thôn","rural areas; ≠ urban","Healthcare in [rural] areas is often limited.","Dịch vụ y tế ở nông thôn thường hạn chế."],
+["quality of life","n","chất lượng cuộc sống","improve / enhance quality of life","Green spaces improve residents' [quality of life].","Không gian xanh cải thiện chất lượng sống của cư dân."],
+["generation gap","n","khoảng cách thế hệ","bridge the generation gap","Technology has widened the [generation gap].","Công nghệ đã nới rộng khoảng cách thế hệ."],
+["nuclear family","n","gia đình hạt nhân (bố mẹ và con)","≠ extended family (đại gia đình)","The [nuclear family] is becoming more common in Vietnam.","Gia đình hạt nhân ngày càng phổ biến ở Việt Nam."],
+["volunteer","v","tình nguyện","volunteer work; voluntary (adj)","Students should [volunteer] in their local area.","Học sinh nên làm tình nguyện ở địa phương."],
+["tradition","n","truyền thống","preserve traditions; traditional (adj)","Globalisation threatens many local [traditions].","Toàn cầu hóa đe dọa nhiều truyền thống địa phương."],
+["social cohesion","n","sự gắn kết xã hội","promote / strengthen social cohesion","Shared public spaces promote [social cohesion].","Không gian công cộng chung thúc đẩy sự gắn kết xã hội."]
+]},
+{t:"Pháp luật & chính phủ", w:[
+["legislation","n","luật pháp, sự lập pháp","introduce / pass legislation (danh từ không đếm được)","The government introduced new [legislation] to protect workers.","Chính phủ ban hành luật mới để bảo vệ người lao động."],
+["regulation","n","quy định","strict regulations; regulate (v)","Stricter [regulations] are needed on food advertising.","Cần quy định chặt hơn về quảng cáo thực phẩm."],
+["impose","v","áp đặt, áp dụng","impose a tax / ban / fine on","Governments should [impose] higher taxes on sugary drinks.","Chính phủ nên áp thuế cao hơn lên đồ uống có đường."],
+["ban","v","cấm","a ban on sth; ban sth","Many cities have [banned] single-use plastic bags.","Nhiều thành phố đã cấm túi nhựa dùng một lần."],
+["enforce","v","thực thi","enforce the law; enforcement (n)","The police must [enforce] traffic laws more strictly.","Cảnh sát phải thực thi luật giao thông nghiêm hơn."],
+["deterrent","n","biện pháp răn đe","act as a deterrent; deter (v)","Heavy fines act as a [deterrent] to speeding.","Phạt nặng có tác dụng răn đe việc chạy quá tốc độ."],
+["offender","n","người phạm tội","young / repeat offenders","Young [offenders] should be educated rather than punished.","Người phạm tội trẻ tuổi nên được giáo dục hơn là trừng phạt."],
+["rehabilitation","n","sự cải tạo, phục hồi","rehabilitation programmes; rehabilitate (v)","Prisons should focus on [rehabilitation], not just punishment.","Nhà tù nên tập trung cải tạo, không chỉ trừng phạt."],
+["punishment","n","hình phạt","harsh / severe punishment; capital punishment (tử hình)","Harsher [punishment] does not always reduce crime.","Hình phạt nặng hơn không phải lúc nào cũng giảm tội phạm."],
+["crime rate","n","tỷ lệ tội phạm","a rise / fall in the crime rate","The [crime rate] has fallen thanks to better street lighting.","Tỷ lệ tội phạm giảm nhờ đèn đường tốt hơn."],
+["juvenile delinquency","n","tội phạm vị thành niên","tackle juvenile delinquency","Poverty is closely linked to [juvenile delinquency].","Nghèo đói có liên hệ chặt chẽ với tội phạm vị thành niên."],
+["subsidise","v","trợ cấp","subsidy (n); subsidise public transport","The state should [subsidise] public transport.","Nhà nước nên trợ giá giao thông công cộng."],
+["allocate","v","phân bổ","allocate funds / resources to","More funds should be [allocated] to healthcare.","Nên phân bổ nhiều ngân sách hơn cho y tế."],
+["taxpayer","n","người nộp thuế","taxpayers' money","Should [taxpayers'] money be spent on space exploration?","Có nên chi tiền thuế của dân cho thám hiểm vũ trụ?"],
+["policy","n","chính sách","implement / introduce a policy","The new [policy] aims to reduce traffic in the city centre.","Chính sách mới nhằm giảm giao thông ở trung tâm."],
+["authorities","n","chính quyền","local authorities; the authorities","Local [authorities] should provide more sports facilities.","Chính quyền địa phương nên cung cấp thêm cơ sở thể thao."],
+["welfare","n","phúc lợi","social welfare; welfare system","A strong [welfare] system protects the poor.","Hệ thống phúc lợi vững mạnh bảo vệ người nghèo."]
+]},
+{t:"Truyền thông & văn hóa", w:[
+["advertising","n","ngành / hoạt động quảng cáo","misleading advertising; advertisement (n, một mẩu quảng cáo)","[Advertising] aimed at children should be restricted.","Quảng cáo nhắm vào trẻ em nên bị hạn chế."],
+["influence","n","sự ảnh hưởng","have an influence on; influential (adj)","Celebrities have a huge [influence] on young people.","Người nổi tiếng có ảnh hưởng lớn tới giới trẻ."],
+["mass media","n","truyền thông đại chúng","the mass media shape public opinion","The [mass media] shape public opinion.","Truyền thông đại chúng định hình dư luận."],
+["coverage","n","sự đưa tin","media / news coverage","The event received wide media [coverage].","Sự kiện được truyền thông đưa tin rộng rãi."],
+["biased","adj","thiên vị","biased reporting; bias (n)","Some news channels are clearly [biased].","Một số kênh tin tức rõ ràng là thiên vị."],
+["censorship","n","sự kiểm duyệt","internet censorship; censor (v)","Strict [censorship] limits freedom of speech.","Kiểm duyệt chặt hạn chế tự do ngôn luận."],
+["globalisation","n","toàn cầu hóa","the impact of globalisation","[Globalisation] has made foreign products widely available.","Toàn cầu hóa khiến hàng ngoại trở nên phổ biến."],
+["cultural identity","n","bản sắc văn hóa","preserve / lose cultural identity","Young people should be proud of their [cultural identity].","Người trẻ nên tự hào về bản sắc văn hóa của mình."],
+["heritage","n","di sản","cultural heritage; heritage site","Hoi An is a famous world [heritage] site.","Hội An là một di sản thế giới nổi tiếng."],
+["tourism","n","ngành du lịch","mass tourism; the tourism industry","Mass [tourism] can damage historic sites.","Du lịch đại trà có thể làm hư hại di tích."],
+["celebrity","n","người nổi tiếng","celebrity culture","[Celebrity] culture puts pressure on teenagers to look perfect.","Văn hóa thần tượng gây áp lực phải hoàn hảo lên thanh thiếu niên."],
+["role model","n","tấm gương","be a good role model for","Parents are children's first [role models].","Cha mẹ là tấm gương đầu tiên của trẻ."],
+["entertainment","n","sự giải trí","a form of entertainment","Television is still a popular form of [entertainment].","Truyền hình vẫn là hình thức giải trí phổ biến."],
+["broaden","v","mở rộng","broaden one's horizons (mở mang tầm mắt)","Travelling abroad can [broaden] your horizons.","Du lịch nước ngoài giúp mở mang tầm mắt."],
+["stereotype","n","định kiến, khuôn mẫu","reinforce / challenge stereotypes","Films sometimes reinforce negative [stereotypes].","Phim ảnh đôi khi củng cố những định kiến tiêu cực."],
+["fund","v","tài trợ","fund the arts; funding (n)","Should governments [fund] the arts?","Chính phủ có nên tài trợ cho nghệ thuật?"]
+]},
+{t:"Task 1: mô tả xu hướng", w:[
+["increase","v","tăng","increase by 10% (tăng thêm) / to 50% (tăng lên mức); a sharp increase in","The number of tourists [increased] by 20% between 2010 and 2020.","Số du khách tăng 20% trong giai đoạn 2010–2020."],
+["decline","v","giảm","decline steadily; a gradual decline in","Sales [declined] steadily over the period.","Doanh số giảm đều trong suốt giai đoạn."],
+["fluctuate","v","dao động","fluctuate between X and Y; fluctuation (n)","Prices [fluctuated] between $5 and $8.","Giá dao động trong khoảng 5–8 đô."],
+["peak","v","đạt đỉnh","peak at; reach a peak of","Visitor numbers [peaked] at 2 million in 2019.","Lượng khách đạt đỉnh 2 triệu năm 2019."],
+["plateau","n","giai đoạn chững lại","reach a plateau; ≈ level off","The figure rose quickly before reaching a [plateau].","Con số tăng nhanh trước khi chững lại."],
+["remain stable","v","giữ ổn định","remain stable / unchanged at","Unemployment [remained stable] at 4%.","Tỷ lệ thất nghiệp giữ ổn định ở mức 4%."],
+["dramatic","adj","đột ngột, mạnh","a dramatic rise / fall; dramatically (adv)","There was a [dramatic] fall in sales in 2008.","Doanh số giảm mạnh vào năm 2008."],
+["gradual","adj","dần dần","a gradual increase; gradually (adv)","The chart shows a [gradual] increase in internet use.","Biểu đồ cho thấy việc dùng internet tăng dần."],
+["significant","adj","đáng kể","a significant increase; significantly (adv)","There was a [significant] rise in car ownership.","Tỷ lệ sở hữu ô tô tăng đáng kể."],
+["slightly","adv","nhẹ, một chút","fall slightly; a slight drop (adj)","The figure fell [slightly] in the final year.","Con số giảm nhẹ vào năm cuối."],
+["proportion","n","tỷ lệ, phần","a large proportion of; ≈ percentage, share","A large [proportion] of students live at home.","Một phần lớn sinh viên sống ở nhà."],
+["account for","v","chiếm (bao nhiêu %)","account for 30% of","Coal [accounted for] 40% of electricity production.","Than chiếm 40% sản lượng điện."],
+["respectively","adv","lần lượt, tương ứng","đặt ở cuối câu","Men and women spent 3 and 5 hours [respectively].","Nam và nữ lần lượt dành 3 và 5 giờ."],
+["overall","adv","nhìn chung","Overall, it is clear that… (câu tổng quan Task 1)","[Overall], the number of cars increased over the period.","Nhìn chung, số ô tô tăng trong giai đoạn này."],
+["surpass","v","vượt qua","≈ overtake, exceed","In 2015, online sales [surpassed] in-store sales.","Năm 2015, doanh số online vượt doanh số tại cửa hàng."],
+["double","v","tăng gấp đôi","double / triple / halve (giảm một nửa)","The population [doubled] between 1950 and 2000.","Dân số tăng gấp đôi từ 1950 đến 2000."],
+["in contrast","phr","ngược lại","≈ by contrast; whereas","Car use rose. [In contrast], cycling fell.","Việc dùng ô tô tăng. Ngược lại, đi xe đạp giảm."],
+["approximately","adv","xấp xỉ","≈ roughly, around, about","[Approximately] 60% of people used the bus.","Khoảng 60% người dân đi xe buýt."]
+]},
+{t:"Từ nối & lập luận", w:[
+["however","adv","tuy nhiên","đầu câu + dấu phẩy","Technology is useful. [However], it can be addictive.","Công nghệ hữu ích. Tuy nhiên, nó có thể gây nghiện."],
+["furthermore","adv","hơn nữa","≈ moreover, in addition","[Furthermore], public transport reduces pollution.","Hơn nữa, giao thông công cộng giảm ô nhiễm."],
+["consequently","adv","do đó","≈ as a result, therefore","Many factories closed. [Consequently], unemployment rose.","Nhiều nhà máy đóng cửa. Do đó, thất nghiệp tăng."],
+["whereas","conj","trong khi (đối lập)","nối hai mệnh đề tương phản","Some prefer cities, [whereas] others enjoy rural life.","Có người thích thành phố, trong khi người khác thích nông thôn."],
+["despite","prep","mặc dù","despite + danh từ / V-ing (KHÔNG + mệnh đề)","[Despite] the cost, many families pay for private tuition.","Dù tốn kém, nhiều gia đình vẫn trả tiền học thêm."],
+["for instance","phr","ví dụ","≈ for example","Some jobs, [for instance] driving, may disappear.","Một số nghề, ví dụ lái xe, có thể biến mất."],
+["in terms of","phr","về mặt","in terms of cost / quality","[In terms of] cost, public transport is cheaper.","Về chi phí, giao thông công cộng rẻ hơn."],
+["to some extent","phr","ở một mức độ nào đó","agree to some extent","I agree with this view [to some extent].","Tôi đồng ý với quan điểm này ở một mức độ nào đó."],
+["it is widely believed that","phr","nhiều người tin rằng","câu mở bài học thuật","[It is widely believed that] university education is essential.","Nhiều người tin rằng học đại học là thiết yếu."],
+["arguably","adv","có thể nói là","từ rào đón (hedging) – mẹo band 7","Health is [arguably] more important than wealth.","Có thể nói sức khỏe quan trọng hơn của cải."],
+["tend to","v","có xu hướng","hedging; tendency (n)","Older people [tend to] be less comfortable with technology.","Người lớn tuổi thường kém thoải mái với công nghệ."],
+["inevitable","adj","không thể tránh khỏi","inevitably (adv)","Some job losses are [inevitable] as technology develops.","Mất việc là không tránh khỏi khi công nghệ phát triển."],
+["advocate","v","ủng hộ, chủ trương","advocate sth; ≈ support","Many experts [advocate] a four-day working week.","Nhiều chuyên gia ủng hộ tuần làm việc bốn ngày."],
+["outweigh","v","lớn hơn, nặng hơn","the advantages outweigh the disadvantages","I believe the benefits [outweigh] the drawbacks.","Tôi tin rằng lợi ích lớn hơn bất lợi."],
+["drawback","n","nhược điểm","≈ disadvantage","The main [drawback] of online learning is the lack of interaction.","Nhược điểm chính của học trực tuyến là thiếu tương tác."],
+["address","v","giải quyết (vấn đề)","address an issue / a problem","Governments must [address] the issue of homelessness.","Chính phủ phải giải quyết vấn đề vô gia cư."],
+["tackle","v","giải quyết, xử lý","tackle a problem; ≈ deal with","Several measures could be taken to [tackle] this problem.","Có thể áp dụng một số biện pháp để giải quyết vấn đề này."],
+["a wide range of","phr","nhiều loại, đa dạng","≈ various","Cities offer [a wide range of] job opportunities.","Thành phố mang lại nhiều cơ hội việc làm đa dạng."],
+["play a crucial role in","phr","đóng vai trò then chốt trong","play a crucial role in + N / V-ing","Parents [play a crucial role in] children's education.","Cha mẹ đóng vai trò then chốt trong việc giáo dục con."],
+["in conclusion","phr","tóm lại, kết luận","mở đầu đoạn kết bài","[In conclusion], both sides have valid points.","Tóm lại, cả hai phía đều có lý lẽ hợp lý."]
+]}
+];
+
+// Nâng cấp câu: o[0] luôn là đáp án đúng (sẽ được xáo trộn khi hiển thị)
+const PARA = [
+{q:"Many people use their phones too much.",o:["Excessive smartphone use has become widespread.","Many people use phones excessive.","Smartphone using is too much by many people."],why:"“Excessive” là tính từ đứng trước danh từ “use”. Câu 2 sai vì cần trạng từ “excessively”; câu 3 sai cấu trúc."},
+{q:"Pollution is a very big problem.",o:["Pollution poses a serious threat to public health.","Pollution makes a serious threat to public health.","Pollution is a very heavy problem."],why:"Collocation đúng là “pose a threat”, không phải “make a threat”; “heavy problem” không tự nhiên trong tiếng Anh."},
+{q:"The number of students went up a lot.",o:["There was a significant increase in student numbers.","The number of students increased significant.","The students number went up very much."],why:"“An increase in + N”; khi bổ nghĩa cho động từ phải dùng trạng từ “significantly”."},
+{q:"Children learn a lot from their parents.",o:["Parents play a crucial role in shaping their children's behaviour.","Parents play a crucial role to shape their children's behaviour.","Parents make an important role in their children's behaviour."],why:"Cấu trúc là “play a role in + V-ing”, không dùng “to V” và không dùng “make a role”."},
+{q:"The good points are more than the bad points.",o:["The advantages outweigh the disadvantages.","The advantages are outweigh the disadvantages.","The advantages outweigh than the disadvantages."],why:"“Outweigh” là động từ nên không cần “are”, và không đi với “than”."},
+{q:"The government should do something about traffic jams.",o:["The government should take measures to ease traffic congestion.","The government should do measures to reduce traffic jam.","The government should take measures to easy traffic congestion."],why:"Collocation là “take measures”; “ease” là động từ, còn “easy” là tính từ."},
+{q:"People in the countryside move to cities to find jobs.",o:["Many rural residents migrate to urban areas in search of employment.","Many rural residents migrate to urban areas for searching employment.","Many rural people migrates to city area to find job."],why:"Cụm cố định là “in search of”. Câu 3 sai chia động từ (migrates) và thiếu mạo từ / số nhiều."},
+{q:"Smoking is very bad for your health.",o:["Smoking is extremely detrimental to health.","Smoking is extremely harmful with health.","Smoking causes very bad affects to health."],why:"Dùng “detrimental / harmful to”, không dùng “with”. “Affect” là động từ, danh từ phải là “effect” và đi với “on”."},
+{q:"Because of the internet, we can get information easily.",o:["The internet has made information far more accessible.","The internet has made information more access.","Due to the internet, we can get information easy."],why:"Sau “make + O” cần tính từ “accessible”; “easy” là tính từ, bổ nghĩa động từ phải dùng “easily”."},
+{q:"I agree a little with this idea.",o:["I agree with this view to some extent.","I agree this view to some extent.","I am agree with this view in some extent."],why:"Phải nói “agree with”, không dùng “am agree”; cụm đúng là “to some extent”."},
+{q:"Life is more expensive now.",o:["The cost of living has risen considerably.","The cost of living has raised considerably.","The living cost has risen considerable."],why:"“Rise” là nội động từ (rise–rose–risen), còn “raise” cần tân ngữ. Bổ nghĩa động từ cần trạng từ “considerably”."},
+{q:"Many young people don't have jobs.",o:["Youth unemployment remains a serious concern.","Young unemployment remains a serious concern.","Youth unemployment remain a serious concern."],why:"Cụm đúng là “youth unemployment”; chủ ngữ số ít nên động từ là “remains”."},
+{q:"There are more old people than before.",o:["The proportion of elderly people has grown steadily.","The proportion of elderly people has grown steady.","The proportion of old peoples has growth steadily."],why:"Bổ nghĩa động từ cần trạng từ “steadily”; “people” đã là số nhiều; “growth” là danh từ."},
+{q:"Watching TV a lot is not good for kids.",o:["Excessive screen time can have a negative impact on children.","Excessive screen time can have a negative impact to children.","Excessive screen time can make a negative effect for children."],why:"Cấu trúc đúng: “have an impact / effect on”."},
+{q:"Some people think university should be free, other people think students should pay.",o:["While some argue that university should be free, others believe students should contribute to the cost.","Despite some argue that university should be free, others believe students should contribute to the cost.","Some argue that university should be free, whereas others believes students should contributing to the cost."],why:"“Despite” không đi với mệnh đề. Câu 3 sai “others believe” (số nhiều) và “should + V nguyên mẫu”."},
+{q:"Many animals are dying because forests are cut down.",o:["Deforestation is pushing many species towards extinction.","Deforestation is pushing many species to extinct.","Deforestation makes many species extinction."],why:"“Towards / to + danh từ extinction”; “extinct” là tính từ."},
+{q:"Online learning is convenient but it has problems.",o:["Despite its convenience, online learning has several drawbacks.","Despite it is convenient, online learning has several drawbacks.","Although its convenience, online learning has several drawback."],why:"Despite + danh từ (its convenience); Although + mệnh đề. “Several” đi với danh từ số nhiều."},
+{q:"Companies should pay workers more money.",o:["Companies should offer their employees more competitive salaries.","Companies should offer their employees a more competitive salaries.","Companies should give employees salaries more competitive."],why:"Không dùng “a” với danh từ số nhiều; tính từ đứng trước danh từ."}
+];
+
+KO.push(
+{t:"Gia đình & mối quan hệ", w:[
+["가족","gia đình","가족 家族 · gia tộc","우리 [가족]은 네 명이에요.","Gia đình tôi có bốn người."],
+["부모님","bố mẹ","부모 父母 · phụ mẫu","[부모님]은 베트남에 계세요.","Bố mẹ tôi đang ở Việt Nam."],
+["아버지","bố, cha","","[아버지]는 선생님이세요.","Bố tôi là giáo viên."],
+["어머니","mẹ","","[어머니]가 요리를 잘하세요.","Mẹ tôi nấu ăn giỏi."],
+["형","anh trai (em trai gọi)","형 兄 · huynh","[형]은 회사원이에요.","Anh trai tôi là nhân viên công ty."],
+["오빠","anh trai (em gái gọi); anh (thân mật)","","[오빠], 같이 가요!","Anh ơi, đi cùng nhau đi!"],
+["언니","chị gái (em gái gọi)","","[언니]는 서울에 살아요.","Chị tôi sống ở Seoul."],
+["누나","chị gái (em trai gọi)","","[누나]가 저를 도와줬어요.","Chị đã giúp tôi."],
+["동생","em","동생 同生 · đồng sinh","제 [동생]은 대학생이에요.","Em tôi là sinh viên đại học."],
+["남편","chồng","남편 男便 · nam tiện","[남편]은 회사에 갔어요.","Chồng tôi đi làm rồi."],
+["아내","vợ","","[아내]와 같이 여행했어요.","Tôi đã đi du lịch cùng vợ."],
+["아이","đứa trẻ, con","","[아이]가 두 명 있어요.","Tôi có hai đứa con."],
+["결혼하다","kết hôn","결혼 結婚 · kết hôn","다음 달에 [결혼해요].","Tháng sau tôi kết hôn."],
+["남자 친구","bạn trai","","[남자 친구] 있어요?","Bạn có bạn trai chưa?"],
+["여자 친구","bạn gái","","[여자 친구]하고 영화를 봤어요.","Tôi đã xem phim với bạn gái."],
+["선배","tiền bối, đàn anh/chị","선배 先輩 · tiên bối","회사 [선배]가 많이 가르쳐 줘요.","Tiền bối ở công ty chỉ dạy tôi nhiều."],
+["후배","hậu bối, đàn em","후배 後輩 · hậu bối","학교 [후배]를 만났어요.","Tôi đã gặp đàn em cùng trường."],
+["나이","tuổi","","[나이]가 어떻게 되세요?","Anh/chị bao nhiêu tuổi ạ?"]
+]},
+{t:"Cơ thể & ngoại hình", w:[
+["머리","đầu; tóc","","[머리]를 잘랐어요.","Tôi đã cắt tóc."],
+["얼굴","khuôn mặt","","[얼굴]이 빨개졌어요.","Mặt đỏ lên rồi."],
+["코","mũi","","[코]가 막혔어요.","Tôi bị nghẹt mũi."],
+["입","miệng","","[입]을 크게 벌리세요.","Hãy há miệng to ra."],
+["귀","tai","","[귀]가 아파요.","Tôi đau tai."],
+["손","tay, bàn tay","","[손]을 씻었어요?","Bạn rửa tay chưa?"],
+["다리","chân (cả cái chân)","","오래 걸어서 [다리]가 아파요.","Đi bộ lâu nên mỏi chân."],
+["발","bàn chân","","[발]이 너무 차가워요.","Chân lạnh quá."],
+["키","chiều cao","","[키]가 몇이에요?","Bạn cao bao nhiêu?"],
+["키가 크다","cao (người)","","제 동생은 [키가 커요].","Em tôi cao."],
+["예쁘다","đẹp, xinh","","이 꽃 정말 [예뻐요].","Bông hoa này đẹp thật."],
+["멋있다","ngầu, phong độ","","그 배우는 정말 [멋있어요].","Diễn viên đó thật phong độ."],
+["귀엽다","dễ thương","","강아지가 너무 [귀여워요].","Cún con dễ thương quá."],
+["잘생기다","đẹp trai","","남자 친구가 [잘생겼어요].","Bạn trai đẹp trai."],
+["안경","kính mắt","안경 眼鏡 · nhãn kính","저는 [안경]을 써요.","Tôi đeo kính."]
+]},
+{t:"Nghề nghiệp", w:[
+["직업","nghề nghiệp","직업 職業 · chức nghiệp","[직업]이 뭐예요?","Bạn làm nghề gì?"],
+["선생님","giáo viên; thầy cô","선생 先生 · tiên sinh","우리 [선생님]은 친절하세요.","Cô giáo chúng tôi rất tử tế."],
+["학생","học sinh, sinh viên","학생 學生 · học sinh","저는 [학생]이에요.","Tôi là học sinh."],
+["의사","bác sĩ","의사 醫師 · y sư","[의사] 선생님을 만나야 해요.","Tôi phải gặp bác sĩ."],
+["간호사","y tá","간호사 看護師 · khán hộ sư","[간호사]가 약을 줬어요.","Y tá đã đưa thuốc cho tôi."],
+["요리사","đầu bếp","요리사 料理師 · liệu lý sư","제 꿈은 [요리사]예요.","Ước mơ của tôi là làm đầu bếp."],
+["경찰","cảnh sát","경찰 警察 · cảnh sát","[경찰]에 신고했어요.","Tôi đã báo cảnh sát."],
+["가수","ca sĩ","가수 歌手 · ca thủ","좋아하는 [가수]가 누구예요?","Ca sĩ bạn thích là ai?"],
+["배우","diễn viên","배우 俳優 · bài ưu","그 [배우]를 정말 좋아해요.","Tôi rất thích diễn viên đó."],
+["기자","nhà báo, phóng viên","기자 記者 · ký giả","[기자]가 인터뷰를 했어요.","Phóng viên đã phỏng vấn."],
+["사장님","giám đốc; ông/bà chủ quán","사장 社長 · xã trưởng","[사장님], 여기 계산해 주세요.","Chủ quán ơi, tính tiền cho tôi."],
+["직원","nhân viên","직원 職員 · chức viên","가게 [직원]에게 물어보세요.","Hãy hỏi nhân viên cửa hàng."],
+["아르바이트","việc làm thêm","từ mượn: Arbeit (tiếng Đức)","주말에 카페에서 [아르바이트]를 해요.","Cuối tuần tôi làm thêm ở quán cà phê."],
+["취직하다","xin được việc","취직 就職 · tựu chức","작년에 [취직했어요].","Năm ngoái tôi đã xin được việc."],
+["면접","phỏng vấn (xin việc)","면접 面接 · diện tiếp","내일 [면접]이 있어요.","Mai tôi có buổi phỏng vấn."]
+]},
+{t:"Địa điểm trong thành phố", w:[
+["은행","ngân hàng","은행 銀行 · ngân hàng","[은행]에서 돈을 찾았어요.","Tôi đã rút tiền ở ngân hàng."],
+["우체국","bưu điện","우체국 郵遞局 · bưu đệ cục","[우체국]에서 소포를 보냈어요.","Tôi đã gửi bưu kiện ở bưu điện."],
+["도서관","thư viện","도서관 圖書館 · đồ thư quán","[도서관]은 몇 시에 열어요?","Thư viện mấy giờ mở cửa?"],
+["시장","chợ","시장 市場 · thị trường (nghĩa: chợ)","[시장]에서 과일을 샀어요.","Tôi mua trái cây ở chợ."],
+["마트","siêu thị","từ mượn: mart","[마트]에 장 보러 가요.","Tôi đi siêu thị mua đồ."],
+["백화점","trung tâm thương mại","백화점 百貨店 · bách hóa điếm","[백화점]에서 세일을 해요.","Trung tâm thương mại đang giảm giá."],
+["카페","quán cà phê","từ mượn: café","[카페]에서 만나요.","Gặp nhau ở quán cà phê nhé."],
+["공원","công viên","공원 公園 · công viên","[공원]에 사람이 많아요.","Công viên đông người."],
+["학교","trường học","학교 學校 · học hiệu","[학교]에 걸어서 가요.","Tôi đi bộ đến trường."],
+["대학교","trường đại học","대학교 大學校 · đại học hiệu","어느 [대학교]에 다녀요?","Bạn học trường đại học nào?"],
+["미용실","tiệm làm tóc","미용실 美容室 · mỹ dung thất","[미용실]에서 머리를 잘랐어요.","Tôi đã cắt tóc ở tiệm."],
+["가게","cửa hàng","","이 [가게]는 몇 시에 닫아요?","Cửa hàng này mấy giờ đóng cửa?"],
+["영화관","rạp chiếu phim","영화관 映畫館 · ánh họa quán","[영화관]에 사람이 많아요.","Rạp phim đông người."],
+["주차장","bãi đỗ xe","주차장 駐車場 · trú xa trường","[주차장]이 어디에 있어요?","Bãi đỗ xe ở đâu?"],
+["건물","tòa nhà","건물 建物 · kiến vật","저 [건물] 3층이에요.","Ở tầng 3 của tòa nhà kia."],
+["층","tầng","층 層 · tầng","사무실은 5[층]이에요.","Văn phòng ở tầng 5."],
+["엘리베이터","thang máy","từ mượn: elevator","[엘리베이터]를 타세요.","Hãy đi thang máy."]
+]},
+{t:"Sở thích & giải trí", w:[
+["취미","sở thích","취미 趣味 · thú vị (nghĩa: sở thích)","[취미]가 뭐예요?","Sở thích của bạn là gì?"],
+["영화","phim điện ảnh","영화 映畫 · ánh họa","주말에 [영화]를 봤어요.","Cuối tuần tôi đã xem phim."],
+["드라마","phim truyền hình","từ mượn: drama","요즘 어떤 [드라마]를 봐요?","Dạo này bạn xem phim gì?"],
+["음악","âm nhạc","음악 音樂 · âm nhạc","어떤 [음악]을 좋아해요?","Bạn thích nhạc gì?"],
+["노래하다","hát","","저는 [노래하는] 걸 좋아해요.","Tôi thích hát."],
+["노래방","phòng karaoke","방 房 · phòng (노래 = bài hát)","오늘 [노래방] 갈래요?","Hôm nay đi hát karaoke không?"],
+["사진","ảnh","사진 寫眞 · tả chân","[사진] 좀 찍어 주세요.","Chụp ảnh giúp tôi với."],
+["찍다","chụp (ảnh)","","여기서 사진을 [찍어도] 돼요?","Ở đây chụp ảnh được không?"],
+["게임","trò chơi điện tử","từ mượn: game","동생은 [게임]을 너무 많이 해요.","Em tôi chơi game nhiều quá."],
+["축구","bóng đá","축구 蹴球 · xúc cầu","친구들과 [축구]를 해요.","Tôi đá bóng với bạn bè."],
+["수영","bơi lội","수영 水泳 · thủy vịnh","[수영]할 줄 알아요?","Bạn biết bơi không?"],
+["등산","leo núi","등산 登山 · đăng sơn","주말에 [등산]을 가요.","Cuối tuần tôi đi leo núi."],
+["책","sách","책 冊 · sách","요즘 무슨 [책]을 읽어요?","Dạo này bạn đọc sách gì?"],
+["그림","tranh, bức vẽ","","[그림]을 잘 그리네요.","Bạn vẽ đẹp nhỉ."],
+["산책하다","đi dạo","산책 散策 · tản sách","저녁에 공원에서 [산책해요].","Buổi tối tôi đi dạo ở công viên."],
+["쇼핑하다","mua sắm","từ mượn: shopping","친구랑 [쇼핑했어요].","Tôi đã đi mua sắm với bạn."],
+["콘서트","buổi hòa nhạc","từ mượn: concert","[콘서트] 표를 샀어요.","Tôi đã mua vé xem hòa nhạc."]
+]},
+{t:"Điện thoại & internet", w:[
+["휴대폰","điện thoại di động","휴대 携帶 · huề đới","[휴대폰] 번호가 뭐예요?","Số điện thoại của bạn là gì?"],
+["전화하다","gọi điện","전화 電話 · điện thoại","이따가 [전화할게요].","Lát nữa tôi gọi nhé."],
+["문자","tin nhắn","문자 文字 · văn tự","[문자] 보내 주세요.","Nhắn tin cho tôi nhé."],
+["카톡","KakaoTalk (ứng dụng nhắn tin)","","[카톡] 아이디 있어요?","Bạn có ID KakaoTalk không?"],
+["번호","số","번호 番號 · phiên hiệu","전화[번호] 좀 알려 주세요.","Cho tôi xin số điện thoại."],
+["충전하다","sạc pin; nạp tiền","충전 充電 · sung điện","휴대폰 좀 [충전해도] 돼요?","Tôi sạc nhờ điện thoại được không?"],
+["와이파이","wifi","","[와이파이] 비밀번호가 뭐예요?","Mật khẩu wifi là gì?"],
+["비밀번호","mật khẩu","비밀번호 祕密番號 · bí mật phiên hiệu","[비밀번호]를 잊어버렸어요.","Tôi quên mật khẩu rồi."],
+["인터넷","internet","","[인터넷]이 안 돼요.","Internet không vào được."],
+["앱","ứng dụng (app)","","이 [앱]을 다운받으세요.","Hãy tải ứng dụng này."],
+["검색하다","tìm kiếm (trên mạng)","","인터넷에서 [검색해] 보세요.","Hãy thử tìm trên mạng."],
+["보내다","gửi","","사진을 [보내] 줄게요.","Tôi sẽ gửi ảnh cho bạn."],
+["답장","tin nhắn trả lời","답장 答狀 · đáp trạng","왜 [답장]을 안 해요?","Sao bạn không trả lời tin nhắn?"],
+["배터리","pin","","[배터리]가 다 됐어요.","Hết pin rồi."]
+]},
+{t:"Du lịch & khách sạn", w:[
+["여행","du lịch","여행 旅行 · lữ hành","다음 달에 제주도로 [여행]을 가요.","Tháng sau tôi đi du lịch đảo Jeju."],
+["예약하다","đặt trước","예약 豫約 · dự ước","호텔을 [예약했어요].","Tôi đã đặt khách sạn."],
+["호텔","khách sạn","","[호텔]이 역에서 가까워요.","Khách sạn gần ga."],
+["체크인","nhận phòng","","[체크인]은 몇 시부터예요?","Nhận phòng từ mấy giờ?"],
+["여권","hộ chiếu","여권 旅券 · lữ khoán","[여권]을 보여 주세요.","Vui lòng cho xem hộ chiếu."],
+["비행기","máy bay","비행기 飛行機 · phi hành cơ","[비행기]가 늦게 출발했어요.","Máy bay cất cánh muộn."],
+["표","vé","표 票 · phiếu","부산 가는 [표] 한 장 주세요.","Cho tôi một vé đi Busan."],
+["짐","hành lý","","[짐]이 너무 무거워요.","Hành lý nặng quá."],
+["관광지","điểm du lịch","관광지 觀光地 · quan quang địa","서울의 유명한 [관광지]가 어디예요?","Điểm du lịch nổi tiếng ở Seoul là đâu?"],
+["구경하다","ngắm, tham quan","","시장을 [구경했어요].","Tôi đã đi ngắm chợ."],
+["지도","bản đồ","지도 地圖 · địa đồ","[지도]를 보여 주세요.","Cho tôi xem bản đồ."],
+["외국인","người nước ngoài","외국인 外國人 · ngoại quốc nhân","저는 [외국인]이에요.","Tôi là người nước ngoài."],
+["환전하다","đổi tiền","환전 換錢 · hoán tiền","어디에서 [환전할] 수 있어요?","Đổi tiền ở đâu được?"],
+["기념품","quà lưu niệm","기념품 紀念品 · kỷ niệm phẩm","[기념품]을 많이 샀어요.","Tôi đã mua nhiều quà lưu niệm."],
+["바다","biển","","[바다]를 보러 가고 싶어요.","Tôi muốn đi ngắm biển."],
+["산","núi","산 山 · sơn","[산]이 정말 아름다워요.","Núi đẹp thật."],
+["출발하다","xuất phát","출발 出發 · xuất phát","몇 시에 [출발해요]?","Mấy giờ xuất phát?"],
+["도착하다","đến nơi","도착 到着 · đáo trước","방금 [도착했어요].","Tôi vừa đến nơi."]
+]},
+{t:"Số đếm & lượng từ", w:[
+["하나","một (số thuần Hàn)","","커피 [하나] 주세요.","Cho tôi một cà phê."],
+["둘","hai (số thuần Hàn)","","[둘]이서 왔어요.","Chúng tôi đến hai người."],
+["셋","ba (số thuần Hàn)","","하나, 둘, [셋]!","Một, hai, ba!"],
+["몇","mấy, bao nhiêu","","[몇] 개 필요해요?","Bạn cần mấy cái?"],
+["개","cái, chiếc (đếm đồ vật)","개 個 · cá","사과 세 [개] 주세요.","Cho tôi ba quả táo."],
+["명","người (đếm người)","명 名 · danh","몇 [명]이세요?","Quý khách mấy người ạ?"],
+["잔","ly, cốc","잔 盞 · trản","맥주 두 [잔] 주세요.","Cho tôi hai cốc bia."],
+["병","chai","병 甁 · bình","물 한 [병] 주세요.","Cho tôi một chai nước."],
+["권","quyển","권 卷 · quyển","책을 두 [권] 샀어요.","Tôi mua hai quyển sách."],
+["장","tờ, tấm","장 張 · trương","사진 한 [장]만 찍어 주세요.","Chụp giúp tôi một tấm ảnh thôi."],
+["시","giờ (giờ đồng hồ)","시 時 · thời","지금 몇 [시]예요?","Bây giờ là mấy giờ?"],
+["분","phút","분 分 · phân","5[분]만 기다려 주세요.","Đợi tôi 5 phút thôi."],
+["원","won (tiền Hàn)","","이거 만 [원]이에요.","Cái này mười nghìn won."],
+["번","lần; số","번 番 · phiên","한 [번] 더 말해 주세요.","Nói lại một lần nữa giúp tôi."],
+["살","tuổi (đếm tuổi)","","저는 스물다섯 [살]이에요.","Tôi 25 tuổi."]
+]},
+{t:"Tính từ thông dụng", w:[
+["많다","nhiều","","사람이 너무 [많아요].","Đông người quá."],
+["적다","ít","","월급이 좀 [적어요].","Lương hơi ít."],
+["쉽다","dễ","","한국어는 생각보다 [쉬워요].","Tiếng Hàn dễ hơn mình nghĩ."],
+["어렵다","khó","","발음이 좀 [어려워요].","Phát âm hơi khó."],
+["재미없다","chán, không thú vị","","그 영화는 [재미없어요].","Phim đó chán."],
+["조용하다","yên tĩnh","","도서관은 [조용해요].","Thư viện yên tĩnh."],
+["시끄럽다","ồn ào","","밖이 너무 [시끄러워요].","Bên ngoài ồn quá."],
+["깨끗하다","sạch sẽ","","방이 아주 [깨끗해요].","Phòng rất sạch sẽ."],
+["더럽다","bẩn","","신발이 [더러워요].","Giày bẩn rồi."],
+["새롭다","mới mẻ","","[새로운] 친구를 만났어요.","Tôi đã quen một người bạn mới."],
+["오래되다","cũ, lâu đời","","이 건물은 [오래됐어요].","Tòa nhà này cũ rồi."],
+["빠르다","nhanh","","지하철이 버스보다 [빨라요].","Tàu điện ngầm nhanh hơn xe buýt."],
+["느리다","chậm","","인터넷이 너무 [느려요].","Mạng chậm quá."],
+["편하다","thoải mái, tiện","편 便 · tiện","이 신발은 정말 [편해요].","Đôi giày này rất thoải mái."],
+["불편하다","bất tiện, khó chịu","불편 不便 · bất tiện","교통이 좀 [불편해요].","Giao thông hơi bất tiện."],
+["중요하다","quan trọng","중요 重要 · trọng yếu","이건 정말 [중요해요].","Cái này rất quan trọng."],
+["유명하다","nổi tiếng","유명 有名 · hữu danh","이 식당은 아주 [유명해요].","Quán này rất nổi tiếng."],
+["비슷하다","giống, tương tự","","두 사람이 [비슷해요].","Hai người trông giống nhau."],
+["다르다","khác","","우리는 생각이 [달라요].","Chúng tôi nghĩ khác nhau."],
+["같다","giống nhau","","우리는 나이가 [같아요].","Chúng tôi bằng tuổi."]
+]},
+{t:"Động từ thông dụng 2", w:[
+["앉다","ngồi","","여기 [앉으세요].","Mời ngồi đây."],
+["서다","đứng","","여기에 줄을 [서세요].","Hãy xếp hàng ở đây."],
+["걷다","đi bộ","","매일 30분씩 [걸어요].","Mỗi ngày tôi đi bộ 30 phút."],
+["뛰다","chạy","","늦어서 [뛰었어요].","Muộn nên tôi đã chạy."],
+["들어가다","đi vào","","안으로 [들어가세요].","Mời vào trong."],
+["나가다","đi ra","","잠깐 밖에 [나갈게요].","Tôi ra ngoài một lát."],
+["돌아가다","quay về","","언제 베트남에 [돌아가요]?","Khi nào bạn về Việt Nam?"],
+["빌리다","mượn","","이 책 [빌려도] 돼요?","Tôi mượn quyển sách này được không?"],
+["갚다","trả (nợ)","","돈은 내일 [갚을게요].","Mai tôi trả tiền nhé."],
+["바꾸다","đổi, thay","","자리를 [바꿔도] 돼요?","Đổi chỗ được không?"],
+["고르다","chọn","","하나 [골라] 보세요.","Chọn thử một cái đi."],
+["신다","đi (giày, tất)","","운동화를 [신었어요].","Tôi đi giày thể thao."],
+["벗다","cởi","","여기서 신발을 [벗어] 주세요.","Vui lòng cởi giày ở đây."],
+["웃다","cười","","아기가 [웃어요].","Em bé đang cười."],
+["울다","khóc","","왜 [울어요]?","Sao bạn khóc?"],
+["놀다","chơi","","주말에 친구랑 [놀았어요].","Cuối tuần tôi đi chơi với bạn."],
+["싸우다","cãi nhau, đánh nhau","","어제 친구랑 [싸웠어요].","Hôm qua tôi cãi nhau với bạn."],
+["잊다","quên","","약속을 [잊지] 마세요.","Đừng quên cuộc hẹn nhé."],
+["기억하다","nhớ (ký ức)","기억 記憶 · ký ức","저를 [기억해요]?","Bạn còn nhớ tôi không?"],
+["보고 싶다","nhớ (người), muốn gặp","","가족이 너무 [보고 싶어요].","Tôi nhớ gia đình quá."],
+["연습하다","luyện tập","연습 練習 · luyện tập","매일 발음을 [연습해요].","Ngày nào tôi cũng luyện phát âm."]
+]},
+{t:"Câu giao tiếp hữu ích", w:[
+["처음 뵙겠습니다","hân hạnh được gặp (lần đầu, trang trọng)","","[처음 뵙겠습니다]. 저는 란이에요.","Rất hân hạnh. Tôi là Lan."],
+["잘 부탁드립니다","mong được giúp đỡ","부탁 付託 · phó thác","앞으로 [잘 부탁드립니다].","Từ nay mong anh/chị giúp đỡ."],
+["오랜만이에요","lâu rồi không gặp","","[오랜만이에요]! 잘 지냈어요?","Lâu rồi không gặp! Bạn khỏe không?"],
+["잘 먹겠습니다","xin phép ăn (nói trước bữa ăn)","","와, 맛있겠다! [잘 먹겠습니다].","Ôi, trông ngon quá! Tôi xin phép ăn ạ."],
+["잘 먹었습니다","cảm ơn vì bữa ăn (nói sau khi ăn)","","[잘 먹었습니다]. 정말 맛있었어요.","Cảm ơn vì bữa ăn. Ngon lắm ạ."],
+["어서 오세요","xin mời vào (chào khách)","","[어서 오세요]. 몇 분이세요?","Xin mời vào. Quý khách đi mấy người ạ?"],
+["안녕히 가세요","tạm biệt (nói với người ra về)","","네, [안녕히 가세요]!","Vâng, chào anh/chị ạ!"],
+["안녕히 계세요","tạm biệt (nói với người ở lại)","","저 먼저 갈게요. [안녕히 계세요]!","Tôi về trước nhé. Chào anh/chị!"],
+["축하해요","chúc mừng","축하 祝賀 · chúc hạ","생일 [축하해요]!","Chúc mừng sinh nhật!"],
+["화이팅","cố lên!","","시험 잘 봐요. [화이팅]!","Thi tốt nhé. Cố lên!"],
+["어떡해요","làm sao đây","","[어떡해요]? 지갑을 잃어버렸어요.","Làm sao đây? Tôi mất ví rồi."],
+["맞아요","đúng vậy","","네, [맞아요].","Vâng, đúng rồi."],
+["아니에요","không phải; không có gì","","A: 감사합니다. B: [아니에요].","A: Cảm ơn. B: Không có gì."],
+["그럼요","tất nhiên rồi","","[그럼요], 같이 가요.","Tất nhiên rồi, đi cùng nhé."],
+["글쎄요","ừm, để xem (lưỡng lự)","","[글쎄요], 잘 모르겠어요.","Ừm, tôi không rõ lắm."],
+["천천히","từ từ, chậm rãi","","[천천히] 드세요.","Ăn từ từ thôi."],
+["조심하세요","hãy cẩn thận","조심 操心 · thao tâm","길이 미끄러우니까 [조심하세요].","Đường trơn, cẩn thận nhé."],
+["괜찮으세요","anh/chị có sao không","","[괜찮으세요]? 많이 아파요?","Anh/chị có sao không? Đau lắm không?"],
+["말씀 좀 묻겠습니다","cho tôi hỏi chút (lịch sự)","","[말씀 좀 묻겠습니다]. 서울역이 어디예요?","Cho tôi hỏi một chút. Ga Seoul ở đâu ạ?"],
+["한국어를 잘 못해요","tôi nói tiếng Hàn chưa giỏi","","죄송해요, [한국어를 잘 못해요].","Xin lỗi, tôi nói tiếng Hàn chưa giỏi."]
+]}
+);
+
+EN.push(
+{t:"Gia đình & trẻ em", w:[
+["upbringing","n","sự nuôi dạy","a strict / happy upbringing","Our values are shaped by our [upbringing].","Giá trị sống của ta được hình thành từ cách ta được nuôi dạy."],
+["parenting","n","cách nuôi dạy con","parenting style; good parenting","Good [parenting] matters more than expensive schools.","Cách nuôi dạy tốt quan trọng hơn trường học đắt tiền."],
+["spoil","v","chiều hư","spoil a child; spoilt (adj)","Giving children everything they want may [spoil] them.","Cho trẻ mọi thứ chúng muốn có thể làm hư chúng."],
+["sibling","n","anh chị em ruột","sibling rivalry (sự ganh đua giữa anh chị em)","I get on well with my [siblings].","Tôi hòa hợp với anh chị em của mình."],
+["childcare","n","việc trông trẻ","childcare facilities / costs","The high cost of [childcare] stops many mothers returning to work.","Chi phí trông trẻ cao khiến nhiều bà mẹ không đi làm lại."],
+["working parents","n","cha mẹ đi làm","working parents struggle to…","[Working parents] often struggle to spend time with their children.","Cha mẹ đi làm thường khó dành thời gian cho con."],
+["elderly","adj","cao tuổi","the elderly; elderly parents","Many adults look after their [elderly] parents.","Nhiều người trưởng thành chăm sóc cha mẹ già."],
+["nursing home","n","viện dưỡng lão","move into a nursing home","Some families send their grandparents to a [nursing home].","Một số gia đình gửi ông bà vào viện dưỡng lão."],
+["independent","adj","tự lập","become independent; independence (n)","Teenagers should learn to be more [independent].","Thanh thiếu niên nên học cách tự lập hơn."],
+["adolescence","n","tuổi vị thành niên","during adolescence; adolescent (n/adj)","[Adolescence] is a difficult period for many young people.","Tuổi vị thành niên là giai đoạn khó khăn với nhiều người trẻ."],
+["bond","n","sự gắn bó","a strong bond between; bond with (v)","Family meals strengthen the [bond] between parents and children.","Bữa cơm gia đình củng cố sự gắn bó giữa cha mẹ và con."],
+["supervision","n","sự trông nom, giám sát","without adult supervision; supervise (v)","Young children should not go online without [supervision].","Trẻ nhỏ không nên lên mạng khi không có người trông."],
+["household chores","n","việc nhà","do household chores","Children should help with [household chores].","Trẻ em nên phụ giúp việc nhà."],
+["role","n","vai trò","gender roles; play a role in","Traditional gender [roles] are changing in Vietnam.","Vai trò giới truyền thống đang thay đổi ở Việt Nam."],
+["birth rate","n","tỷ lệ sinh","a falling / declining birth rate","South Korea has one of the lowest [birth rates] in the world.","Hàn Quốc có tỷ lệ sinh thuộc hàng thấp nhất thế giới."],
+["raise","v","nuôi dạy (con); nâng lên","raise children / a family (≠ rise: tự tăng)","It is expensive to [raise] children in big cities.","Nuôi con ở thành phố lớn rất tốn kém."],
+["obedient","adj","vâng lời","obedient children; obey (v)","Strict parents often expect their children to be [obedient].","Cha mẹ nghiêm khắc thường muốn con cái vâng lời."]
+]},
+{t:"Du lịch & giao thông", w:[
+["destination","n","điểm đến","a popular tourist destination","Da Nang has become a popular tourist [destination].","Đà Nẵng đã trở thành điểm đến du lịch nổi tiếng."],
+["itinerary","n","lịch trình","plan an itinerary","Our [itinerary] includes three days in Seoul.","Lịch trình của chúng tôi gồm ba ngày ở Seoul."],
+["commute","v","đi lại (giữa nhà và nơi làm)","a long commute (n); commuter (n)","Many people [commute] for over an hour each day.","Nhiều người đi lại hơn một tiếng mỗi ngày."],
+["accommodation","n","chỗ ở","find / book accommodation (không đếm được)","[Accommodation] in the city centre is expensive.","Chỗ ở tại trung tâm thành phố rất đắt."],
+["ecotourism","n","du lịch sinh thái","promote ecotourism","[Ecotourism] can protect nature while creating jobs.","Du lịch sinh thái có thể bảo vệ thiên nhiên đồng thời tạo việc làm."],
+["overtourism","n","du lịch quá tải","the problem of overtourism","[Overtourism] has damaged many famous beaches.","Du lịch quá tải đã làm hư hại nhiều bãi biển nổi tiếng."],
+["local residents","n","cư dân địa phương","disturb / benefit local residents","Tourism can bring real benefits to [local residents].","Du lịch có thể mang lại lợi ích thực sự cho người dân địa phương."],
+["pedestrian","n","người đi bộ","pedestrian zone / crossing","The old quarter should be open only to [pedestrians].","Khu phố cổ nên chỉ dành cho người đi bộ."],
+["vehicle","n","phương tiện, xe cộ","private vehicles; electric vehicles","The number of private [vehicles] has risen sharply.","Số lượng xe cá nhân đã tăng mạnh."],
+["fare","n","giá vé (phương tiện)","bus / train fare","Lower [fares] would encourage more people to take the bus.","Giá vé thấp hơn sẽ khuyến khích nhiều người đi xe buýt hơn."],
+["rush hour","n","giờ cao điểm","during rush hour","Roads are extremely busy during [rush hour].","Đường xá rất đông vào giờ cao điểm."],
+["cycle lane","n","làn xe đạp","build cycle lanes","More [cycle lanes] would make cycling safer.","Thêm làn xe đạp sẽ giúp đạp xe an toàn hơn."],
+["road safety","n","an toàn giao thông","improve road safety","Speed cameras have improved [road safety].","Camera bắn tốc độ đã cải thiện an toàn giao thông."],
+["jet lag","n","mệt do lệch múi giờ","suffer from jet lag","I always suffer from [jet lag] after long flights.","Tôi luôn bị mệt vì lệch múi giờ sau các chuyến bay dài."],
+["off the beaten track","phr","nơi ít người lui tới","cụm tự nhiên cho Speaking","I prefer places [off the beaten track].","Tôi thích những nơi ít khách du lịch."],
+["sightseeing","n","việc tham quan","go sightseeing","We spent the afternoon [sightseeing] in the old quarter.","Chúng tôi dành buổi chiều tham quan phố cổ."]
+]},
+{t:"Khoa học & vũ trụ", w:[
+["research","n","nghiên cứu","carry out / conduct research (không đếm được)","Scientists carry out [research] to find new treatments.","Các nhà khoa học tiến hành nghiên cứu để tìm cách điều trị mới."],
+["experiment","n","thí nghiệm","conduct an experiment","Students learn more by doing [experiments] themselves.","Học sinh học được nhiều hơn khi tự làm thí nghiệm."],
+["space exploration","n","thám hiểm vũ trụ","invest in space exploration","[Space exploration] costs billions of dollars every year.","Thám hiểm vũ trụ tốn hàng tỷ đô la mỗi năm."],
+["discovery","n","sự phát hiện, khám phá","a scientific discovery; discover (v)","The [discovery] of penicillin saved millions of lives.","Việc phát hiện ra penicillin đã cứu hàng triệu sinh mạng."],
+["evidence","n","bằng chứng","scientific evidence (không đếm được)","There is strong [evidence] that exercise reduces stress.","Có bằng chứng rõ ràng rằng tập thể dục giảm căng thẳng."],
+["theory","n","lý thuyết","develop / test a theory","Einstein's [theory] changed modern physics.","Lý thuyết của Einstein đã thay đổi vật lý hiện đại."],
+["funding","n","nguồn tài trợ, kinh phí","research funding; receive funding","Universities need more [funding] for scientific research.","Các trường đại học cần thêm kinh phí cho nghiên cứu khoa học."],
+["genetic","adj","(thuộc) di truyền","genetic engineering / modification","[Genetic] engineering raises many ethical questions.","Kỹ thuật di truyền đặt ra nhiều câu hỏi đạo đức."],
+["ethical","adj","(thuộc) đạo đức","ethical issues / concerns; ethics (n)","Animal testing raises serious [ethical] concerns.","Thử nghiệm trên động vật gây ra nhiều lo ngại về đạo đức."],
+["practical application","n","ứng dụng thực tiễn","have practical applications","Some research has no immediate [practical application].","Một số nghiên cứu không có ứng dụng thực tiễn ngay lập tức."],
+["satellite","n","vệ tinh","launch a satellite","[Satellites] help us forecast the weather.","Vệ tinh giúp chúng ta dự báo thời tiết."],
+["advance","n","bước tiến","advances in medicine / technology","Recent [advances] in medicine have increased life expectancy.","Những tiến bộ y học gần đây đã nâng cao tuổi thọ."],
+["analyse","v","phân tích","analyse data; analysis (n)","Computers can [analyse] huge amounts of data in seconds.","Máy tính có thể phân tích lượng dữ liệu khổng lồ trong vài giây."],
+["scientific","adj","(thuộc) khoa học","scientific research / method","[Scientific] knowledge should be shared freely.","Tri thức khoa học nên được chia sẻ rộng rãi."]
+]},
+{t:"Nghệ thuật & thể thao", w:[
+["creativity","n","sự sáng tạo","foster / encourage creativity; creative (adj)","Art classes help children develop [creativity].","Giờ học mỹ thuật giúp trẻ phát triển sự sáng tạo."],
+["performance","n","buổi biểu diễn; thành tích","a live performance; perform (v)","We watched a live [performance] of traditional music.","Chúng tôi xem một buổi biểu diễn nhạc truyền thống trực tiếp."],
+["exhibition","n","triển lãm","an art exhibition; exhibit (v)","The museum is holding an [exhibition] of modern art.","Bảo tàng đang tổ chức triển lãm nghệ thuật hiện đại."],
+["museum","n","bảo tàng","free entry to museums","Should [museums] be free for everyone?","Bảo tàng có nên miễn phí cho tất cả mọi người?"],
+["appreciate","v","thưởng thức, trân trọng","appreciate art / music; appreciation (n)","Children should learn to [appreciate] classical music.","Trẻ em nên học cách thưởng thức nhạc cổ điển."],
+["aesthetic","adj","(thuộc) thẩm mỹ","aesthetic value","Public buildings should have [aesthetic] value as well as a practical function.","Công trình công cộng nên có giá trị thẩm mỹ chứ không chỉ công năng."],
+["professional athlete","n","vận động viên chuyên nghiệp","become a professional athlete","[Professional athletes] earn far more than nurses.","Vận động viên chuyên nghiệp kiếm nhiều hơn y tá rất nhiều."],
+["competitive","adj","mang tính cạnh tranh","competitive sports; competition (n)","[Competitive] sports teach children how to win and lose.","Thể thao thi đấu dạy trẻ cách thắng và thua."],
+["team spirit","n","tinh thần đồng đội","develop team spirit","Football helps young people build [team spirit].","Bóng đá giúp người trẻ xây dựng tinh thần đồng đội."],
+["physical activity","n","hoạt động thể chất","regular physical activity","Children need at least an hour of [physical activity] a day.","Trẻ em cần ít nhất một giờ hoạt động thể chất mỗi ngày."],
+["spectator","n","khán giả (thể thao)","attract thousands of spectators","The match attracted 50,000 [spectators].","Trận đấu thu hút 50.000 khán giả."],
+["sponsorship","n","sự tài trợ","corporate sponsorship; sponsor (v/n)","Many sports events depend on [sponsorship].","Nhiều sự kiện thể thao phụ thuộc vào nhà tài trợ."],
+["self-expression","n","sự thể hiện bản thân","a form of self-expression","Music is a powerful form of [self-expression].","Âm nhạc là một hình thức thể hiện bản thân mạnh mẽ."],
+["leisure","n","thời gian rảnh, giải trí","leisure time / activities","People have less [leisure] time than in the past.","Mọi người có ít thời gian rảnh hơn trước đây."]
+]},
+{t:"Nhà ở & kiến trúc", w:[
+["affordable","adj","vừa túi tiền","affordable housing / prices","The government should build more [affordable] homes.","Chính phủ nên xây thêm nhà ở giá phải chăng."],
+["high-rise","adj","cao tầng","high-rise buildings / flats","[High-rise] apartments save space in crowded cities.","Chung cư cao tầng giúp tiết kiệm diện tích ở thành phố đông đúc."],
+["suburb","n","vùng ngoại ô","live in the suburbs; suburban (adj)","Many families move to the [suburbs] for more space.","Nhiều gia đình chuyển ra ngoại ô để có không gian rộng hơn."],
+["rent","v","thuê (nhà)","rent a flat; rent (n) = tiền thuê","Most young people [rent] rather than buy a home.","Đa số người trẻ thuê nhà thay vì mua."],
+["homeownership","n","việc sở hữu nhà","rates of homeownership","[Homeownership] is a dream for many young couples.","Sở hữu nhà là ước mơ của nhiều cặp vợ chồng trẻ."],
+["homelessness","n","tình trạng vô gia cư","tackle homelessness; homeless (adj)","Rising rents have increased [homelessness].","Giá thuê nhà tăng làm gia tăng tình trạng vô gia cư."],
+["green space","n","không gian xanh","parks and green spaces","Cities need more [green spaces] where residents can relax.","Thành phố cần thêm không gian xanh để người dân thư giãn."],
+["preserve","v","bảo tồn, giữ gìn","preserve historic buildings; preservation (n)","We should [preserve] old buildings for future generations.","Chúng ta nên giữ gìn các công trình cổ cho thế hệ sau."],
+["modern architecture","n","kiến trúc hiện đại","modern vs traditional architecture","Some people think [modern architecture] lacks character.","Một số người cho rằng kiến trúc hiện đại thiếu cá tính."],
+["neighbourhood","n","khu phố, khu dân cư","a quiet / safe neighbourhood","I grew up in a quiet [neighbourhood].","Tôi lớn lên ở một khu phố yên tĩnh."],
+["spacious","adj","rộng rãi","a spacious flat / room","Houses in the countryside are usually more [spacious].","Nhà ở nông thôn thường rộng rãi hơn."],
+["renovate","v","cải tạo, sửa sang","renovate an old house; renovation (n)","They [renovated] an old factory and turned it into a café.","Họ cải tạo một nhà máy cũ thành quán cà phê."]
+]},
+{t:"Tiêu dùng & kinh doanh", w:[
+["consumer","n","người tiêu dùng","consumer goods / behaviour","[Consumers] are becoming more aware of environmental issues.","Người tiêu dùng ngày càng ý thức hơn về vấn đề môi trường."],
+["brand","n","thương hiệu","brand loyalty; well-known brands","Teenagers are often obsessed with famous [brands].","Thanh thiếu niên thường bị cuốn vào các thương hiệu nổi tiếng."],
+["purchase","v","mua (trang trọng)","make a purchase (n); ≈ buy","More people now [purchase] goods online.","Ngày càng nhiều người mua hàng trực tuyến."],
+["impulse buying","n","mua sắm bốc đồng","encourage impulse buying","Online ads encourage [impulse buying].","Quảng cáo trực tuyến khuyến khích mua sắm bốc đồng."],
+["e-commerce","n","thương mại điện tử","the growth of e-commerce","[E-commerce] has changed the way people shop.","Thương mại điện tử đã thay đổi cách mọi người mua sắm."],
+["profit","n","lợi nhuận","make a profit; profitable (adj)","Companies should not focus only on [profit].","Doanh nghiệp không nên chỉ tập trung vào lợi nhuận."],
+["multinational","adj","đa quốc gia","multinational companies / corporations","[Multinational] companies create jobs in developing countries.","Các công ty đa quốc gia tạo việc làm ở các nước đang phát triển."],
+["small business","n","doanh nghiệp nhỏ","support small businesses","Large supermarkets can force [small businesses] to close.","Siêu thị lớn có thể khiến các cửa hàng nhỏ phải đóng cửa."],
+["materialistic","adj","trọng vật chất","a materialistic society; materialism (n)","Modern society has become increasingly [materialistic].","Xã hội hiện đại ngày càng trọng vật chất."],
+["target","v","nhắm vào","target children / young people","Many adverts [target] young children.","Nhiều quảng cáo nhắm vào trẻ nhỏ."],
+["demand","n","nhu cầu","high demand for; supply and demand","There is a growing [demand] for organic food.","Nhu cầu về thực phẩm hữu cơ ngày càng tăng."],
+["second-hand","adj","đã qua sử dụng","second-hand clothes / goods","Buying [second-hand] clothes is good for the environment.","Mua quần áo cũ tốt cho môi trường."],
+["value for money","n","đáng đồng tiền","good value for money","Public transport offers good [value for money].","Giao thông công cộng rất đáng đồng tiền."]
+]},
+{t:"Thức ăn & lối sống", w:[
+["fast food","n","đồ ăn nhanh","eat / consume fast food","[Fast food] is cheap but often unhealthy.","Đồ ăn nhanh rẻ nhưng thường không tốt cho sức khỏe."],
+["home-cooked","adj","nấu tại nhà","home-cooked meals","[Home-cooked] meals are usually healthier.","Bữa ăn nấu ở nhà thường lành mạnh hơn."],
+["organic","adj","hữu cơ","organic food / farming","[Organic] food is more expensive than ordinary food.","Thực phẩm hữu cơ đắt hơn thực phẩm thông thường."],
+["vegetarian","n","người ăn chay","become a vegetarian; vegetarian (adj)","More young people are becoming [vegetarians].","Ngày càng nhiều người trẻ ăn chay."],
+["portion","n","khẩu phần","large / small portions","Restaurant [portions] have become larger over the years.","Khẩu phần ở nhà hàng ngày càng lớn hơn qua các năm."],
+["lifestyle","n","lối sống","a healthy / busy lifestyle","A busy [lifestyle] leaves little time for cooking.","Lối sống bận rộn khiến ít thời gian nấu ăn."],
+["habit","n","thói quen","eating habits; break a habit","Children's eating [habits] are formed early.","Thói quen ăn uống của trẻ hình thành từ sớm."],
+["skip","v","bỏ (bữa)","skip breakfast / a meal","Many students [skip] breakfast.","Nhiều học sinh bỏ bữa sáng."],
+["cuisine","n","ẩm thực","local / Vietnamese cuisine","Vietnamese [cuisine] is famous for its fresh herbs.","Ẩm thực Việt Nam nổi tiếng với rau thơm tươi."],
+["sugary","adj","nhiều đường","sugary drinks / snacks","[Sugary] drinks should be taxed more heavily.","Đồ uống có đường nên bị đánh thuế cao hơn."],
+["nutritious","adj","bổ dưỡng","a nutritious meal","Schools should provide [nutritious] lunches.","Trường học nên cung cấp bữa trưa bổ dưỡng."],
+["work out","phr v","tập luyện (thể hình)","work out at the gym; workout (n)","I [work out] three times a week.","Tôi tập thể hình ba lần một tuần."]
+]},
+{t:"Speaking: cụm từ tự nhiên", w:[
+["to be honest","phr","thành thật mà nói","mở đầu câu trả lời Speaking","[To be honest], I'm not a big fan of sport.","Thành thật mà nói, tôi không thích thể thao lắm."],
+["I'd say","phr","tôi cho là","nêu ý kiến một cách nhẹ nhàng","[I'd say] reading is my favourite hobby.","Tôi cho rằng đọc sách là sở thích lớn nhất của tôi."],
+["it depends","phr","còn tùy","it depends on + N","[It depends] on the weather, really.","Thật ra còn tùy vào thời tiết."],
+["be into","phr v","mê, thích (thân mật)","be into music / sport","I'm really [into] Korean dramas at the moment.","Dạo này tôi rất mê phim Hàn."],
+["keen on","adj phr","thích, hứng thú với","be keen on + N / V-ing","I'm quite [keen on] cooking.","Tôi khá thích nấu ăn."],
+["not my cup of tea","idiom","không phải gu của tôi","dùng tự nhiên trong Speaking","Horror films are [not my cup of tea].","Phim kinh dị không phải gu của tôi."],
+["once in a blue moon","idiom","rất hiếm khi","≈ very rarely","I go to the cinema [once in a blue moon].","Tôi rất hiếm khi ra rạp xem phim."],
+["hit the books","idiom","học chăm chỉ","≈ study hard","I need to [hit the books] before the exam.","Tôi cần học chăm trước kỳ thi."],
+["a breath of fresh air","idiom","làn gió mới","be a breath of fresh air","Her new ideas were [a breath of fresh air].","Ý tưởng mới của cô ấy như một làn gió mới."],
+["on the go","phr","bận rộn liên tục","be always on the go","I'm always [on the go], so I eat a lot of fast food.","Tôi lúc nào cũng bận nên ăn nhiều đồ ăn nhanh."],
+["unwind","v","thư giãn","≈ relax; unwind after work","I listen to music to [unwind] after work.","Tôi nghe nhạc để thư giãn sau giờ làm."],
+["catch up with","phr v","gặp lại hỏi han","catch up with friends","At weekends I [catch up with] old friends.","Cuối tuần tôi gặp lại bạn cũ trò chuyện."],
+["get the hang of","phr","dần quen, nắm được cách","get the hang of + N / V-ing","Korean was hard at first, but I'm [getting the hang of] it.","Tiếng Hàn lúc đầu khó nhưng tôi đang dần quen."],
+["off the top of my head","phr","nghĩ nhanh thì","khi trả lời ngay, chưa suy nghĩ kỹ","[Off the top of my head], I'd say about ten.","Nghĩ nhanh thì tôi đoán khoảng mười."],
+["that's a tough question","phr","câu hỏi khó đấy","câu kéo dài thời gian suy nghĩ","[That's a tough question], but I think it's money.","Câu hỏi khó đấy, nhưng tôi nghĩ là tiền."],
+["let me think","phr","để tôi nghĩ đã","tránh im lặng trong Speaking","Hmm, [let me think]… probably my grandmother.","Ừm, để tôi nghĩ… có lẽ là bà tôi."],
+["as far as I know","phr","theo như tôi biết","rào đón (hedging)","[As far as I know], the museum is free on Sundays.","Theo như tôi biết, bảo tàng miễn phí vào Chủ nhật."],
+["broadly speaking","phr","nói chung","≈ generally speaking","[Broadly speaking], young people prefer online shopping.","Nói chung, người trẻ thích mua sắm trực tuyến hơn."],
+["look forward to","phr v","mong chờ","look forward to + N / V-ing (KHÔNG + V nguyên mẫu)","I'm [looking forward to] visiting Korea.","Tôi đang mong chờ được đến Hàn Quốc."],
+["make the most of","phr","tận dụng tối đa","make the most of an opportunity / time","Students should [make the most of] their time at university.","Sinh viên nên tận dụng tối đa thời gian ở đại học."]
+]},
+{t:"Task 1: quy trình & bản đồ", w:[
+["stage","n","giai đoạn","in the first / final stage","In the first [stage], the beans are harvested.","Ở giai đoạn đầu, hạt được thu hoạch."],
+["subsequently","adv","sau đó","≈ afterwards, then","The mixture is [subsequently] heated to 200°C.","Hỗn hợp sau đó được đun nóng đến 200°C."],
+["once","conj","sau khi, một khi","once + mệnh đề (thường bị động)","[Once] the bottles are cleaned, they are refilled.","Sau khi chai được làm sạch, chúng được đổ đầy lại."],
+["be transported","v","được vận chuyển","be transported to + nơi","The bricks [are transported] to the factory by truck.","Gạch được chở đến nhà máy bằng xe tải."],
+["undergo","v","trải qua","undergo a process / changes","The town [underwent] dramatic changes between 1990 and 2010.","Thị trấn đã trải qua những thay đổi lớn từ 1990 đến 2010."],
+["be replaced by","v","được thay thế bởi","X was replaced by Y","The old houses [were replaced by] apartment blocks.","Những ngôi nhà cũ đã được thay bằng các khu chung cư."],
+["be converted into","v","được chuyển đổi thành","convert X into Y","The factory [was converted into] a shopping centre.","Nhà máy được chuyển đổi thành trung tâm mua sắm."],
+["be demolished","v","bị phá bỏ","demolish (v); demolition (n)","The old hospital [was demolished] in 2005.","Bệnh viện cũ đã bị phá bỏ năm 2005."],
+["be constructed","v","được xây dựng","≈ be built","A new bridge [was constructed] across the river.","Một cây cầu mới được xây qua sông."],
+["be extended","v","được mở rộng, kéo dài","extend (v); extension (n)","The railway line [was extended] to the airport.","Tuyến đường sắt được kéo dài đến sân bay."],
+["adjacent to","adj phr","liền kề với","≈ next to","The car park is [adjacent to] the library.","Bãi đỗ xe nằm sát thư viện."],
+["to the north of","phr","ở phía bắc của","to the south / east / west of","A new school was built [to the north of] the park.","Một trường học mới được xây ở phía bắc công viên."],
+["cyclical","adj","mang tính chu trình","a cyclical process","The water cycle is a natural [cyclical] process.","Vòng tuần hoàn nước là một quá trình tự nhiên mang tính chu kỳ."],
+["raw material","n","nguyên liệu thô","raw materials such as clay","Clay is the main [raw material] used to make bricks.","Đất sét là nguyên liệu thô chính để làm gạch."],
+["end product","n","thành phẩm","the final / end product","The [end product] is packaged and sent to shops.","Thành phẩm được đóng gói và gửi đến cửa hàng."],
+["in total","phr","tổng cộng","there are X stages in total","There are seven stages [in total].","Tổng cộng có bảy giai đoạn."]
+]},
+{t:"Từ học thuật thông dụng", w:[
+["crucial","adj","then chốt, cực kỳ quan trọng","≈ vital, essential","Sleep is [crucial] for memory.","Giấc ngủ cực kỳ quan trọng cho trí nhớ."],
+["essential","adj","thiết yếu","be essential for / to","Clean water is [essential] for life.","Nước sạch là thiết yếu cho sự sống."],
+["enhance","v","nâng cao","enhance the quality of","Travel can [enhance] our understanding of other cultures.","Du lịch có thể nâng cao hiểu biết về các nền văn hóa khác."],
+["contribute to","v","góp phần vào","contribution (n)","Cars [contribute to] air pollution.","Ô tô góp phần gây ô nhiễm không khí."],
+["lead to","v","dẫn đến","≈ result in, cause","Stress can [lead to] serious health problems.","Căng thẳng có thể dẫn đến vấn đề sức khỏe nghiêm trọng."],
+["result in","v","gây ra, dẫn đến","≠ result from (là hậu quả của)","A poor diet can [result in] obesity.","Chế độ ăn kém có thể dẫn đến béo phì."],
+["factor","n","yếu tố","a key / major factor in","Cost is a key [factor] in choosing a university.","Chi phí là yếu tố then chốt khi chọn trường đại học."],
+["issue","n","vấn đề","a serious / pressing issue","Climate change is a pressing global [issue].","Biến đổi khí hậu là vấn đề toàn cầu cấp bách."],
+["approach","n","cách tiếp cận","a new approach to + N / V-ing","We need a new [approach] to tackling crime.","Chúng ta cần cách tiếp cận mới để giải quyết tội phạm."],
+["measure","n","biện pháp","take measures to; effective measures","Governments should take [measures] to reduce traffic.","Chính phủ nên áp dụng biện pháp để giảm giao thông."],
+["solution","n","giải pháp","a solution to sth (không dùng “for”)","There is no simple [solution] to this problem.","Không có giải pháp đơn giản cho vấn đề này."],
+["benefit","n","lợi ích","the benefits of; benefit from (v)","The [benefits] of exercise are well known.","Lợi ích của việc tập thể dục ai cũng biết."],
+["impact","n","tác động","have an impact on","Social media has a huge [impact] on young people.","Mạng xã hội có tác động lớn đến giới trẻ."],
+["trend","n","xu hướng","a growing trend towards","There is a growing [trend] towards working from home.","Xu hướng làm việc tại nhà ngày càng tăng."],
+["potential","adj","tiềm ẩn, tiềm năng","potential risks / benefits","We must consider the [potential] risks of AI.","Chúng ta phải xem xét những rủi ro tiềm ẩn của AI."],
+["widespread","adj","phổ biến rộng rãi","widespread use / belief","Smartphone use is [widespread] among teenagers.","Việc dùng điện thoại thông minh phổ biến rộng rãi ở thanh thiếu niên."],
+["considerable","adj","đáng kể","a considerable amount of; considerably (adv)","Learning a language takes a [considerable] amount of time.","Học một ngôn ngữ cần một lượng thời gian đáng kể."],
+["reluctant","adj","ngần ngại, miễn cưỡng","be reluctant to + V","Many people are [reluctant] to change their habits.","Nhiều người ngần ngại thay đổi thói quen."],
+["promote","v","thúc đẩy, quảng bá","promote healthy eating / tourism","Schools should [promote] healthy eating.","Trường học nên khuyến khích ăn uống lành mạnh."],
+["encourage","v","khuyến khích","encourage sb to do sth","Parents should [encourage] children to read.","Cha mẹ nên khuyến khích con đọc sách."],
+["discourage","v","làm nản lòng, ngăn cản","discourage sb from doing sth","High taxes [discourage] people from smoking.","Thuế cao khiến người ta ngại hút thuốc."],
+["overlook","v","bỏ qua, xem nhẹ","an often overlooked issue","The importance of sleep is often [overlooked].","Tầm quan trọng của giấc ngủ thường bị xem nhẹ."]
+]}
+);
+PARA.push(
+{q:"Many people think university is very important.",o:["It is widely believed that a university degree is essential.","It is widely believed that university degree is essential.","It widely believes that university is very essential."],why:"Danh từ đếm được số ít “degree” cần mạo từ “a”. Cấu trúc đúng là “It is widely believed that…” (bị động). “Essential” đã mang nghĩa rất quan trọng nên không dùng “very essential”."},
+{q:"This problem is getting worse and worse.",o:["This problem has become increasingly serious.","This problem has become increasing serious.","This problem is getting more worse."],why:"Bổ nghĩa tính từ “serious” phải dùng trạng từ “increasingly”. “Worse” đã là dạng so sánh hơn nên không thêm “more”."},
+{q:"Tourists come and the place becomes dirty.",o:["Mass tourism can lead to environmental degradation.","Mass tourism can lead to environment degrade.","Mass tourism can lead the environmental degradation."],why:"Cấu trúc là “lead to + danh từ”: environmental (tính từ) + degradation (danh từ)."},
+{q:"Kids should do sport to be healthy.",o:["Children should be encouraged to take part in sport to stay healthy.","Children should be encouraged taking part in sport to stay healthy.","Children should be encouraged to take part on sport to stay healthy."],why:"Cấu trúc là “encourage sb to do sth”, và cụm đúng là “take part in”."},
+{q:"There are a lot of reasons for this.",o:["There are several reasons for this trend.","There are several reason for this trend.","There are much reasons for this trend."],why:"“Several” đi với danh từ số nhiều; “much” dùng cho danh từ không đếm được."},
+{q:"Old buildings should be kept.",o:["Historic buildings should be preserved for future generations.","Historic buildings should be preserve for future generations.","Historic buildings should preserved for future generation."],why:"Câu bị động cần “be + V3”: should be preserved. “Generations” ở dạng số nhiều."},
+{q:"People buy things they don't need.",o:["Consumers often purchase goods they do not really need.","Consumers often purchase goods they are not really need.","Consumers often purchases goods they don't need really."],why:"“Need” là động từ thường nên phủ định bằng “do not”, không dùng “are not”. Chủ ngữ số nhiều nên là “purchase”."},
+{q:"The rich get richer and the poor get poorer.",o:["The gap between the rich and the poor is widening.","The gap between rich and poor people is widen.","The gap of the rich and the poor is widening more."],why:"Cụm đúng là “the gap between A and B”. Thì tiếp diễn cần V-ing (widening); “widening more” bị thừa."},
+{q:"Cars make the air dirty.",o:["Vehicle emissions are a major cause of air pollution.","Vehicle emissions are a major cause for air pollution.","Vehicle emission is major cause of air pollute."],why:"Collocation đúng là “a cause of + N” (“cause for” dùng trong “cause for concern”). “Pollute” là động từ, danh từ là “pollution”."},
+{q:"Working at home is good and bad.",o:["Remote working has both advantages and disadvantages.","Remote working has both advantage and disadvantage.","Remote working have both advantages and disadvantages."],why:"“Both… and…” đi với danh từ số nhiều. “Remote working” là chủ ngữ số ít nên động từ là “has”."},
+{q:"Prices went up from 2010 to 2020.",o:["Prices rose steadily between 2010 and 2020.","Prices rose steadily between 2010 to 2020.","Prices were risen steadily from 2010 and 2020."],why:"Các cặp đúng là “between… and…” và “from… to…”. “Rise” là nội động từ nên không dùng ở dạng bị động."},
+{q:"Parents should spend time with children.",o:["Parents should spend quality time with their children.","Parents should spend quality time for their children.","Parents should spend quality times with their child."],why:"Cụm đúng là “spend time with sb”. “Quality time” không đếm được; “parents” số nhiều nên dùng “children”."}
+);
+
+</script>
+<script>
+(function(){
+'use strict';
+const MINE='Từ của tôi', LSKEY='sotu-han-anh-v1', MIN=6e4, HOUR=36e5, DAY=864e5;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const norm=s=>String(s||'').normalize('NFC').toLowerCase().replace(/[\s.,!?'"’‘“”`~\-–—()…:;]/g,'');
+const strip=s=>String(s||'').replace(/[\[\]]/g,'');
+const surface=c=>{const m=String(c.ex||'').match(/\[(.+?)\]/);return m?m[1]:c.w};
+const hl=s=>esc(s).replace(/\[(.+?)\]/g,'<b class="hl">$1</b>');
+const blankOut=s=>esc(s).replace(/\[(.+?)\]/g,'<span class="blank">___</span>');
+const LNAME={ko:'tiếng Hàn',en:'tiếng Anh'};
+const ICON_SAY='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+const ICON_PLAY='<svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+const sayBtn=(text,cls='')=>`<button class="say ${cls}" type="button" data-say="${esc(strip(text))}" aria-label="Nghe phát âm">${ICON_SAY}</button>`;
+
+/* ---------- State ---------- */
+function fresh(){return{lang:'ko',settings:{newPerDay:15,dir:'fwd',autoplay:true,rate:1},cards:{ko:{},en:{}},custom:{ko:[],en:[]},tomb:[],days:{},reset:{ko:0,en:0},sAt:0,updatedAt:0}}
+function hydrate(o){
+  const d=fresh(); if(!o||typeof o!=='object') return d;
+  return Object.assign(d,o,{
+    settings:Object.assign(d.settings,o.settings||{}),
+    cards:{ko:Object.assign({},(o.cards||{}).ko),en:Object.assign({},(o.cards||{}).en)},
+    custom:{ko:[...((o.custom||{}).ko||[])],en:[...((o.custom||{}).en||[])]},
+    tomb:[...(o.tomb||[])], days:Object.assign({},o.days||{}),
+    reset:Object.assign({ko:0,en:0},o.reset||{})
+  });
+}
+let S=(()=>{try{return hydrate(JSON.parse(localStorage.getItem(LSKEY)))}catch(e){return fresh()}})();
+function persistLocal(){try{localStorage.setItem(LSKEY,JSON.stringify(S))}catch(e){}}
+function save(){S.updatedAt=Date.now();const ks=Object.keys(S.days).sort();while(ks.length>120)delete S.days[ks.shift()];persistLocal();queuePush()}
+
+const dkey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const endOfDay=()=>{const d=new Date();d.setHours(23,59,59,999);return+d};
+const todayPeek=L=>((S.days[dkey()]||{})[L])||{n:0,r:0};
+function todayStat(L){const k=dkey();S.days[k]=S.days[k]||{};S.days[k][L]=S.days[k][L]||{n:0,r:0};return S.days[k][L]}
+function streak(){
+  const has=k=>{const x=S.days[k];return!!x&&Object.values(x).some(v=>(v.n||0)+(v.r||0)>0)};
+  const d=new Date();let n=0;if(!has(dkey(d)))d.setDate(d.getDate()-1);
+  while(has(dkey(d))){n++;d.setDate(d.getDate()-1)}return n;
+}
+
+/* ---------- Decks ---------- */
+const DECKS={};
+function buildDeck(L){
+  const out=[];
+  (L==='ko'?KO:EN).forEach(tp=>tp.w.forEach(a=>out.push(L==='ko'
+    ?{id:'ko:'+a[0],w:a[0],m:a[1],hv:a[2],ex:a[3],exv:a[4],topic:tp.t}
+    :{id:'en:'+a[0],w:a[0],pos:a[1],m:a[2],note:a[3],ex:a[4],exv:a[5],topic:tp.t})));
+  S.custom[L].filter(c=>!S.tomb.includes(c.id)).forEach(c=>out.push(Object.assign({},c,{topic:MINE,custom:true})));
+  return out;
+}
+function rebuildDecks(){DECKS.ko=buildDeck('ko');DECKS.en=buildDeck('en')}
+const topicsOf=L=>[...new Set(DECKS[L].map(c=>c.topic))];
+const UI={topic:{ko:'all',en:'all'},qtype:{ko:'meaning',en:'meaning'},ltype:'lchoose',addOpen:false,search:'',status:'all'};
+function filtered(L){const t=UI.topic[L];if(t!=='all'&&!topicsOf(L).includes(t))UI.topic[L]='all';return UI.topic[L]==='all'?DECKS[L]:DECKS[L].filter(c=>c.topic===UI.topic[L])}
+const rec=(L,c)=>S.cards[L][c.id];
+const statusOf=r=>!r?'new':r.i>=7?'known':'learning';
+const STATUS_VN={new:'Mới',learning:'Đang học',known:'Đã nhớ'};
+const isDue=(r,now,eod)=>r.i<1?r.d<=now+20*MIN:r.d<=eod;
+
+/* ---------- SRS ---------- */
+function schedule(old,g,now){
+  const r=old?Object.assign({},old):{i:0,e:2.5,n:0,l:0};
+  if(r.i<1){
+    if(g===0){r.i=0;r.d=now+MIN}
+    else if(g===1){r.i=0;r.d=now+6*MIN}
+    else if(g===2){r.i=1;r.d=now+DAY}
+    else{r.i=4;r.e+=0.15;r.d=now+4*DAY}
+  }else{
+    if(g===0){r.l=(r.l||0)+1;r.e=Math.max(1.3,r.e-0.2);r.i=0;r.d=now+10*MIN}
+    else if(g===1){r.e=Math.max(1.3,r.e-0.15);r.i=Math.max(1,r.i*1.2);r.d=now+r.i*DAY}
+    else if(g===2){r.i=r.i*r.e;r.d=now+r.i*DAY}
+    else{r.e+=0.15;r.i=r.i*r.e*1.3;r.d=now+r.i*DAY}
+  }
+  r.i=Math.round(r.i*100)/100;r.e=Math.round(r.e*100)/100;r.n=(r.n||0)+1;r.t=now;return r;
+}
+function fmtIvl(ms){
+  const m=ms/MIN;if(m<60)return Math.max(1,Math.round(m))+' phút';
+  const h=ms/HOUR;if(h<22)return Math.round(h)+' giờ';
+  const d=ms/DAY;if(d<30)return Math.max(1,Math.round(d))+' ngày';
+  if(d<365)return String(Math.round(d/3)/10).replace('.',',')+' tháng';
+  return String(Math.round(d/36.5)/10).replace('.',',')+' năm';
+}
+
+/* ---------- Speech ---------- */
+const HAS_TTS='speechSynthesis' in window;
+let VOICES=[];
+function loadVoices(){if(HAS_TTS){try{VOICES=speechSynthesis.getVoices()||[]}catch(e){}}}
+if(HAS_TTS){loadVoices();try{speechSynthesis.addEventListener('voiceschanged',()=>{loadVoices();if(VIEW==='settings')renderVoiceInfo()})}catch(e){speechSynthesis.onvoiceschanged=loadVoices}}
+let VPREF=(()=>{try{return JSON.parse(localStorage.getItem('sotu-voice'))||{}}catch(e){return{}}})();
+function saveVPref(){try{localStorage.setItem('sotu-voice',JSON.stringify(VPREF))}catch(e){}}
+const NOVELTY=/albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|deranged|hysterical/i;
+const GOOD_RE=/natural|neural|premium|enhanced|google|nâng cao|cao cấp/i;
+function voiceScore(v,L){
+  const lg=String(v.lang||'').toLowerCase().replace('_','-'),n=String(v.name||'');
+  if(!lg.startsWith(L==='ko'?'ko':'en'))return -1;
+  let s=10;
+  if(L==='en'){if(lg==='en-gb')s+=8;else if(lg==='en-us')s+=6;else if(/en-(au|ie|ca|nz)/.test(lg))s+=4}
+  if(/natural|neural/i.test(n))s+=60;
+  if(/online/i.test(n))s+=15;
+  if(/premium|cao cấp/i.test(n))s+=50;
+  if(/enhanced|nâng cao/i.test(n))s+=40;
+  if(/google/i.test(n))s+=30;
+  if(v.localService===false)s+=5;
+  if(/compact|espeak|eloquence/i.test(n))s-=20;
+  if(NOVELTY.test(n))s-=100;
+  return s;
+}
+function voicesFor(L){return VOICES.map(v=>({v,s:voiceScore(v,L)})).filter(x=>x.s>=0).sort((a,b)=>b.s-a.s).map(x=>x.v)}
+function voiceFor(L){const list=voicesFor(L);if(!list.length)return null;const p=VPREF[L];if(p){const f=list.find(v=>v.voiceURI===p);if(f)return f}return list[0]}
+const voiceIsGood=v=>!!v&&GOOD_RE.test(v.name);
+function speak(text,L,rate){
+  if(!HAS_TTS||!text)return;L=L||S.lang;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(strip(text)),v=voiceFor(L);
+    u.lang=v?v.lang:(L==='ko'?'ko-KR':'en-GB');if(v)u.voice=v;
+    u.rate=rate||S.settings.rate;u.pitch=1;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(b)speak(b.dataset.say,b.dataset.lang,b.dataset.slow?0.6:0)});
+
+/* ---------- Sync (claude db, per-person private) ---------- */
+const SY={ref:null,timer:null,retry:0};
+const SYNC_TXT={local:'Lưu trên máy này',ok:'Đã đồng bộ',saving:'Đang lưu…',err:'Chưa đồng bộ được'};
+function setSync(s){const el=$('#sync');el.dataset.s=s;$('span',el).textContent=SYNC_TXT[s];SY.state=s}
+async function initSync(){
+  try{
+    if(!window.claude||typeof window.claude.use!=='function'){setSync('local');return}
+    const [db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);
+    if(!db||!user){setSync('local');return}
+    const id=await user.id();if(!id){setSync('local');return}
+    SY.ref=db.collection('data/users/'+id).doc('state');
+    await pull();
+  }catch(e){setSync('local')}
+}
+async function pull(){
+  if(!SY.ref)return;
+  try{
+    const snap=await SY.ref.get();
+    if(snap.exists){const d=snap.data();if(d&&typeof d.s==='string'){if(mergeIn(hydrate(JSON.parse(d.s)))){persistLocal();rebuildDecks();afterRemote()}}}
+    await push();
+  }catch(e){setSync('err')}
+}
+function queuePush(){queueGist();if(!SY.ref)return;clearTimeout(SY.timer);setSync('saving');SY.timer=setTimeout(push,1500)}
+async function push(){
+  if(!SY.ref)return;
+  try{await SY.ref.set({s:JSON.stringify(S),at:Date.now()});SY.retry=0;setSync('ok')}
+  catch(e){if(e&&e.code==='unavailable'&&SY.retry<2){SY.retry++;setTimeout(push,1500+Math.random()*2500)}else setSync('err')}
+}
+function mergeIn(r){
+  let ch=false;
+  for(const L of ['ko','en']){
+    const rs=Math.max(S.reset[L]||0,(r.reset||{})[L]||0);
+    if(rs>(S.reset[L]||0)){S.reset[L]=rs;for(const k in S.cards[L])if((S.cards[L][k].t||0)<rs){delete S.cards[L][k];ch=true}}
+    const a=S.cards[L],b=r.cards[L];
+    for(const k in b){const y=b[k];if((y.t||0)<rs)continue;if(!a[k]||(y.t||0)>(a[k].t||0)){a[k]=y;ch=true}}
+    const ids=new Set(S.custom[L].map(c=>c.id));
+    for(const c of r.custom[L])if(!ids.has(c.id)){S.custom[L].push(c);ch=true}
+  }
+  for(const t of r.tomb)if(!S.tomb.includes(t)){S.tomb.push(t);ch=true}
+  for(const d in r.days){S.days[d]=S.days[d]||{};for(const L in r.days[d]){const x=S.days[d][L]||{n:0,r:0},y=r.days[d][L]||{};const n=Math.max(x.n||0,y.n||0),rr=Math.max(x.r||0,y.r||0);if(n!==x.n||rr!==x.r||!S.days[d][L]){S.days[d][L]={n,r:rr};ch=true}}}
+  if((r.sAt||0)>(S.sAt||0)){S.settings=Object.assign(S.settings,r.settings);S.lang=r.lang||S.lang;S.sAt=r.sAt;ch=true}
+  return ch;
+}
+function afterRemote(){
+  renderHeader();
+  if(VIEW==='review'){if(!R.cur||!R.flipped){R.built=false;renderView()}else R.stale=true}
+  else{R.built=false;if(VIEW==='list'||VIEW==='settings')renderView()}
+}
+/* ---------- Sync qua GitHub Gist (cho bản tự đăng lên github.io) ---------- */
+const IN_CLAUDE=!!(window.claude&&typeof window.claude.use==='function');
+const GKEY='sotu-gist',GFILE='sotu-progress.json';
+let GS=(()=>{try{return JSON.parse(localStorage.getItem(GKEY))||{}}catch(e){return{}}})();
+function saveGS(){try{localStorage.setItem(GKEY,JSON.stringify(GS))}catch(e){}}
+const gistOn=()=>!IN_CLAUDE&&!!GS.token&&!!GS.id;
+async function gh(path,opt){
+  opt=opt||{};
+  const headers={'Accept':'application/vnd.github+json','Authorization':'Bearer '+GS.token};
+  if(opt.body)headers['Content-Type']='application/json';
+  const r=await fetch('https://api.github.com'+path,Object.assign({},opt,{headers,cache:'no-store'}));
+  if(!r.ok){const e=new Error('github '+r.status);e.status=r.status;throw e}
+  return r.status===204?null:r.json();
+}
+function ghErr(e){
+  if(e&&e.status===401)return 'Token không hợp lệ hoặc đã hết hạn. Hãy tạo token mới rồi kết nối lại.';
+  if(e&&e.status===404)return 'Token chưa có quyền gist, hoặc không tìm thấy gist. Hãy tạo token có chọn quyền gist.';
+  if(e&&(e.status===403||e.status===429))return 'GitHub đang tạm giới hạn lượt truy cập. Thử lại sau ít phút.';
+  return 'Không kết nối được tới GitHub. Hãy kiểm tra mạng.';
+}
+async function gistRead(){
+  const g=await gh('/gists/'+GS.id);
+  const f=g&&g.files&&g.files[GFILE];if(!f)return{raw:'',data:null};
+  let raw=f.content||'';
+  if(f.truncated&&f.raw_url){const r=await fetch(f.raw_url,{cache:'no-store'});raw=await r.text()}
+  try{return{raw,data:JSON.parse(raw)}}catch(e){return{raw,data:null}}
+}
+let gBusy=false,gAgain=false,gTimer=null;
+async function gistSync(){
+  if(!gistOn())return;
+  if(gBusy){gAgain=true;return}
+  gBusy=true;clearTimeout(gTimer);gTimer=null;setSync('saving');
+  try{
+    const rem=await gistRead();
+    if(rem.data&&mergeIn(hydrate(rem.data))){persistLocal();rebuildDecks();afterRemote()}
+    const out=JSON.stringify(S);
+    if(out!==rem.raw)await gh('/gists/'+GS.id,{method:'PATCH',body:JSON.stringify({files:{[GFILE]:{content:out}}})});
+    GS.last=Date.now();GS.err='';saveGS();setSync('ok');
+  }catch(e){GS.err=ghErr(e);saveGS();setSync('err')}
+  finally{gBusy=false;if(VIEW==='settings')renderSyncBox();if(gAgain){gAgain=false;setTimeout(gistSync,400)}}
+}
+async function gistConnect(token){
+  GS={token:token.trim()};
+  const u=await gh('/user');GS.login=u&&u.login;
+  let id=null;
+  for(let p=1;p<=5&&!id;p++){const list=await gh('/gists?per_page=100&page='+p);if(!list||!list.length)break;const f=list.find(g=>g.files&&g.files[GFILE]);if(f)id=f.id}
+  if(!id){const g=await gh('/gists',{method:'POST',body:JSON.stringify({description:'Sổ từ vựng Hàn – Anh: tiến độ học',public:false,files:{[GFILE]:{content:JSON.stringify(S)}}})});id=g.id}
+  GS.id=id;saveGS();
+  await gistSync();
+}
+function queueGist(){if(!gistOn())return;clearTimeout(gTimer);setSync('saving');gTimer=setTimeout(gistSync,3000)}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'){pull();if(gistOn()&&(!GS.last||Date.now()-GS.last>15000))gistSync()}
+  else if(gTimer)gistSync();
+});
+window.addEventListener('online',()=>{if(gistOn())gistSync()});
+
+/* ---------- Shell ---------- */
+let VIEW='review';
+function renderHeader(){
+  const L=S.lang,now=Date.now(),eod=endOfDay();
+  let due=0,known=0;
+  for(const c of DECKS[L]){const r=rec(L,c);if(!r)continue;if(isDue(r,now,eod))due++;if(r.i>=7)known++}
+  const newLeft=Math.max(0,S.settings.newPerDay-todayPeek(L).n);
+  $('#stats').innerHTML=`<div class="stat due"><b>${due}</b><span>cần ôn</span></div><div class="stat"><b>${newLeft}</b><span>từ mới còn lại</span></div><div class="stat"><b>${streak()}</b><span>ngày liên tiếp</span></div><div class="stat"><b>${known}<em class="of">/${DECKS[L].length}</em></b><span>đã nhớ</span></div>`;
+}
+function render(){
+  document.body.dataset.lang=S.lang;
+  document.title=S.lang==='ko'?'Sổ từ vựng · 한국어':'Sổ từ vựng · IELTS';
+  $$('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.l===S.lang)));
+  $$('.tabs button').forEach(b=>b.dataset.v===VIEW?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  renderHeader();renderView();
+}
+function renderView(){({review:viewReview,quiz:viewQuiz,listen:viewQuiz,list:viewList,settings:viewSettings})[VIEW]()}
+$$('.lang button').forEach(b=>b.addEventListener('click',()=>{if(S.lang===b.dataset.l)return;S.lang=b.dataset.l;S.sAt=Date.now();R.built=false;save();if(HAS_TTS)speechSynthesis.cancel();render();window.scrollTo(0,0)}));
+$$('.tabs button').forEach(b=>b.addEventListener('click',()=>{VIEW=b.dataset.v;if(HAS_TTS)speechSynthesis.cancel();render();window.scrollTo(0,0)}));
+$('#sync').addEventListener('click',()=>{if(SY.ref)pull();else if(gistOn())gistSync();else{VIEW='settings';render();const el=$('#syncSec');if(el)el.scrollIntoView()}});
+
+function topicSelect(L){
+  const ts=topicsOf(L),cur=UI.topic[L];
+  return `<label class="tsel"><span>Chủ đề</span><select class="sel" id="topicSel"><option value="all">Tất cả chủ đề (${DECKS[L].length})</option>${ts.map(t=>`<option value="${esc(t)}"${cur===t?' selected':''}>${esc(t)} (${DECKS[L].filter(c=>c.topic===t).length})</option>`).join('')}</select></label>`;
+}
+function bindTopic(after){const s=$('#topicSel');if(s)s.addEventListener('change',()=>{UI.topic[S.lang]=s.value;after()})}
+
+/* ---------- Review ---------- */
+const R={queue:[],cur:null,flipped:false,extra:0,built:false,lang:null,topic:null};
+function buildQueue(){
+  const L=S.lang,deck=filtered(L),now=Date.now(),eod=endOfDay();
+  const due=deck.filter(c=>{const r=rec(L,c);return r&&isDue(r,now,eod)}).sort((a,b)=>rec(L,a).d-rec(L,b).d);
+  const left=Math.max(0,S.settings.newPerDay+R.extra-todayPeek(L).n);
+  const fresh=deck.filter(c=>!rec(L,c)).slice(0,left);
+  const q=[];let i=0,j=0;
+  while(i<due.length||j<fresh.length){for(let k=0;k<3&&i<due.length;k++)q.push(due[i++]);if(j<fresh.length)q.push(fresh[j++])}
+  R.queue=q;R.cur=q.shift()||null;R.flipped=false;R.built=true;R.lang=L;R.topic=UI.topic[L];
+}
+function counts(){const L=S.lang;let n=0,l=0,r=0;for(const c of [R.cur,...R.queue]){if(!c)continue;const x=rec(L,c);if(!x)n++;else if(x.i<1)l++;else r++}return{n,l,r}}
+function wordVisual(c,L){
+  if(L==='ko'){const ch=[...c.w];return `<div class="grid${ch.length>6?' long':''}" lang="ko" aria-label="${esc(c.w)}">${ch.map(x=>x===' '?'<span class="cell sp"></span>':`<span class="cell" aria-hidden="true">${esc(x)}</span>`).join('')}</div>`}
+  return `<div class="sheet" lang="en"><span class="eword">${esc(c.w)}</span>${c.pos?`<span class="pos">${esc(c.pos)}</span>`:''}</div>`;
+}
+function metaLine(c,L){
+  if(L==='ko'&&c.hv){const loan=/^từ mượn/i.test(c.hv);return `<div class="meta"><span>${loan?'Gốc từ':'Hán-Việt'}</span>${esc(loan?c.hv.replace(/^từ mượn:?\s*/i,''):c.hv)}</div>`}
+  if(L==='en'&&c.note)return `<div class="meta"><span>Collocation</span>${esc(c.note)}</div>`;
+  return '';
+}
+function exBlock(c,L){
+  if(!c.ex)return '';
+  return `<div class="ex"><p lang="${L}">${hl(c.ex)}</p>${sayBtn(c.ex,'sm')}</div>${c.exv?`<p class="exv">${esc(c.exv)}</p>`:''}`;
+}
+function viewReview(){
+  const L=S.lang,v=$('#view');
+  if(!R.built||R.lang!==L||R.topic!==UI.topic[L]||!R.cur)buildQueue();
+  const tb=`<div class="toolbar">${topicSelect(L)}</div>`;
+  if(!R.cur){
+    const deck=filtered(L),now=Date.now();
+    const remainNew=deck.filter(c=>!rec(L,c)).length;
+    const next=deck.map(c=>rec(L,c)).filter(r=>r&&r.d>now).reduce((m,r)=>Math.min(m,r.d),Infinity);
+    const t=todayPeek(L);
+    const art=L==='ko'?wordVisual({w:'잘했어요'},'ko'):`<div class="sheet"><span class="eword">Well done</span></div>`;
+    v.innerHTML=tb+`<div class="card done">${art}<h2>${t.n+t.r?'Xong phần hôm nay':'Chưa có thẻ nào đến hạn'}</h2>
+      <p class="muted">${t.n+t.r?`Hôm nay bạn đã học ${t.n} từ mới và ôn ${t.r} lượt. `:''}${next<Infinity?`Thẻ tiếp theo đến hạn sau ${fmtIvl(next-now)}.`:''}${remainNew?'':' Bạn đã học hết từ trong chủ đề này.'}</p>
+      <div class="btns">${remainNew?`<button class="btn" id="more">Học thêm ${Math.min(10,remainNew)} từ mới</button>`:''}<button class="btn ghost" id="goQuiz">Làm bài kiểm tra</button></div></div>`;
+    bindTopic(()=>{R.built=false;viewReview()});
+    const m=$('#more');if(m)m.addEventListener('click',()=>{R.extra+=10;R.built=false;viewReview()});
+    $('#goQuiz').addEventListener('click',()=>{VIEW='quiz';render()});
+    return;
+  }
+  const c=R.cur,dir=S.settings.dir,k=counts(),r=rec(L,c),now=Date.now();
+  const front=dir==='fwd'
+    ?`${wordVisual(c,L)}${sayBtn(c.w)}`
+    :`<div class="vn-front">${esc(c.m)}</div><p class="hint">Từ ${LNAME[L]} là gì?</p>`;
+  let back='';
+  if(R.flipped){
+    back=`<div class="back">${dir==='rev'?`<div style="display:flex;flex-direction:column;align-items:center;gap:10px">${wordVisual(c,L)}${sayBtn(c.w)}</div>`:`<div class="meaning">${esc(c.m)}</div>`}${metaLine(c,L)}${exBlock(c,L)}</div>`;
+  }
+  const actions=R.flipped
+    ?`<div class="grades" role="group" aria-label="Bạn nhớ từ này thế nào?">${['Quên','Khó','Được','Dễ'].map((t,g)=>`<button class="g${g}" data-g="${g}">${t}<small>${fmtIvl(schedule(r,g,now).d-now)}</small></button>`).join('')}</div>`
+    :`<button class="btn" id="flip">Lật thẻ <kbd>Space</kbd></button>`;
+  v.innerHTML=tb+`<div class="counts"><span class="c-new"><b>${k.n}</b>mới</span><span class="c-learn"><b>${k.l}</b>đang học</span><span class="c-rev"><b>${k.r}</b>ôn lại</span></div>
+    <article class="card"><div class="topicline"><span>${esc(c.topic)}</span><span>${r?STATUS_VN[statusOf(r)]:'Từ mới'}</span></div><div class="front">${front}</div>${back}</article>${actions}`;
+  bindTopic(()=>{R.built=false;viewReview()});
+  const f=$('#flip');if(f)f.addEventListener('click',flip);
+  $$('.grades button').forEach(b=>b.addEventListener('click',()=>grade(+b.dataset.g)));
+  if(!R.flipped&&dir==='fwd'&&S.settings.autoplay)speak(c.w,L);
+}
+function flip(){if(!R.cur||R.flipped)return;R.flipped=true;viewReview();if(S.settings.dir==='rev'&&S.settings.autoplay)speak(R.cur.w);const g=$('.grades button.g2');if(g)g.focus({preventScroll:true})}
+function grade(g){
+  if(!R.cur||!R.flipped)return;
+  const L=S.lang,c=R.cur,old=rec(L,c),now=Date.now(),r=schedule(old,g,now);
+  S.cards[L][c.id]=r;const ts=todayStat(L);if(old)ts.r++;else ts.n++;
+  if(r.d-now<20*MIN)R.queue.splice(Math.min(R.queue.length,3),0,c);
+  save();R.cur=R.queue.shift()||null;R.flipped=false;if(R.stale){R.stale=false;R.built=false}renderHeader();viewReview();
+}
+
+/* ---------- Quiz & Listening (shared engine) ---------- */
+const QS={quiz:null,listen:null};
+const QTYPES={
+  meaning:{t:'Chọn nghĩa',d:'Xem từ, chọn nghĩa tiếng Việt đúng'},
+  word:{t:'Chọn từ',d:'Xem nghĩa tiếng Việt, chọn từ đúng'},
+  fill:{t:'Điền từ vào câu',d:'Chọn từ (đúng dạng) để hoàn thành câu ví dụ'},
+  para:{t:'Nâng cấp câu IELTS',d:'Chọn cách viết lại tự nhiên, đúng ngữ pháp, hướng tới band 7'}
+};
+const LTYPES={lchoose:{t:'Nghe và chọn nghĩa',d:'Nghe phát âm rồi chọn nghĩa đúng'},ltype:{t:'Nghe và gõ lại',d:'Nghe rồi gõ lại từ, luyện cả chính tả'}};
+function makeItem(kind,c,L){
+  if(kind==='ltype')return{kind,card:c};
+  const key=kind==='word'?(x=>x.w):kind==='fill'?(x=>x.ex&&/\[.+?\]/.test(x.ex)?surface(x):''):(x=>x.m);
+  const correct=key(c),all=DECKS[L];
+  const pool=[...shuffle(all.filter(x=>x.topic===c.topic&&x.id!==c.id)),...shuffle(all.filter(x=>x.topic!==c.topic))];
+  const opts=[{t:correct,ok:true}],seen=new Set([norm(correct)]);
+  for(const x of pool){if(opts.length>=4)break;const v=key(x);if(!v||seen.has(norm(v)))continue;seen.add(norm(v));opts.push({t:v,ok:false})}
+  return{kind,card:c,opts:shuffle(opts)};
+}
+function startRound(view){
+  const L=S.lang;let items=[];
+  const kind=view==='listen'?UI.ltype:UI.qtype[L];
+  if(kind==='para'){items=shuffle(PARA).slice(0,10).map(p=>({kind,prompt:p.q,why:p.why,opts:shuffle(p.o.map((t,i)=>({t,ok:i===0})))}))}
+  else{
+    let deck=filtered(L);if(kind==='fill')deck=deck.filter(c=>/\[.+?\]/.test(c.ex||''));
+    const seen=deck.filter(c=>rec(L,c));
+    let picks=shuffle(seen).slice(0,10);
+    if(picks.length<10)picks=picks.concat(shuffle(deck.filter(c=>!rec(L,c))).slice(0,10-picks.length));
+    items=shuffle(picks).map(c=>makeItem(kind,c,L));
+  }
+  QS[view]=items.length?{view,lang:L,items,i:0,score:0,wrong:[],answered:false,done:false}:{empty:true,lang:L};
+}
+function viewQuiz(){
+  const view=VIEW,L=S.lang,v=$('#view');let Q=QS[view];
+  if(Q&&Q.lang!==L)Q=QS[view]=null;
+  const isL=view==='listen';
+  if(!Q||Q.empty){
+    const types=isL?LTYPES:QTYPES,cur=isL?UI.ltype:UI.qtype[L];
+    const keys=Object.keys(types).filter(k=>k!=='para'||L==='en');
+    let notice='';
+    if(isL){
+      if(!HAS_TTS)notice='<div class="notice">Trình duyệt này không hỗ trợ đọc thành tiếng. Hãy mở bằng Chrome, Safari hoặc Edge.</div>';
+      else if(VOICES.length&&!voiceFor(L))notice=`<div class="notice">Thiết bị chưa có giọng đọc ${LNAME[L]}. Xem cách tải giọng trong <button class="linkbtn" data-goset>Cài đặt</button>.</div>`;
+      else if(VOICES.length&&!voiceIsGood(voiceFor(L)))notice=`<div class="notice">Máy đang dùng giọng đọc cơ bản nên nghe chưa tự nhiên. Vào <button class="linkbtn" data-goset>Cài đặt</button> để chọn hoặc tải giọng tốt hơn.</div>`;
+    }
+    v.innerHTML=`<h2>${isL?'Luyện nghe':'Kiểm tra'}</h2>${notice}
+      <div class="types" role="radiogroup">${keys.map(k=>`<button class="type" role="radio" data-k="${k}" aria-pressed="${k===cur}" aria-checked="${k===cur}"><span class="radio"></span><span><b>${types[k].t}</b><small>${types[k].d}</small></span></button>`).join('')}</div>
+      ${cur==='para'?'':`<div class="toolbar" style="margin-top:0">${topicSelect(L)}</div>`}
+      ${Q&&Q.empty?'<p class="msg no">Chủ đề này chưa có đủ từ cho dạng bài này. Hãy chọn chủ đề khác.</p>':''}
+      <p class="muted small">Mỗi lượt 10 câu, ưu tiên những từ bạn đã học. ${isL?'':'Từ trả lời sai sẽ được đưa vào phần ôn thẻ ngay.'}</p>
+      <button class="btn" id="startQ">Bắt đầu</button>`;
+    $$('[data-goset]').forEach(b=>b.addEventListener('click',()=>{VIEW='settings';render();window.scrollTo(0,0)}));
+    $$('.type').forEach(b=>b.addEventListener('click',()=>{if(isL)UI.ltype=b.dataset.k;else UI.qtype[L]=b.dataset.k;QS[view]=null;viewQuiz()}));
+    bindTopic(()=>{QS[view]=null;viewQuiz()});
+    $('#startQ').addEventListener('click',()=>{startRound(view);viewQuiz();const q=QS[view];if(q&&!q.empty&&q.items[0].kind[0]==='l')speak(q.items[0].card.w,L)});
+    return;
+  }
+  if(Q.done){
+    const n=Q.items.length,p=Q.score/n;
+    const msg=p>=0.9?'Rất tốt! Bạn nắm chắc nhóm từ này.':p>=0.7?'Khá ổn. Xem lại những câu sai bên dưới nhé.':'Hãy ôn lại các từ bên dưới rồi làm lại.';
+    const wrongCards=Q.wrong.filter(it=>it.card);
+    v.innerHTML=`<div class="score">${Q.score}<span>/${n}</span></div><p>${msg}</p>
+      ${Q.wrong.length?`<h3 style="margin-top:20px">Cần xem lại</h3><ul class="misslist">${Q.wrong.map(it=>it.card?`<li><b class="${L==='ko'?'kr':''}">${esc(it.card.w)}</b><span class="muted">${esc(it.card.m)}</span></li>`:`<li><span>${esc(it.opts.find(o=>o.ok).t)}</span></li>`).join('')}</ul>`:''}
+      <div class="btns"><button class="btn" id="again">Làm lượt mới</button>${!isL&&wrongCards.some(it=>rec(L,it.card))?'<button class="btn ghost" id="toReview">Ôn lại từ sai</button>':''}<button class="btn ghost" id="changeType">Đổi dạng bài</button></div>`;
+    $('#again').addEventListener('click',()=>{startRound(view);viewQuiz();const q=QS[view];if(q&&!q.empty&&q.items[0].kind[0]==='l')speak(q.items[0].card.w,L)});
+    const tr=$('#toReview');if(tr)tr.addEventListener('click',()=>{R.built=false;VIEW='review';render()});
+    $('#changeType').addEventListener('click',()=>{QS[view]=null;viewQuiz()});
+    return;
+  }
+  const it=Q.items[Q.i],c=it.card,n=Q.items.length;
+  let prompt='';
+  if(it.kind==='meaning')prompt=`<p class="ask">Nghĩa của từ này là gì?</p><div class="qword ${L==='ko'?'kr':''}" lang="${L}">${esc(c.w)}${sayBtn(c.w)}</div>${L==='en'&&c.pos?`<p class="hint" style="margin-top:6px"><i>${esc(c.pos)}</i></p>`:''}`;
+  else if(it.kind==='word')prompt=`<p class="ask">Từ nào có nghĩa là</p><div class="qmean">${esc(c.m)}</div>`;
+  else if(it.kind==='fill')prompt=`<p class="ask">Chọn từ thích hợp cho chỗ trống</p><div class="qsent ${L==='ko'?'kr':''}" lang="${L}">${blankOut(c.ex)}</div>${c.exv?`<p style="text-align:left;margin:10px 0 0"><button class="linkbtn" id="hintBtn">Xem nghĩa của câu</button></p><p class="exv" id="hintTxt" hidden style="text-align:left;margin-top:6px">${esc(c.exv)}</p>`:''}`;
+  else if(it.kind==='para')prompt=`<p class="ask">Câu gốc (band 5). Cách viết lại nào tốt nhất?</p><div class="qsent" lang="en">${esc(it.prompt)}</div>`;
+  else prompt=`<p class="ask">${it.kind==='lchoose'?'Nghe và chọn nghĩa đúng':'Nghe và gõ lại từ bạn nghe được'}</p><div class="play"><button class="playbtn" type="button" data-say="${esc(c.w)}" aria-label="Phát lại">${ICON_PLAY}</button><button class="linkbtn" type="button" data-say="${esc(c.w)}" data-slow="1">Nghe chậm</button></div>`;
+  let answers='';
+  if(it.kind==='ltype')answers=`<div class="typed"><input class="inp" id="typed" lang="${L}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${L==='ko'?'Gõ bằng bàn phím tiếng Hàn':'Gõ từ tiếng Anh'}" aria-label="Câu trả lời"><button class="btn" id="checkT">Kiểm tra</button></div>`;
+  else{
+    const optKr=L==='ko'&&(it.kind==='word'||it.kind==='fill'||false);
+    answers=`<div class="opts">${it.opts.map((o,i)=>`<button class="opt ${optKr?'kr':''}" data-i="${i}" ${optKr?'lang="ko"':''}><span class="n">${i+1}</span><span>${esc(o.t)}</span></button>`).join('')}</div>`;
+  }
+  v.innerHTML=`<div class="qhead"><span>Câu ${Q.i+1}/${n}</span><span>Đúng ${Q.score}</span></div><div class="bar"><i style="width:${Q.i/n*100}%"></i></div>
+    <div class="qcard">${prompt}</div>${answers}<div id="fb"></div>`;
+  $$('.opt').forEach(b=>b.addEventListener('click',()=>answer(+b.dataset.i)));
+  const hb=$('#hintBtn');if(hb)hb.addEventListener('click',()=>{$('#hintTxt').hidden=false;hb.hidden=true});
+  const ti=$('#typed');
+  if(ti){
+    ti.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();Q.answered?nextQ():checkTyped()}});
+    $('#checkT').addEventListener('click',checkTyped);
+    if(window.matchMedia('(hover:hover)').matches)ti.focus({preventScroll:true});
+  }
+}
+function feedback(it,ok,typed){
+  const L=S.lang,c=it.card,Q=QS[VIEW],last=Q.i===Q.items.length-1;
+  let body='';
+  if(it.kind==='para')body=`<p>${esc(it.why)}</p>`;
+  else body=`<p><b class="${L==='ko'?'kr':''}" lang="${L}" style="font-size:18px">${esc(c.w)}</b> ${sayBtn(c.w,'sm')}</p><p>${esc(c.m)}</p>${metaLine(c,L)}${exBlock(c,L)}`;
+  if(typed!=null&&!ok)body=`<p class="muted small">Bạn gõ: ${esc(typed)||'(trống)'}</p>`+body;
+  $('#fb').innerHTML=`<div class="fb ${ok?'':'no'}"><span class="verdict">${ok?'Chính xác':'Chưa đúng'}</span>${body}</div><div class="btns"><button class="btn" id="nextQ">${last?'Xem kết quả':'Câu tiếp theo'} <kbd>Enter</kbd></button></div>`;
+  $('#nextQ').addEventListener('click',nextQ);
+  if(typed==null)$('#nextQ').focus({preventScroll:true});
+  $('#fb').scrollIntoView({block:'nearest',behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+}
+function markResult(it,ok){
+  const Q=QS[VIEW],L=S.lang;
+  if(ok)Q.score++;
+  else{Q.wrong.push(it);if(it.card&&VIEW==='quiz'){const r=rec(L,it.card);if(r){r.d=Date.now();r.t=Date.now();save();renderHeader()}}}
+}
+function answer(i){
+  const Q=QS[VIEW];if(!Q||Q.answered||Q.done)return;const it=Q.items[Q.i];if(!it.opts||!it.opts[i])return;
+  Q.answered=true;const ok=it.opts[i].ok;markResult(it,ok);
+  $$('.opt').forEach((b,j)=>{b.disabled=true;if(it.opts[j].ok)b.classList.add('right');else if(j===i)b.classList.add('wrong')});
+  feedback(it,ok,null);
+  if(it.kind==='lchoose'||it.kind==='meaning'){}else if(it.card&&S.settings.autoplay)speak(it.card.w);
+}
+function checkTyped(){
+  const Q=QS[VIEW];if(!Q||Q.answered)return;const it=Q.items[Q.i],inp=$('#typed');
+  const val=inp.value.trim();const ok=norm(val)===norm(it.card.w);
+  Q.answered=true;markResult(it,ok);inp.readOnly=true;$('#checkT').disabled=true;
+  inp.style.borderColor=ok?'var(--ok)':'var(--bad)';
+  feedback(it,ok,val);
+}
+function nextQ(){
+  const Q=QS[VIEW];if(!Q||!Q.answered)return;
+  if(Q.i>=Q.items.length-1){Q.done=true}else{Q.i++;Q.answered=false}
+  viewQuiz();window.scrollTo(0,0);
+  if(!Q.done){const it=Q.items[Q.i];if(it.kind[0]==='l')speak(it.card.w)}
+}
+
+/* ---------- Word list ---------- */
+function viewList(){
+  const L=S.lang,v=$('#view');
+  const tally={new:0,learning:0,known:0};DECKS[L].forEach(c=>tally[statusOf(rec(L,c))]++);
+  const f=L==='ko'
+    ?[['w','Từ tiếng Hàn *','예: 산책하다'],['m','Nghĩa tiếng Việt *','đi dạo'],['hv','Hán-Việt (nếu có)','산책 散策 · tản sách'],['ex','Câu ví dụ','저녁에 공원에서 [산책해요].'],['exv','Dịch câu ví dụ','Buổi tối tôi đi dạo ở công viên.']]
+    :[['w','Từ tiếng Anh *','e.g. commute'],['m','Nghĩa tiếng Việt *','đi lại (giữa nhà và nơi làm)'],['pos','Loại từ','v / n / adj'],['note','Collocation / ghi chú','a long commute; commute to work'],['ex','Câu ví dụ','Many people [commute] for over an hour.'],['exv','Dịch câu ví dụ','Nhiều người đi lại hơn một tiếng mỗi ngày.']];
+  v.innerHTML=`<div class="toolbar"><input class="inp" id="q" type="search" placeholder="Tìm từ hoặc nghĩa" value="${esc(UI.search)}" aria-label="Tìm từ" style="flex:1 1 200px"><select class="sel" id="st" aria-label="Lọc theo trạng thái"><option value="all">Mọi trạng thái</option>${['new','learning','known'].map(s=>`<option value="${s}"${UI.status===s?' selected':''}>${STATUS_VN[s]}</option>`).join('')}</select></div>
+    <div class="toolbar" style="margin-top:6px">${topicSelect(L)}</div>
+    <div class="chips"><span><b>${tally.known}</b> đã nhớ</span><span><b>${tally.learning}</b> đang học</span><span><b>${tally.new}</b> chưa học</span></div>
+    <button class="btn ghost" id="addBtn" aria-expanded="${UI.addOpen}">${UI.addOpen?'Đóng':'Thêm từ của bạn'}</button>
+    <div class="formbox" id="addForm" ${UI.addOpen?'':'hidden'}>
+      ${f.map(([k,lab,ph])=>`<div class="field"><label for="f-${k}">${lab}</label><input class="inp" id="f-${k}" placeholder="${esc(ph)}" ${k==='w'||k==='ex'?`lang="${L}"`:''} autocomplete="off"></div>`).join('')}
+      <p class="muted small" style="margin:0">Đặt từ cần học trong câu vào [ngoặc vuông] để dùng cho bài điền từ. Nếu bỏ trống, ứng dụng sẽ tự tìm từ trong câu.</p>
+      <p class="msg" id="addMsg"></p>
+      <button class="btn" id="saveWord">Lưu từ</button>
+    </div>
+    <div class="wl" id="wl"></div>`;
+  const q=$('#q');q.addEventListener('input',()=>{UI.search=q.value;renderList()});
+  $('#st').addEventListener('change',e=>{UI.status=e.target.value;renderList()});
+  bindTopic(renderList);
+  $('#addBtn').addEventListener('click',()=>{UI.addOpen=!UI.addOpen;viewList();if(UI.addOpen)$('#f-w').focus()});
+  $('#saveWord').addEventListener('click',addWord);
+  renderList();
+}
+function renderList(){
+  const L=S.lang,q=norm(UI.search),now=Date.now();
+  const rows=filtered(L).filter(c=>(UI.status==='all'||statusOf(rec(L,c))===UI.status)&&(!q||norm(c.w).includes(q)||norm(c.m).includes(q)));
+  $('#wl').innerHTML=rows.length?rows.map(c=>{
+    const r=rec(L,c),st=statusOf(r);
+    const due=r?(r.d<=now?'Đến hạn ôn':`Ôn lại sau ${fmtIvl(r.d-now)}`):'Chưa học';
+    return `<details><summary><span class="w-word ${L==='ko'?'kr':''}" lang="${L}">${esc(c.w)}</span><span class="w-m">${esc(c.m)}</span><span class="tag ${st}">${STATUS_VN[st]}</span></summary>
+      <div class="w-body"><div class="ansrow"><div class="meaning" style="font-size:17px">${esc(c.m)}${c.pos?` <span class="pos">${esc(c.pos)}</span>`:''}</div>${sayBtn(c.w,'sm')}</div>${metaLine(c,L)}${exBlock(c,L)}
+      <div class="w-foot"><span>${esc(c.topic)}, ${due.charAt(0).toLowerCase()+due.slice(1)}</span>${c.custom?`<button class="linkbtn" data-del="${esc(c.id)}" style="color:var(--bad)">Xóa từ</button>`:''}</div></div></details>`;
+  }).join(''):`<p class="empty">Không tìm thấy từ nào. ${UI.search?'Thử từ khóa khác, hoặc thêm từ này vào danh sách của bạn.':''}</p>`;
+  $$('[data-del]').forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.del;if(!confirm('Xóa từ này khỏi danh sách của bạn?'))return;
+    S.tomb.push(id);S.custom[L]=S.custom[L].filter(c=>c.id!==id);delete S.cards[L][id];save();rebuildDecks();R.built=false;renderHeader();viewList();
+  }));
+}
+function addWord(){
+  const L=S.lang,val=id=>{const e=$('#f-'+id);return e?e.value.trim():''},msg=$('#addMsg');
+  const w=val('w'),m=val('m');
+  if(!w||!m){msg.className='msg no';msg.textContent='Hãy nhập cả từ và nghĩa tiếng Việt.';return}
+  if(DECKS[L].some(c=>norm(c.w)===norm(w))){msg.className='msg no';msg.textContent='Từ này đã có trong danh sách.';return}
+  let ex=val('ex');if(ex&&!/\[.+?\]/.test(ex)){const i=ex.toLowerCase().indexOf(w.toLowerCase());if(i>=0)ex=ex.slice(0,i)+'['+ex.slice(i,i+w.length)+']'+ex.slice(i+w.length)}
+  const id=L+':c'+Date.now().toString(36);
+  const c=L==='ko'?{id,w,m,hv:val('hv'),ex,exv:val('exv')}:{id,w,pos:val('pos'),m,note:val('note'),ex,exv:val('exv')};
+  S.custom[L].push(c);save();rebuildDecks();R.built=false;renderHeader();
+  UI.addOpen=true;viewList();
+  const mm=$('#addMsg');mm.className='msg ok';mm.textContent=`Đã thêm “${w}”. Từ này sẽ xuất hiện trong phần ôn thẻ, chủ đề “${MINE}”.`;
+}
+
+/* ---------- Settings ---------- */
+const VSAMPLE={ko:'안녕하세요. 오늘 날씨가 정말 좋네요.',en:'Hello. The weather is really lovely today, isn\'t it?'};
+function renderVoiceInfo(){
+  for(const L of ['ko','en']){
+    const sel=$('#v-'+L),q=$('#vq-'+L);if(!sel)continue;
+    if(!HAS_TTS){sel.innerHTML='<option>Không hỗ trợ</option>';sel.disabled=true;q.textContent='Trình duyệt này không hỗ trợ đọc thành tiếng.';continue}
+    const list=voicesFor(L),cur=voiceFor(L);
+    if(!list.length){sel.innerHTML='<option>Chưa có giọng</option>';sel.disabled=true;q.className='vq basic';q.textContent=`Thiết bị chưa có giọng ${LNAME[L]}. Xem hướng dẫn tải giọng bên dưới.`;continue}
+    sel.disabled=false;
+    sel.innerHTML=`<option value="">Tự động: ${esc(list[0].name)}</option>`+list.map(v=>`<option value="${esc(v.voiceURI)}"${VPREF[L]===v.voiceURI?' selected':''}>${esc(v.name)} (${esc(v.lang)})${voiceIsGood(v)?' ★':''}</option>`).join('');
+    if(!VPREF[L]||!list.some(v=>v.voiceURI===VPREF[L]))sel.value='';
+    const good=voiceIsGood(cur);
+    q.className='vq '+(good?'good':'basic');
+    q.textContent=good?'Giọng chất lượng cao.':'Giọng cơ bản, nghe chưa tự nhiên. Hãy thử giọng khác có dấu ★, hoặc tải thêm theo hướng dẫn bên dưới.';
+  }
+}
+function renderSyncBox(){
+  const box=$('#syncBox');if(!box)return;
+  if(IN_CLAUDE){
+    box.innerHTML=`<p>${SY.ref?'Tiến độ được lưu vào tài khoản Claude của bạn, nên học trên điện thoại hay máy tính đều tiếp tục được. Dữ liệu này chỉ mình bạn xem được.':'Tiến độ đang được lưu trên trình duyệt của thiết bị này.'}</p><p class="muted small">Đồng bộ qua GitHub Gist chỉ dùng cho bản bạn tự đăng lên github.io.</p>`;
+    return;
+  }
+  if(gistOn()){
+    box.innerHTML=`<p>Đang đồng bộ qua GitHub Gist${GS.login?` với tài khoản <b>@${esc(GS.login)}</b>`:''}.</p>
+      <p class="muted small">${GS.last?'Lần đồng bộ gần nhất: '+esc(new Date(GS.last).toLocaleString('vi-VN')):'Chưa đồng bộ lần nào.'}</p>
+      ${GS.err?`<p class="msg no">${esc(GS.err)}</p>`:''}
+      <div class="seg"><button id="gNow" type="button">Đồng bộ ngay</button><button id="gOff" type="button">Ngắt kết nối</button></div>`;
+    $('#gNow').addEventListener('click',gistSync);
+    $('#gOff').addEventListener('click',()=>{if(!confirm('Ngắt kết nối GitHub trên máy này? Tiến độ vẫn được giữ trên máy và trong gist.'))return;clearTimeout(gTimer);GS={};saveGS();setSync('local');renderSyncBox()});
+    return;
+  }
+  box.innerHTML=`<p>Tiến độ đang lưu trên trình duyệt của máy này. Kết nối với GitHub Gist để đồng bộ giữa điện thoại và máy tính.</p>
+    <ol class="gsteps">
+      <li>Bấm <a href="https://github.com/settings/tokens/new?scopes=gist&amp;description=So%20tu%20vung" target="_blank" rel="noopener">tạo token trên GitHub</a>. Trang mở ra đã chọn sẵn quyền <b>gist</b>.</li>
+      <li>Ở mục Expiration, chọn thời hạn (ví dụ 1 năm), rồi kéo xuống cuối trang bấm <b>Generate token</b>.</li>
+      <li>Sao chép mã bắt đầu bằng <code>ghp_</code>, dán vào ô dưới đây rồi bấm Kết nối.</li>
+      <li>Trên máy còn lại, mở trang và dán cùng mã đó. Hãy lưu mã vào ghi chú riêng, vì GitHub chỉ hiện mã một lần.</li>
+    </ol>
+    <div class="typed"><input class="inp" id="gTok" type="password" placeholder="ghp_…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="GitHub token"><button class="btn" id="gGo" type="button">Kết nối</button></div>
+    <p class="msg" id="gMsg"></p>
+    <p class="muted small">Mã chỉ được lưu trong trình duyệt của máy này và chỉ dùng để đọc, ghi một gist bí mật chứa tiến độ học. Chỉ nên kết nối trên máy cá nhân.</p>`;
+  const go=async()=>{
+    const v=$('#gTok').value.trim(),m=$('#gMsg');
+    if(!v){m.className='msg no';m.textContent='Hãy dán token vào ô trên.';return}
+    m.className='msg';m.textContent='Đang kết nối…';$('#gGo').disabled=true;
+    try{await gistConnect(v);if(GS.err)throw{status:0,msg:GS.err};renderSyncBox()}
+    catch(e){const msg=e&&e.msg?e.msg:ghErr(e);GS={};saveGS();setSync('local');m.className='msg no';m.textContent=msg;$('#gGo').disabled=false}
+  };
+  $('#gGo').addEventListener('click',go);
+  $('#gTok').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go()}});
+}
+function viewSettings(){
+  const s=S.settings,v=$('#view');
+  v.innerHTML=`<h2>Cài đặt</h2>
+  <section class="set"><h3>Ôn thẻ</h3>
+    <label class="line">Số từ mới mỗi ngày (mỗi ngôn ngữ)<select class="sel" id="sNew">${[5,10,15,20,30].map(n=>`<option${n===s.newPerDay?' selected':''}>${n}</option>`).join('')}</select></label>
+    <div style="padding:8px 0">Mặt trước của thẻ<div class="seg"><button data-dir="fwd" aria-pressed="${s.dir==='fwd'}">Ngoại ngữ → Việt</button><button data-dir="rev" aria-pressed="${s.dir==='rev'}">Việt → Ngoại ngữ</button></div></div>
+    <label class="line">Tự đọc từ khi hiện thẻ<input type="checkbox" id="sAuto"${s.autoplay?' checked':''}></label>
+  </section>
+  <section class="set"><h3>Giọng đọc</h3>
+    ${['ko','en'].map(L=>`<div class="vrow"><label for="v-${L}">Giọng ${L==='ko'?'tiếng Hàn':'tiếng Anh'}</label><div class="vsel"><select class="sel" id="v-${L}"></select><button class="say" type="button" data-say="${esc(VSAMPLE[L])}" data-lang="${L}" aria-label="Nghe thử">${ICON_SAY}</button></div><p class="vq" id="vq-${L}"></p></div>`).join('')}
+    <label class="line">Tốc độ đọc<select class="sel" id="sRate">${[[0.8,'Chậm'],[0.9,'Hơi chậm'],[1,'Tự nhiên']].map(([x,t])=>`<option value="${x}"${x===s.rate?' selected':''}>${t}</option>`).join('')}</select></label>
+    <details class="tips"><summary>Cách có giọng đọc tự nhiên hơn</summary>
+      <p>Trang này dùng giọng đọc có sẵn trên thiết bị, nên chất lượng tùy vào giọng bạn đã cài. Giọng có dấu ★ là giọng chất lượng cao.</p>
+      <p><b>Máy tính Windows:</b> mở Claude bằng trình duyệt Microsoft Edge. Edge có sẵn các giọng “Online (Natural)” như SunHi, InJoon (tiếng Hàn) và Sonia, Ryan (tiếng Anh Anh), nghe gần như người thật. Cần có mạng.</p>
+      <p><b>Chrome trên máy tính:</b> thường có giọng “Google 한국의” và “Google UK English”, tự nhiên hơn giọng mặc định của hệ điều hành.</p>
+      <p><b>iPhone, iPad:</b> Cài đặt → Trợ năng → Nội dung được đọc → Giọng nói → Tiếng Hàn, rồi tải giọng có chữ “Nâng cao” hoặc “Cao cấp” (ví dụ Yuna). Làm tương tự với tiếng Anh. Sau đó tải lại trang này và chọn giọng mới ở trên.</p>
+      <p><b>Android:</b> Cài đặt → Hệ thống hoặc Trợ năng → Chuyển văn bản thành lời nói → chọn “Dịch vụ lời nói của Google” → mở phần cài đặt của nó → Cài đặt dữ liệu giọng nói → tải tiếng Hàn và tiếng Anh. Tên menu có thể khác đôi chút tùy hãng máy.</p>
+      <p><b>Mac:</b> Cài đặt hệ thống → Trợ năng → Nội dung được đọc → Giọng hệ thống → Quản lý giọng, rồi tải Yuna (bản Nâng cao hoặc Cao cấp) và một giọng tiếng Anh.</p>
+    </details>
+  </section>
+  <section class="set" id="syncSec"><h3>Đồng bộ</h3><div id="syncBox"></div></section>
+  <section class="set"><h3>Tiến độ</h3>
+    <p class="muted" style="margin:0 0 12px">Xóa toàn bộ lịch ôn của ${LNAME[S.lang]}. Từ bạn tự thêm vẫn được giữ lại.</p>
+    <button class="btn danger" id="reset">Xóa tiến độ ${LNAME[S.lang]}</button>
+  </section>`;
+  const touch=()=>{S.sAt=Date.now();save();R.built=false;renderHeader()};
+  $('#sNew').addEventListener('change',e=>{s.newPerDay=+e.target.value;touch()});
+  $$('[data-dir]').forEach(b=>b.addEventListener('click',()=>{s.dir=b.dataset.dir;touch();viewSettings()}));
+  $('#sAuto').addEventListener('change',e=>{s.autoplay=e.target.checked;touch()});
+  $('#sRate').addEventListener('change',e=>{s.rate=+e.target.value;touch();speak(VSAMPLE[S.lang],S.lang)});
+  ['ko','en'].forEach(L=>{const sel=$('#v-'+L);if(sel)sel.addEventListener('change',()=>{VPREF[L]=sel.value;saveVPref();renderVoiceInfo();speak(VSAMPLE[L],L)})});
+  $('#reset').addEventListener('click',()=>{
+    if(!confirm(`Xóa toàn bộ tiến độ học ${LNAME[S.lang]}? Không thể hoàn tác.`))return;
+    S.cards[S.lang]={};S.reset[S.lang]=Date.now();save();R.built=false;QS.quiz=QS.listen=null;renderHeader();viewSettings();
+  });
+  renderVoiceInfo();renderSyncBox();
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown',e=>{
+  if(e.target.closest('input,textarea,select'))return;
+  if(e.target.closest('button')&&(e.key==='Enter'||e.key===' '))return;
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  if(VIEW==='review'&&R.cur){
+    if(!R.flipped&&(e.key===' '||e.key==='Enter')){e.preventDefault();flip()}
+    else if(R.flipped&&'1234'.includes(e.key)&&e.key.length===1){grade(+e.key-1)}
+  }else if((VIEW==='quiz'||VIEW==='listen')&&QS[VIEW]&&!QS[VIEW].empty&&!QS[VIEW].done){
+    const Q=QS[VIEW];
+    if(!Q.answered&&'1234'.includes(e.key)&&e.key.length===1)answer(+e.key-1);
+    else if(Q.answered&&e.key==='Enter')nextQ();
+  }
+});
+
+rebuildDecks();render();initSync();if(gistOn())gistSync();
+})();
+</script>
+</body>
+</html>
