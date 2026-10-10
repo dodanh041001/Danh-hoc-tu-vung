@@ -1244,7 +1244,9 @@ function voiceScore(v,L){
   return s;
 }
 function voicesFor(L){return VOICES.map(v=>({v,s:voiceScore(v,L)})).filter(x=>x.s>=0).sort((a,b)=>b.s-a.s).map(x=>x.v)}
-function voiceFor(L){const list=voicesFor(L);if(!list.length)return null;const p=VPREF[L];if(p){const f=list.find(v=>v.voiceURI===p);if(f)return f}return list[0]}
+const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const sysMode=L=>VPREF[L]==='__system__'||(!VPREF[L]&&IS_IOS);
+function voiceFor(L){if(sysMode(L))return null;const list=voicesFor(L);if(!list.length)return null;const p=VPREF[L];if(p){const f=list.find(v=>v.voiceURI===p);if(f)return f}return list[0]}
 const voiceIsGood=v=>!!v&&GOOD_RE.test(v.name);
 function speak(text,L,rate){
   if(!HAS_TTS||!text)return;L=L||S.lang;
@@ -1501,8 +1503,8 @@ function viewQuiz(){
     let notice='';
     if(isL){
       if(!HAS_TTS)notice='<div class="notice">Trình duyệt này không hỗ trợ đọc thành tiếng. Hãy mở bằng Chrome, Safari hoặc Edge.</div>';
-      else if(VOICES.length&&!voiceFor(L))notice=`<div class="notice">Thiết bị chưa có giọng đọc ${LNAME[L]}. Xem cách tải giọng trong <button class="linkbtn" data-goset>Cài đặt</button>.</div>`;
-      else if(VOICES.length&&!voiceIsGood(voiceFor(L)))notice=`<div class="notice">Máy đang dùng giọng đọc cơ bản nên nghe chưa tự nhiên. Vào <button class="linkbtn" data-goset>Cài đặt</button> để chọn hoặc tải giọng tốt hơn.</div>`;
+      else if(!sysMode(L)&&VOICES.length&&!voiceFor(L))notice=`<div class="notice">Thiết bị chưa có giọng đọc ${LNAME[L]}. Xem cách tải giọng trong <button class="linkbtn" data-goset>Cài đặt</button>.</div>`;
+      else if(!sysMode(L)&&VOICES.length&&!voiceIsGood(voiceFor(L)))notice=`<div class="notice">Máy đang dùng giọng đọc cơ bản nên nghe chưa tự nhiên. Vào <button class="linkbtn" data-goset>Cài đặt</button> để chọn hoặc tải giọng tốt hơn.</div>`;
     }
     v.innerHTML=`<h2>${isL?'Luyện nghe':'Kiểm tra'}</h2>${notice}
       <div class="types" role="radiogroup">${keys.map(k=>`<button class="type" role="radio" data-k="${k}" aria-pressed="${k===cur}" aria-checked="${k===cur}"><span class="radio"></span><span><b>${types[k].t}</b><small>${types[k].d}</small></span></button>`).join('')}</div>
@@ -1649,10 +1651,12 @@ function renderVoiceInfo(){
     const sel=$('#v-'+L),q=$('#vq-'+L);if(!sel)continue;
     if(!HAS_TTS){sel.innerHTML='<option>Không hỗ trợ</option>';sel.disabled=true;q.textContent='Trình duyệt này không hỗ trợ đọc thành tiếng.';continue}
     const list=voicesFor(L),cur=voiceFor(L);
-    if(!list.length){sel.innerHTML='<option>Chưa có giọng</option>';sel.disabled=true;q.className='vq basic';q.textContent=`Thiết bị chưa có giọng ${LNAME[L]}. Xem hướng dẫn tải giọng bên dưới.`;continue}
     sel.disabled=false;
-    sel.innerHTML=`<option value="">Tự động: ${esc(list[0].name)}</option>`+list.map(v=>`<option value="${esc(v.voiceURI)}"${VPREF[L]===v.voiceURI?' selected':''}>${esc(v.name)} (${esc(v.lang)})${voiceIsGood(v)?' ★':''}</option>`).join('');
-    if(!VPREF[L]||!list.some(v=>v.voiceURI===VPREF[L]))sel.value='';
+    const autoLbl=IS_IOS?'Tự động: giọng mặc định của máy':(list.length?'Tự động: '+esc(list[0].name):'Tự động');
+    sel.innerHTML=`<option value="">${autoLbl}</option><option value="__system__"${VPREF[L]==='__system__'?' selected':''}>Giọng mặc định của hệ thống</option>`+list.map(v=>`<option value="${esc(v.voiceURI)}"${VPREF[L]===v.voiceURI?' selected':''}>${esc(v.name)} (${esc(v.lang)})${voiceIsGood(v)?' ★':''}</option>`).join('');
+    if(!VPREF[L]||(VPREF[L]!=='__system__'&&!list.some(v=>v.voiceURI===VPREF[L])))sel.value='';
+    if(sysMode(L)){q.className='vq';q.textContent=IS_IOS?`Đang dùng giọng bạn chọn cho ${L==='ko'?'Tiếng Hàn':'Tiếng Anh (Vương quốc Anh)'} trong Cài đặt iPhone → Trợ năng → Nội dung được đọc → Giọng nói.`:'Đang dùng giọng mặc định của hệ điều hành cho ngôn ngữ này.';continue}
+    if(!list.length){q.className='vq basic';q.textContent=`Thiết bị chưa có giọng ${LNAME[L]}. Xem hướng dẫn tải giọng bên dưới.`;continue}
     const good=voiceIsGood(cur);
     q.className='vq '+(good?'good':'basic');
     q.textContent=good?'Giọng chất lượng cao.':'Giọng cơ bản, nghe chưa tự nhiên. Hãy thử giọng khác có dấu ★, hoặc tải thêm theo hướng dẫn bên dưới.';
@@ -1708,7 +1712,7 @@ function viewSettings(){
       <p>Trang này dùng giọng đọc có sẵn trên thiết bị, nên chất lượng tùy vào giọng bạn đã cài. Giọng có dấu ★ là giọng chất lượng cao.</p>
       <p><b>Máy tính Windows:</b> mở Claude bằng trình duyệt Microsoft Edge. Edge có sẵn các giọng “Online (Natural)” như SunHi, InJoon (tiếng Hàn) và Sonia, Ryan (tiếng Anh Anh), nghe gần như người thật. Cần có mạng.</p>
       <p><b>Chrome trên máy tính:</b> thường có giọng “Google 한국의” và “Google UK English”, tự nhiên hơn giọng mặc định của hệ điều hành.</p>
-      <p><b>iPhone, iPad:</b> Cài đặt → Trợ năng → Nội dung được đọc → Giọng nói → Tiếng Hàn, rồi tải giọng có chữ “Nâng cao” hoặc “Cao cấp” (ví dụ Yuna). Làm tương tự với tiếng Anh. Sau đó tải lại trang này và chọn giọng mới ở trên.</p>
+      <p><b>iPhone, iPad:</b> vào Cài đặt → Trợ năng → Nội dung được đọc → Giọng nói → Tiếng Hàn, tải giọng có chữ “Nâng cao” hoặc “Cao cấp” (ví dụ Yuna), rồi <b>chạm vào giọng đó để đánh dấu chọn</b>. Làm tương tự với Tiếng Anh (Vương quốc Anh). Safari trên iPhone thường không hiện tên các giọng tải thêm trong danh sách ở trên, nên trang này mặc định dùng “giọng mặc định của máy”, tức là giọng bạn vừa đánh dấu. Nếu chưa nghe thấy thay đổi, hãy tắt hẳn Safari rồi mở lại.</p>
       <p><b>Android:</b> Cài đặt → Hệ thống hoặc Trợ năng → Chuyển văn bản thành lời nói → chọn “Dịch vụ lời nói của Google” → mở phần cài đặt của nó → Cài đặt dữ liệu giọng nói → tải tiếng Hàn và tiếng Anh. Tên menu có thể khác đôi chút tùy hãng máy.</p>
       <p><b>Mac:</b> Cài đặt hệ thống → Trợ năng → Nội dung được đọc → Giọng hệ thống → Quản lý giọng, rồi tải Yuna (bản Nâng cao hoặc Cao cấp) và một giọng tiếng Anh.</p>
     </details>
