@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sổ từ vựng Hàn – Anh</title>
+<meta name="theme-color" content="#F1F5F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111A1C" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sổ từ">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
@@ -58,7 +67,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .sync{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);border:0;background:none;padding:4px 0}
 .sync i{width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
 .sync[data-s="ok"] i{background:var(--ok)}
-.sync[data-s="saving"] i{background:var(--warn)}
+.sync[data-s="saving"] i,.sync[data-s="offline"] i{background:var(--warn)}
 .sync[data-s="err"] i{background:var(--bad)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 0 8px}
 .stat b{display:block;font-size:21px;line-height:1.15;font-weight:700;font-variant-numeric:tabular-nums}
@@ -1262,7 +1271,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(
 
 /* ---------- Sync (claude db, per-person private) ---------- */
 const SY={ref:null,timer:null,retry:0};
-const SYNC_TXT={local:'Lưu trên máy này',ok:'Đã đồng bộ',saving:'Đang lưu…',err:'Chưa đồng bộ được'};
+const SYNC_TXT={local:'Lưu trên máy này',ok:'Đã đồng bộ',saving:'Đang lưu…',err:'Chưa đồng bộ được',offline:'Ngoại tuyến'};
 function setSync(s){const el=$('#sync');el.dataset.s=s;$('span',el).textContent=SYNC_TXT[s];SY.state=s}
 async function initSync(){
   try{
@@ -1345,8 +1354,8 @@ async function gistSync(){
     if(rem.data&&mergeIn(hydrate(rem.data))){persistLocal();rebuildDecks();afterRemote()}
     const out=JSON.stringify(S);
     if(out!==rem.raw)await gh('/gists/'+GS.id,{method:'PATCH',body:JSON.stringify({files:{[GFILE]:{content:out}}})});
-    GS.last=Date.now();GS.err='';saveGS();setSync('ok');
-  }catch(e){GS.err=ghErr(e);saveGS();setSync('err')}
+    GS.last=Date.now();GS.err='';GS.dirty=false;saveGS();setSync('ok');
+  }catch(e){if(!navigator.onLine){GS.err='';GS.dirty=true;saveGS();setSync('offline')}else{GS.err=ghErr(e);saveGS();setSync('err')}}
   finally{gBusy=false;if(VIEW==='settings')renderSyncBox();if(gAgain){gAgain=false;setTimeout(gistSync,400)}}
 }
 async function gistConnect(token){
@@ -1358,12 +1367,13 @@ async function gistConnect(token){
   GS.id=id;saveGS();
   await gistSync();
 }
-function queueGist(){if(!gistOn())return;clearTimeout(gTimer);setSync('saving');gTimer=setTimeout(gistSync,3000)}
+function queueGist(){if(!gistOn())return;clearTimeout(gTimer);if(!navigator.onLine){setSync('offline');GS.dirty=true;saveGS();return}setSync('saving');gTimer=setTimeout(gistSync,3000)}
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){pull();if(gistOn()&&(!GS.last||Date.now()-GS.last>15000))gistSync()}
   else if(gTimer)gistSync();
 });
 window.addEventListener('online',()=>{if(gistOn())gistSync()});
+window.addEventListener('offline',()=>{if(gistOn())setSync('offline')});
 
 /* ---------- Shell ---------- */
 let VIEW='review';
@@ -1671,7 +1681,7 @@ function renderSyncBox(){
   if(gistOn()){
     box.innerHTML=`<p>Đang đồng bộ qua GitHub Gist${GS.login?` với tài khoản <b>@${esc(GS.login)}</b>`:''}.</p>
       <p class="muted small">${GS.last?'Lần đồng bộ gần nhất: '+esc(new Date(GS.last).toLocaleString('vi-VN')):'Chưa đồng bộ lần nào.'}</p>
-      ${GS.err?`<p class="msg no">${esc(GS.err)}</p>`:''}
+      ${!navigator.onLine?'<p class="msg">Đang ngoại tuyến. Bạn vẫn học bình thường, tiến độ sẽ tự đồng bộ khi có mạng.</p>':''}${GS.err?`<p class="msg no">${esc(GS.err)}</p>`:''}
       <div class="seg"><button id="gNow" type="button">Đồng bộ ngay</button><button id="gOff" type="button">Ngắt kết nối</button></div>`;
     $('#gNow').addEventListener('click',gistSync);
     $('#gOff').addEventListener('click',()=>{if(!confirm('Ngắt kết nối GitHub trên máy này? Tiến độ vẫn được giữ trên máy và trong gist.'))return;clearTimeout(gTimer);GS={};saveGS();setSync('local');renderSyncBox()});
@@ -1712,7 +1722,7 @@ function viewSettings(){
       <p>Trang này dùng giọng đọc có sẵn trên thiết bị, nên chất lượng tùy vào giọng bạn đã cài. Giọng có dấu ★ là giọng chất lượng cao.</p>
       <p><b>Máy tính Windows:</b> mở Claude bằng trình duyệt Microsoft Edge. Edge có sẵn các giọng “Online (Natural)” như SunHi, InJoon (tiếng Hàn) và Sonia, Ryan (tiếng Anh Anh), nghe gần như người thật. Cần có mạng.</p>
       <p><b>Chrome trên máy tính:</b> thường có giọng “Google 한국의” và “Google UK English”, tự nhiên hơn giọng mặc định của hệ điều hành.</p>
-      <p><b>iPhone, iPad:</b> vào Cài đặt → Trợ năng → Nội dung được đọc → Giọng nói → Tiếng Hàn, tải giọng có chữ “Nâng cao” hoặc “Cao cấp” (ví dụ Yuna), rồi <b>chạm vào giọng đó để đánh dấu chọn</b>. Làm tương tự với Tiếng Anh (Vương quốc Anh). Safari trên iPhone thường không hiện tên các giọng tải thêm trong danh sách ở trên, nên trang này mặc định dùng “giọng mặc định của máy”, tức là giọng bạn vừa đánh dấu. Nếu chưa nghe thấy thay đổi, hãy tắt hẳn Safari rồi mở lại.</p>
+      <p><b>iPhone, iPad:</b> vào Settings → Accessibility → <b>Read &amp; Speak</b> → Voices (iOS 18 trở về trước là Spoken Content; hoặc gõ “Voices” vào ô tìm kiếm của Settings). Mở Korean, tải giọng có chữ <b>Enhanced</b> hoặc <b>Premium</b> (ví dụ Yuna), rồi <b>chạm vào giọng đó để đánh dấu chọn</b>. Làm tương tự với English, chọn một giọng UK. Safari trên iPhone thường không hiện các giọng tải thêm trong danh sách ở trên, nên hãy để ô giọng ở “Tự động: giọng mặc định của máy” để iPhone dùng giọng bạn đã chọn. Nếu chưa nghe thấy thay đổi, hãy tắt hẳn Safari hoặc app rồi mở lại.</p>
       <p><b>Android:</b> Cài đặt → Hệ thống hoặc Trợ năng → Chuyển văn bản thành lời nói → chọn “Dịch vụ lời nói của Google” → mở phần cài đặt của nó → Cài đặt dữ liệu giọng nói → tải tiếng Hàn và tiếng Anh. Tên menu có thể khác đôi chút tùy hãng máy.</p>
       <p><b>Mac:</b> Cài đặt hệ thống → Trợ năng → Nội dung được đọc → Giọng hệ thống → Quản lý giọng, rồi tải Yuna (bản Nâng cao hoặc Cao cấp) và một giọng tiếng Anh.</p>
     </details>
@@ -1751,6 +1761,7 @@ document.addEventListener('keydown',e=>{
 });
 
 rebuildDecks();render();initSync();if(gistOn())gistSync();
+if(!IN_CLAUDE&&'serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
 })();
 </script>
 </body>
