@@ -270,3 +270,15 @@ code{font-size:13px;background:var(--paper);border:1px solid var(--line);padding
 .tips p{margin:10px 0 0;font-size:14px;line-height:1.55}
 .tips b{font-weight:600}
 input[type="checkbox"]{width:20px;height:20px;accent-color:var(--acc)}
+/* Thanh điệu */
+.opt.py{font-size:19px;letter-spacing:.01em}
+.py{white-space:nowrap}
+.misslist .py{color:var(--muted)}
+.tgh{font-size:15px;margin:18px 0 0}
+.tset{list-style:none;padding:0;margin:6px 0 4px}
+.tset li{display:flex;flex-wrap:wrap;gap:6px 18px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.tw,.cmp li{display:inline-flex;align-items:center;gap:8px;font-size:15px}
+.tw small{color:var(--muted);font-size:13px}
+.tw .zh,.cmp .zh{font-size:18px}
+.cmp{list-style:none;padding:0;margin:4px 0 0;display:grid;gap:6px}
+.opt .zh{font-size:19px;margin-right:4px}

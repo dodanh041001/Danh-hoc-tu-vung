@@ -297,7 +297,7 @@ function wordVisual(c,L){
   return `<div class="sheet" lang="en"><span class="eword">${esc(c.w)}</span>${c.pos?`<span class="pos">${esc(c.pos)}</span>`:''}</div>`;
 }
 function metaLine(c,L){
-  if(L==='zh')return (c.py?`<div class="meta"><span>Pinyin</span>${esc(c.py)}</div>`:'')+(c.hv?`<div class="meta"><span>Hán-Việt</span>${esc(c.hv)}</div>`:'');
+  if(L==='zh'){const sd=c.py?pySandhi(c.py):'';return (c.py?`<div class="meta"><span>Pinyin</span>${esc(c.py)}</div>`:'')+(sd?`<div class="meta"><span>Đọc thực tế</span>${esc(sd)}</div>`:'')+(c.hv?`<div class="meta"><span>Hán-Việt</span>${esc(c.hv)}</div>`:'')}
   if(L==='ko'&&c.hv){const loan=/^từ mượn/i.test(c.hv);return `<div class="meta"><span>${loan?'Gốc từ':'Hán-Việt'}</span>${esc(loan?c.hv.replace(/^từ mượn:?\s*/i,''):c.hv)}</div>`}
   if(L==='en'&&c.note)return `<div class="meta"><span>Collocation</span>${esc(c.note)}</div>`;
   return '';
@@ -357,11 +357,101 @@ const QTYPES={
   meaning:{t:'Chọn nghĩa',d:'Xem từ, chọn nghĩa tiếng Việt đúng'},
   word:{t:'Chọn từ',d:'Xem nghĩa tiếng Việt, chọn từ đúng'},
   fill:{t:'Điền từ vào câu',d:'Chọn từ (đúng dạng) để hoàn thành câu ví dụ'},
-  para:{t:'Nâng cấp câu IELTS',d:'Chọn cách viết lại tự nhiên, đúng ngữ pháp, hướng tới band 7'}
+  para:{t:'Nâng cấp câu IELTS',d:'Chọn cách viết lại tự nhiên, đúng ngữ pháp, hướng tới band 7',only:'en'},
+  tone:{t:'Chọn đúng thanh điệu',d:'Xem chữ Hán, chọn pinyin có dấu thanh đúng',only:'zh'}
 };
-const LTYPES={lchoose:{t:'Nghe và chọn nghĩa',d:'Nghe phát âm rồi chọn nghĩa đúng'},ltype:{t:'Nghe và gõ lại',d:'Nghe rồi gõ lại từ, luyện cả chính tả'}};
+const LTYPES={lchoose:{t:'Nghe và chọn nghĩa',d:'Nghe phát âm rồi chọn nghĩa đúng'},ltype:{t:'Nghe và gõ lại',d:'Nghe rồi gõ lại từ, luyện cả chính tả'},
+  ltone:{t:'Nghe và chọn thanh điệu',d:'Nghe phát âm, chọn pinyin có dấu thanh đúng',only:'zh'},
+  lpair:{t:'Cặp thanh dễ nhầm',d:'Nghe một từ, chọn đúng từ trong nhóm chỉ khác nhau về thanh điệu',only:'zh'}};
+const typeOk=(types,k,L)=>!!types[k]&&(!types[k].only||types[k].only===L);
+function qkind(view,L){const isL=view==='listen',types=isL?LTYPES:QTYPES,k=isL?UI.ltype:UI.qtype[L];return typeOk(types,k,L)?k:(isL?'lchoose':'meaning')}
+const TONE_KINDS=new Set(['tone','ltone','lpair']);
+
+/* ---------- Thanh điệu: tách pinyin thành âm tiết, đổi dấu thanh ---------- */
+const TONE_OF={'\u0304':1,'\u0301':2,'\u030c':3,'\u0300':4},TONE_MK=['','\u0304','\u0301','\u030c','\u0300'];
+const PY_SYL=/^(?:[zcs]h|[bpmfdtnlgkhjqxrzcsyw])?(?:iang|iong|uang|ang|eng|ing|ong|iao|ian|uai|uan|van|ai|ei|ao|ou|an|en|er|in|ia|ie|iu|ua|uo|ui|un|ue|ve|vn|a|o|e|i|u|v)r?$/;
+const PY_MEMO=new Map();
+function pySeg(s){
+  // Âm tiết không đứng đầu phải bắt đầu bằng phụ âm (a, o, e ở giữa từ luôn có dấu ' đi trước)
+  const n=s.length,best=Array(n+1).fill(null);best[0]=[];
+  for(let i=0;i<n;i++){if(!best[i])continue;
+    for(let j=i+1;j<=Math.min(n,i+7);j++){const sub=s.slice(i,j);
+      if(i>0&&!/^[bpmfdtnlgkhjqxrzcsyw]/.test(sub))continue;
+      if(!PY_SYL.test(sub))continue;
+      if(!best[j]||best[i].length+1<best[j].length)best[j]=best[i].concat([[i,j]])}}
+  return best[n];
+}
+function pyMarkAt(b){let k=b.indexOf('a');if(k<0)k=b.indexOf('e');if(k<0&&b.includes('ou'))k=b.indexOf('o');if(k<0)for(let i=b.length-1;i>=0;i--)if('iouv'.includes(b[i])){k=i;break}return k}
+function pyParse(py){
+  if(PY_MEMO.has(py))return PY_MEMO.get(py);
+  const items=[];
+  for(const ch of String(py||'').normalize('NFD')){
+    const last=items[items.length-1];
+    if(/[a-z]/i.test(ch))items.push({s:ch,b:ch.toLowerCase(),t:0});
+    else if(ch==='\u0308'&&last&&last.b){last.s+=ch;last.b='v'}
+    else if(TONE_OF[ch]&&last&&last.b)last.t=TONE_OF[ch];
+    else items.push({x:ch});
+  }
+  const parts=[],syl=[];let ok=true,i=0;
+  while(i<items.length){
+    if(items[i].x!=null){parts.push(items[i]);i++;continue}
+    let j=i;while(j<items.length&&items[j].x==null)j++;
+    const ls=items.slice(i,j),seg=pySeg(ls.map(l=>l.b).join(''));
+    if(!seg){ok=false;break}
+    for(const [a,b] of seg){const L=ls.slice(a,b),base=L.map(l=>l.b).join('');let mi=L.findIndex(l=>l.t);const tone=mi<0?0:L[mi].t;if(mi<0)mi=pyMarkAt(base);const sy={L,base,tone,mi};syl.push(sy);parts.push(sy)}
+    i=j;
+  }
+  const r=ok&&syl.length?{parts,syl}:null;PY_MEMO.set(py,r);return r;
+}
+function pyRender(P,tones){let k=0;return P.parts.map(p=>{if(p.x!=null)return p.x;const t=tones[k++];return p.L.map((l,i)=>l.s+(i===p.mi&&t?TONE_MK[t]:'')).join('')}).join('').normalize('NFC')}
+// Thanh 3 đứng trước thanh 3 đọc thành thanh 2 (pinyin vẫn viết dấu thanh 3)
+const sandhiTones=t=>t.map((x,i)=>x===3&&t[i+1]===3?2:x);
+function pySandhi(py){const P=pyParse(py);if(!P)return '';const o=P.syl.map(x=>x.tone),r=sandhiTones(o);return r.join()===o.join()?'':pyRender(P,r)}
+const toneConf=(a,b)=>{const k=[a,b].sort().join('');return k==='23'?3:(k==='14'||!a||!b)?2:1};
+function toneOpts(c,listen){
+  // Đáp án sai = cùng pinyin nhưng đổi dấu thanh, ưu tiên đổi một âm tiết theo các cặp hay nhầm (2–3, 1–4).
+  const P=c.py&&pyParse(c.py);if(!P)return null;
+  const Y=P.syl,o=Y.map(x=>x.tone),right=c.py.normalize('NFC');
+  if(pyRender(P,o)!==right)return null;
+  // Không đổi 一, 不: pinyin trong app đã viết theo cách đọc biến điệu (yìqǐ, búcuò).
+  const dom=Y.map(x=>((x.base==='yi'&&c.w.includes('一'))||(x.base==='bu'&&c.w.includes('不')))?[]:(x.tone||!listen)?[1,2,3,4]:[]);
+  const so=sandhiTones(o).join();
+  // Bỏ phương án nghe giống hệt đáp án (khi nghe) hoặc chính là cách đọc biến điệu (khi nhìn).
+  const bad=a=>listen?sandhiTones(a).join()===so:a.join()===so;
+  const out=[{t:right,ok:true}],seen=new Set([right]);
+  const add=a=>{if(out.length>=4)return;const t=pyRender(P,a);if(!seen.has(t)){seen.add(t);out.push({t,ok:false})}};
+  const one=[];
+  Y.forEach((x,i)=>dom[i].forEach(t=>{if(t===o[i])return;const a=o.slice();a[i]=t;if(!bad(a))one.push({a,w:toneConf(o[i],t)+Math.random()*1.5})}));
+  one.sort((p,q)=>q.w-p.w).forEach(x=>add(x.a));
+  if(out.length<4){
+    const two=[];
+    for(let i=0;i<Y.length;i++)for(let j=i+1;j<Y.length;j++)for(const ti of dom[i])for(const tj of dom[j]){if(ti===o[i]||tj===o[j])continue;const a=o.slice();a[i]=ti;a[j]=tj;if(!bad(a))two.push(a)}
+    shuffle(two).forEach(add);
+  }
+  return out.length===4?shuffle(out):null;
+}
+function pairItems(){
+  const sets=[];(typeof ZH_TONES!=='undefined'?ZH_TONES:[]).forEach(g=>g.p.forEach(x=>sets.push(x)));
+  return shuffle(sets).slice(0,10).map(x=>{
+    const m=x.map(([w,py,mn])=>({id:'tone:'+w,w,py,m:mn,hv:'',ex:'',exv:''})),c=m[Math.floor(Math.random()*m.length)];
+    return{kind:'lpair',card:c,set:m,opts:shuffle(m.map(y=>({t:y.w,ok:y===c,h:`<b class="zh" lang="zh">${esc(y.w)}</b> <span class="py">${esc(y.py)}</span> <small class="muted">${esc(y.m)}</small>`})))};
+  });
+}
+const TONE_TIPS=`<details class="tips"><summary>Mẹo phân biệt thanh điệu</summary>
+<p><b>Bốn thanh.</b> Thanh 1 cao và đều (mā). Thanh 2 đi lên (má). Thanh 3 xuống thấp rồi lên (mǎ); khi đứng trước âm tiết khác thường chỉ đọc nửa đầu, thấp và trầm. Thanh 4 rơi mạnh từ cao xuống (mà).</p>
+<p><b>Hay nhầm nhất.</b> Thanh 2 với thanh 3: cả hai đều có đoạn đi lên, nhưng thanh 3 bắt đầu thấp hơn hẳn. Thanh 1 với thanh 4: cùng bắt đầu cao, thanh 4 rơi xuống dứt khoát.</p>
+<p><b>Thanh 3 + thanh 3.</b> Thanh 3 đứng trước đọc thành thanh 2, nhưng pinyin vẫn viết dấu thanh 3: 你好 viết nǐ hǎo, đọc ní hǎo; 可以 viết kěyǐ, đọc kéyǐ. Thẻ từ có hiện dòng “Đọc thực tế” cho những từ này.</p>
+<p><b>不.</b> Trước thanh 4 đọc bú (不是 búshì, 不客气 bú kèqi); trước các thanh khác đọc bù (不好 bù hǎo).</p>
+<p><b>一.</b> Đứng một mình, khi đếm số hay chỉ thứ tự đọc yī (第一 dì-yī, 星期一 xīngqīyī). Trước thanh 4 đọc yí (一下 yíxià); trước thanh 1, 2, 3 đọc yì (一起 yìqǐ). Trong app, pinyin của 一 và 不 đã viết theo cách đọc này, còn thanh 3 vẫn giữ dấu gốc.</p>
+<p><b>Thanh nhẹ.</b> Âm tiết đọc ngắn, nhẹ và không có dấu: 妈妈 māma, 谢谢 xièxie. Có từ chỉ khác nhau ở thanh nhẹ: 东西 dōngxi là đồ vật, còn dōngxī là đông và tây.</p>
+</details>`;
+function pairTable(){
+  const G=typeof ZH_TONES!=='undefined'?ZH_TONES:[];if(!G.length)return '';
+  return `<details class="tips"><summary>Bảng cặp thanh dễ nhầm</summary>${G.map(g=>`<h3 class="tgh">${esc(g.t)}</h3>${g.d?`<p>${esc(g.d)}</p>`:''}<ul class="tset">${g.p.map(x=>`<li>${x.map(([w,py,m])=>`<span class="tw">${sayBtn(w,'sm')}<b class="zh" lang="zh">${esc(w)}</b><span class="py">${esc(py)}</span><small>${esc(m)}</small></span>`).join('')}</li>`).join('')}</ul>`).join('')}</details>`;
+}
 function makeItem(kind,c,L){
   if(kind==='ltype')return{kind,card:c};
+  if(kind==='tone'||kind==='ltone')return{kind,card:c,opts:toneOpts(c,kind==='ltone')};
   const key=kind==='word'?(x=>x.w):kind==='fill'?(x=>x.ex&&/\[.+?\]/.test(x.ex)?surface(x):''):(x=>x.m);
   const correct=key(c),all=DECKS[L];
   const pool=[...shuffle(all.filter(x=>x.topic===c.topic&&x.id!==c.id)),...shuffle(all.filter(x=>x.topic!==c.topic))];
@@ -371,10 +461,12 @@ function makeItem(kind,c,L){
 }
 function startRound(view){
   const L=S.lang;let items=[];
-  const kind=view==='listen'?UI.ltype:UI.qtype[L];
+  const kind=qkind(view,L);
   if(kind==='para'){items=shuffle(PARA).slice(0,10).map(p=>({kind,prompt:p.q,why:p.why,opts:shuffle(p.o.map((t,i)=>({t,ok:i===0})))}))}
+  else if(kind==='lpair')items=pairItems();
   else{
     let deck=filtered(L);if(kind==='fill')deck=deck.filter(c=>/\[.+?\]/.test(c.ex||''));
+    if(kind==='tone'||kind==='ltone')deck=deck.filter(c=>toneOpts(c,kind==='ltone'));
     const seen=deck.filter(c=>rec(L,c));
     let picks=shuffle(seen).slice(0,10);
     if(picks.length<10)picks=picks.concat(shuffle(deck.filter(c=>!rec(L,c))).slice(0,10-picks.length));
@@ -387,8 +479,8 @@ function viewQuiz(){
   if(Q&&Q.lang!==L)Q=QS[view]=null;
   const isL=view==='listen';
   if(!Q||Q.empty){
-    const types=isL?LTYPES:QTYPES,cur=isL?UI.ltype:UI.qtype[L];
-    const keys=Object.keys(types).filter(k=>k!=='para'||L==='en');
+    const types=isL?LTYPES:QTYPES,cur=qkind(view,L);
+    const keys=Object.keys(types).filter(k=>typeOk(types,k,L));
     let notice='';
     if(isL){
       if(!HAS_TTS)notice='<div class="notice">Trình duyệt này không hỗ trợ đọc thành tiếng. Hãy mở bằng Chrome, Safari hoặc Edge.</div>';
@@ -397,10 +489,10 @@ function viewQuiz(){
     }
     v.innerHTML=`<h2>${isL?'Luyện nghe':'Kiểm tra'}</h2>${notice}
       <div class="types" role="radiogroup">${keys.map(k=>`<button class="type" role="radio" data-k="${k}" aria-pressed="${k===cur}" aria-checked="${k===cur}"><span class="radio"></span><span><b>${types[k].t}</b><small>${types[k].d}</small></span></button>`).join('')}</div>
-      ${cur==='para'?'':`<div class="toolbar" style="margin-top:0">${topicSelect(L)}</div>`}
+      ${cur==='para'||cur==='lpair'?'':`<div class="toolbar" style="margin-top:0">${topicSelect(L)}</div>`}
       ${Q&&Q.empty?'<p class="msg no">Chủ đề này chưa có đủ từ cho dạng bài này. Hãy chọn chủ đề khác.</p>':''}
-      <p class="muted small">Mỗi lượt 10 câu, ưu tiên những từ bạn đã học. ${isL?'':'Từ trả lời sai sẽ được đưa vào phần ôn thẻ ngay.'}</p>
-      <button class="btn" id="startQ">Bắt đầu</button>`;
+      <p class="muted small">${cur==='lpair'?'Mỗi lượt 10 câu, lấy ngẫu nhiên từ bảng cặp thanh dễ nhầm bên dưới.':`Mỗi lượt 10 câu, ưu tiên những từ bạn đã học. ${isL?'':'Từ trả lời sai sẽ được đưa vào phần ôn thẻ ngay.'}`}</p>
+      <button class="btn" id="startQ">Bắt đầu</button>${TONE_KINDS.has(cur)?TONE_TIPS+(cur==='lpair'?pairTable():''):''}`;
     $$('[data-goset]').forEach(b=>b.addEventListener('click',()=>{VIEW='settings';render();window.scrollTo(0,0)}));
     $$('.type').forEach(b=>b.addEventListener('click',()=>{if(isL)UI.ltype=b.dataset.k;else UI.qtype[L]=b.dataset.k;QS[view]=null;viewQuiz()}));
     bindTopic(()=>{QS[view]=null;viewQuiz()});
@@ -412,7 +504,7 @@ function viewQuiz(){
     const msg=p>=0.9?'Rất tốt! Bạn nắm chắc nhóm từ này.':p>=0.7?'Khá ổn. Xem lại những câu sai bên dưới nhé.':'Hãy ôn lại các từ bên dưới rồi làm lại.';
     const wrongCards=Q.wrong.filter(it=>it.card);
     v.innerHTML=`<div class="score">${Q.score}<span>/${n}</span></div><p>${msg}</p>
-      ${Q.wrong.length?`<h3 style="margin-top:20px">Cần xem lại</h3><ul class="misslist">${Q.wrong.map(it=>it.card?`<li><b class="${fc(L)}">${esc(it.card.w)}</b><span class="muted">${esc(it.card.m)}</span></li>`:`<li><span>${esc(it.opts.find(o=>o.ok).t)}</span></li>`).join('')}</ul>`:''}
+      ${Q.wrong.length?`<h3 style="margin-top:20px">Cần xem lại</h3><ul class="misslist">${Q.wrong.map(it=>it.card?`<li><b class="${fc(L)}">${esc(it.card.w)}</b>${TONE_KINDS.has(it.kind)?`<span class="py">${esc(it.card.py)}</span>`:''}<span class="muted">${esc(it.card.m)}</span></li>`:`<li><span>${esc(it.opts.find(o=>o.ok).t)}</span></li>`).join('')}</ul>`:''}
       <div class="btns"><button class="btn" id="again">Làm lượt mới</button>${!isL&&wrongCards.some(it=>rec(L,it.card))?'<button class="btn ghost" id="toReview">Ôn lại từ sai</button>':''}<button class="btn ghost" id="changeType">Đổi dạng bài</button></div>`;
     $('#again').addEventListener('click',()=>{startRound(view);viewQuiz();const q=QS[view];if(q&&!q.empty&&q.items[0].kind[0]==='l')speak(q.items[0].card.w,L)});
     const tr=$('#toReview');if(tr)tr.addEventListener('click',()=>{R.built=false;VIEW='review';render()});
@@ -424,13 +516,14 @@ function viewQuiz(){
   if(it.kind==='meaning')prompt=`<p class="ask">Nghĩa của từ này là gì?</p><div class="qword ${fc(L)}" lang="${L}">${esc(c.w)}${sayBtn(c.w)}</div>${L==='en'&&c.pos?`<p class="hint" style="margin-top:6px"><i>${esc(c.pos)}</i></p>`:''}`;
   else if(it.kind==='word')prompt=`<p class="ask">Từ nào có nghĩa là</p><div class="qmean">${esc(c.m)}</div>`;
   else if(it.kind==='fill')prompt=`<p class="ask">Chọn từ thích hợp cho chỗ trống</p><div class="qsent ${fc(L)}" lang="${L}">${blankOut(c.ex)}</div>${c.exv?`<p style="text-align:left;margin:10px 0 0"><button class="linkbtn" id="hintBtn">Xem nghĩa của câu</button></p><p class="exv" id="hintTxt" hidden style="text-align:left;margin-top:6px">${esc(c.exv)}</p>`:''}`;
+  else if(it.kind==='tone')prompt=`<p class="ask">Chọn pinyin có dấu thanh đúng</p><div class="qword zh" lang="zh">${esc(c.w)}</div><p class="hint" style="margin-top:6px">${esc(c.m)}</p>`;
   else if(it.kind==='para')prompt=`<p class="ask">Câu gốc (band 5). Cách viết lại nào tốt nhất?</p><div class="qsent" lang="en">${esc(it.prompt)}</div>`;
-  else prompt=`<p class="ask">${it.kind==='lchoose'?'Nghe và chọn nghĩa đúng':'Nghe và gõ lại từ bạn nghe được'}</p><div class="play"><button class="playbtn" type="button" data-say="${esc(c.w)}" aria-label="Phát lại">${ICON_PLAY}</button><button class="linkbtn" type="button" data-say="${esc(c.w)}" data-slow="1">Nghe chậm</button></div>`;
+  else prompt=`<p class="ask">${{lchoose:'Nghe và chọn nghĩa đúng',ltype:'Nghe và gõ lại từ bạn nghe được',ltone:'Nghe và chọn pinyin có dấu thanh đúng',lpair:'Nghe và chọn từ bạn nghe được'}[it.kind]}</p><div class="play"><button class="playbtn" type="button" data-say="${esc(c.w)}" aria-label="Phát lại">${ICON_PLAY}</button><button class="linkbtn" type="button" data-say="${esc(c.w)}" data-slow="1">Nghe chậm</button></div>`;
   let answers='';
   if(it.kind==='ltype')answers=`<div class="typed"><input class="inp" id="typed" lang="${L}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${L==='ko'?'Gõ bằng bàn phím tiếng Hàn':L==='zh'?'Gõ chữ Hán hoặc pinyin (không cần dấu)':'Gõ từ tiếng Anh'}" aria-label="Câu trả lời"><button class="btn" id="checkT">Kiểm tra</button></div>`;
   else{
-    const optKr=L!=='en'&&(it.kind==='word'||it.kind==='fill');
-    answers=`<div class="opts">${it.opts.map((o,i)=>`<button class="opt ${optKr?fc(L):''}" data-i="${i}" ${optKr?`lang="${L}"`:''}><span class="n">${i+1}</span><span>${esc(o.t)}</span></button>`).join('')}</div>`;
+    const optKr=L!=='en'&&(it.kind==='word'||it.kind==='fill'),optPy=it.kind==='tone'||it.kind==='ltone';
+    answers=`<div class="opts">${it.opts.map((o,i)=>`<button class="opt ${optKr?fc(L):''}${optPy?' py':''}" data-i="${i}" ${optKr?`lang="${L}"`:''}><span class="n">${i+1}</span><span>${o.h||esc(o.t)}</span></button>`).join('')}</div>`;
   }
   v.innerHTML=`<div class="qhead"><span>Câu ${Q.i+1}/${n}</span><span>Đúng ${Q.score}</span></div><div class="bar"><i style="width:${Q.i/n*100}%"></i></div>
     <div class="qcard">${prompt}</div>${answers}<div id="fb"></div>`;
@@ -448,6 +541,7 @@ function feedback(it,ok,typed){
   let body='';
   if(it.kind==='para')body=`<p>${esc(it.why)}</p>`;
   else body=`<p><b class="${fc(L)}" lang="${L}" style="font-size:18px">${esc(c.w)}</b> ${sayBtn(c.w,'sm')}</p><p>${esc(c.m)}</p>${metaLine(c,L)}${exBlock(c,L)}`;
+  if(it.set)body+=`<p class="muted small" style="margin-top:4px">So sánh với</p><ul class="cmp">${it.set.filter(x=>x!==c).map(x=>`<li>${sayBtn(x.w,'sm')}<b class="zh" lang="zh">${esc(x.w)}</b><span class="py">${esc(x.py)}</span><span class="muted">${esc(x.m)}</span></li>`).join('')}</ul>`;
   if(typed!=null&&!ok)body=`<p class="muted small">Bạn gõ: ${esc(typed)||'(trống)'}</p>`+body;
   $('#fb').innerHTML=`<div class="fb ${ok?'':'no'}"><span class="verdict">${ok?'Chính xác':'Chưa đúng'}</span>${body}</div><div class="btns"><button class="btn" id="nextQ">${last?'Xem kết quả':'Câu tiếp theo'} <kbd>Enter</kbd></button></div>`;
   $('#nextQ').addEventListener('click',nextQ);

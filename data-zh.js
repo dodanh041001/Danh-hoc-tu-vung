@@ -503,3 +503,43 @@ const ZH_UNITS=[
  {p:"能 + V",t:"có thể (có khả năng, điều kiện)",d:"Có năng lực hoặc hoàn cảnh cho phép.",ex:[["明天你能来吗？","Mai bạn đến được không?"],["我感冒了，不能去上课。","Tôi bị cảm nên không đi học được."]]},
  {p:"会 + V",t:"biết (kỹ năng học được)",d:"Kỹ năng phải học mới biết: ngôn ngữ, bơi, lái xe…",ex:[["你会说汉语吗？","Bạn biết nói tiếng Trung không?"],["我会骑自行车。","Tôi biết đi xe đạp."]]}]}
 ];
+// Cặp thanh dễ nhầm, dùng cho dạng bài nghe "Cặp thanh dễ nhầm": [chữ Hán, pinyin, nghĩa]. Mỗi nhóm gồm các từ chỉ khác nhau về thanh điệu.
+const ZH_TONES=[
+{t:"Bốn thanh trên cùng một âm",d:"Cùng phụ âm và vần, chỉ khác thanh. Luyện để tai nghe ra đủ bốn thanh.",p:[
+[["妈","mā","mẹ"],["麻","má","tê; vừng"],["马","mǎ","ngựa"],["骂","mà","mắng"]],
+[["汤","tāng","canh"],["糖","táng","đường, kẹo"],["躺","tǎng","nằm"],["烫","tàng","nóng, bỏng"]],
+[["鸡","jī","gà"],["急","jí","vội, gấp"],["挤","jǐ","chật, chen chúc"],["记","jì","nhớ, ghi"]],
+[["优","yōu","tốt, ưu tú"],["油","yóu","dầu, mỡ"],["有","yǒu","có"],["又","yòu","lại (thêm lần nữa)"]],
+[["温","wēn","ấm"],["文","wén","văn, chữ"],["稳","wěn","vững"],["问","wèn","hỏi"]],
+[["诗","shī","thơ"],["十","shí","mười"],["使","shǐ","khiến, làm cho"],["是","shì","là"]]]},
+{t:"Từ một chữ hay gặp",d:"Các từ cơ bản dễ nghe nhầm thành nhau trong bài nghe.",p:[
+[["买","mǎi","mua"],["卖","mài","bán"]],
+[["想","xiǎng","nghĩ, muốn"],["像","xiàng","giống"]],
+[["点","diǎn","giờ; một chút"],["电","diàn","điện"]],
+[["打","dǎ","đánh; gọi (điện)"],["大","dà","to, lớn"]],
+[["水","shuǐ","nước"],["睡","shuì","ngủ"]],
+[["姐","jiě","chị"],["借","jiè","mượn"]],
+[["手","shǒu","tay"],["瘦","shòu","gầy"]],
+[["渴","kě","khát"],["课","kè","bài học, tiết học"]],
+[["骑","qí","cưỡi, đi (xe đạp)"],["起","qǐ","dậy"]],
+[["晴","qíng","nắng, trời quang"],["请","qǐng","mời"]],
+[["千","qiān","nghìn"],["前","qián","trước"]],
+[["九","jiǔ","chín"],["就","jiù","thì, liền"]],
+[["书","shū","sách"],["树","shù","cây"]],
+[["包","bāo","túi, bao"],["饱","bǎo","no"],["报","bào","báo"]],
+[["烟","yān","khói, thuốc lá"],["盐","yán","muối"],["眼","yǎn","mắt"]],
+[["星","xīng","sao"],["醒","xǐng","tỉnh (ngủ dậy)"],["姓","xìng","họ"]]]},
+{t:"Từ hai chữ dễ nhầm",d:"Hai từ khác nghĩa chỉ vì thanh điệu.",p:[
+[["睡觉","shuìjiào","ngủ"],["水饺","shuǐjiǎo","sủi cảo"]],
+[["汉语","Hànyǔ","tiếng Hán (tiếng Trung)"],["韩语","Hányǔ","tiếng Hàn"]],
+[["同事","tóngshì","đồng nghiệp"],["同时","tóngshí","đồng thời"]],
+[["练习","liànxí","luyện tập"],["联系","liánxì","liên hệ"]],
+[["教室","jiàoshì","phòng học"],["教师","jiàoshī","giáo viên"]],
+[["上海","Shànghǎi","Thượng Hải"],["伤害","shānghài","làm tổn thương"]],
+[["语言","yǔyán","ngôn ngữ"],["预言","yùyán","lời tiên đoán"]],
+[["主人","zhǔrén","chủ nhà"],["主任","zhǔrèn","chủ nhiệm"]],
+[["杯子","bēizi","cái cốc"],["被子","bèizi","cái chăn"]],
+[["包子","bāozi","bánh bao"],["豹子","bàozi","con báo"]],
+[["一直","yìzhí","luôn luôn; thẳng một mạch"],["一致","yízhì","nhất trí"]],
+[["老师","lǎoshī","giáo viên"],["老实","lǎoshi","thật thà"]]]}
+];
