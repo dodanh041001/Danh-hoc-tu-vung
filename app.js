@@ -273,6 +273,7 @@ function renderHeader(){
   $('#stats').innerHTML=`<div class="stat due"><b>${due}</b><span>cần ôn</span></div><div class="stat"><b>${newLeft}</b><span>từ mới còn lại</span></div><div class="stat"><b>${streak()}</b><span>ngày liên tiếp</span></div><div class="stat"><b>${known}<em class="of">/${DECKS[L].length}</em></b><span>đã nhớ</span></div>`;
 }
 function render(){
+  if(!document.querySelector('.hwov'))hwStop();
   if(VIEW==='book'&&S.lang==='en')VIEW='review';
   $('.tabs [data-v="book"]').hidden=S.lang==='en';
   document.body.dataset.lang=S.lang;
@@ -343,7 +344,7 @@ function viewReview(){
     :`<div class="vn-front">${esc(c.m)}</div><p class="hint">Từ ${LNAME[L]} là gì?</p>`;
   let back='';
   if(R.flipped){
-    back=`<div class="back">${dir==='rev'?`<div style="display:flex;flex-direction:column;align-items:center;gap:10px">${wordVisual(c,L)}${sayBtn(c.w)}</div>`:`<div class="meaning">${esc(c.m)}</div>`}${metaLine(c,L)}${exBlock(c,L)}</div>`;
+    back=`<div class="back">${dir==='rev'?`<div style="display:flex;flex-direction:column;align-items:center;gap:10px">${wordVisual(c,L)}${sayBtn(c.w)}</div>`:`<div class="meaning">${esc(c.m)}</div>`}${metaLine(c,L)}${exBlock(c,L)}${L==='zh'&&hanOf(c.w).length?'<p style="margin:0"><button class="linkbtn" type="button" id="hwOpen">Luyện viết từ này</button></p>':''}</div>`;
   }
   const actions=R.flipped
     ?`<div class="grades" role="group" aria-label="Bạn nhớ từ này thế nào?">${['Quên','Khó','Được','Dễ'].map((t,g)=>`<button class="g${g}" data-g="${g}">${t}<small>${fmtIvl(schedule(r,g,now).d-now)}</small></button>`).join('')}</div>`
@@ -352,6 +353,7 @@ function viewReview(){
     <article class="card"><div class="topicline"><span>${esc(c.topic)}</span><span>${r?STATUS_VN[statusOf(r)]:'Từ mới'}</span></div><div class="front">${front}</div>${back}</article>${actions}`;
   bindTopic(()=>{R.built=false;viewReview()});
   const f=$('#flip');if(f)f.addEventListener('click',flip);
+  const ho=$('#hwOpen');if(ho)ho.addEventListener('click',()=>hwPractice(c));
   $$('.grades button').forEach(b=>b.addEventListener('click',()=>grade(+b.dataset.g)));
   if(!R.flipped&&dir==='fwd'&&S.settings.autoplay)speak(c.w,L);
 }
@@ -371,7 +373,8 @@ const QTYPES={
   word:{t:'Chọn từ',d:'Xem nghĩa tiếng Việt, chọn từ đúng'},
   fill:{t:'Điền từ vào câu',d:'Chọn từ (đúng dạng) để hoàn thành câu ví dụ'},
   para:{t:'Nâng cấp câu IELTS',d:'Chọn cách viết lại tự nhiên, đúng ngữ pháp, hướng tới band 7',only:'en'},
-  tone:{t:'Chọn đúng thanh điệu',d:'Xem chữ Hán, chọn pinyin có dấu thanh đúng',only:'zh'}
+  tone:{t:'Chọn đúng thanh điệu',d:'Xem chữ Hán, chọn pinyin có dấu thanh đúng',only:'zh'},
+  write:{t:'Luyện viết chữ Hán',d:'Viết từng nét lên màn hình, app chấm thứ tự và hình dạng nét',only:'zh'}
 };
 const LTYPES={lchoose:{t:'Nghe và chọn nghĩa',d:'Nghe phát âm rồi chọn nghĩa đúng'},ltype:{t:'Nghe và gõ lại',d:'Nghe rồi gõ lại từ, luyện cả chính tả'},
   ltone:{t:'Nghe và chọn thanh điệu',d:'Nghe phát âm, chọn pinyin có dấu thanh đúng',only:'zh'},
@@ -462,9 +465,84 @@ function pairTable(){
   const G=typeof ZH_TONES!=='undefined'?ZH_TONES:[];if(!G.length)return '';
   return `<details class="tips"><summary>Bảng cặp thanh dễ nhầm</summary>${G.map(g=>`<h3 class="tgh">${esc(g.t)}</h3>${g.d?`<p>${esc(g.d)}</p>`:''}<ul class="tset">${g.p.map(x=>`<li>${x.map(([w,py,m])=>`<span class="tw">${sayBtn(w,'sm')}<b class="zh" lang="zh">${esc(w)}</b><span class="py">${esc(py)}</span><small>${esc(m)}</small></span>`).join('')}</li>`).join('')}</ul>`).join('')}</details>`;
 }
+/* ---------- Luyện viết chữ Hán (thư viện Hanzi Writer, tải khi cần) ----------
+   Thư viện: MIT. Dữ liệu nét: Make Me a Hanzi, giấy phép Arphic Public License.
+   Mỗi chữ tải một file nhỏ từ jsDelivr ở lần đầu; sw.js lưu lại nên lần sau dùng được khi offline. */
+const HW_SRC='https://cdn.jsdelivr.net/npm/hanzi-writer@3.6.1/dist/hanzi-writer.min.js';
+const HW={p:null,w:null,gen:0};
+const hanOf=w=>[...String(w||'')].filter(ch=>/\p{Script=Han}/u.test(ch));
+UI.wmode='trace';
+function hwLoad(){
+  if(window.HanziWriter)return Promise.resolve(window.HanziWriter);
+  if(!HW.p)HW.p=new Promise((ok,no)=>{
+    const sc=document.createElement('script');sc.src=HW_SRC;sc.crossOrigin='anonymous';
+    sc.onload=()=>window.HanziWriter?ok(window.HanziWriter):no(new Error('lib'));
+    sc.onerror=()=>{sc.remove();no(new Error('net'))};
+    document.head.appendChild(sc);
+  }).catch(e=>{HW.p=null;throw e});
+  return HW.p;
+}
+function hwStop(){HW.gen++;if(HW.w){try{HW.w.cancelQuiz()}catch(e){}HW.w=null}}
+const hwPadHTML=()=>`<div class="hwchars" data-hw="chars"></div><div class="hwpad" data-hw="pad"></div><p class="hwmsg" data-hw="msg" aria-live="polite"></p>
+  <div class="hwbtns"><button class="btn ghost" type="button" data-hw="anim">Xem thứ tự nét</button><button class="btn ghost" type="button" data-hw="redo">Viết lại chữ này</button></div>`;
+// ctx: {root, card, mode:'trace'|'recall', st:{k,miss,helped}, onDone(st)}
+function hwRun(ctx){
+  const root=ctx.root,el=k=>root.querySelector(`[data-hw="${k}"]`),st=ctx.st,chars=hanOf(ctx.card.w),gen=++HW.gen;
+  const pad=el('pad'),msg=el('msg');
+  const paint=()=>{el('chars').innerHTML=chars.map((ch,i)=>`<span class="${i===st.k?'cur':i<st.k?'done':''}" lang="zh">${i<st.k||ctx.mode==='trace'?esc(ch):'?'}</span>`).join('')};
+  const fail=t=>{if(gen!==HW.gen)return;msg.innerHTML=`${t} <button class="linkbtn" type="button" data-hw="retry">Thử lại</button>`;el('retry').addEventListener('click',()=>hwRun(ctx))};
+  paint();
+  if(!window.HanziWriter){pad.innerHTML='';msg.textContent='Đang tải bộ viết chữ…'}
+  hwLoad().then(lib=>{if(gen===HW.gen)step(lib)}).catch(()=>fail('Chưa tải được bộ viết chữ. Lần đầu dùng cần có mạng.'));
+  function step(lib){
+    paint();
+    if(st.k>=chars.length){ctx.onDone(st);return}
+    pad.innerHTML='';msg.textContent='';
+    const css=n=>getComputedStyle(document.body).getPropertyValue(n).trim();
+    const size=Math.max(200,Math.min(320,Math.floor(pad.clientWidth||300)));
+    let w;
+    try{
+      w=HW.w=lib.create(pad,chars[st.k],{width:size,height:size,padding:12,showCharacter:false,showOutline:ctx.mode==='trace',
+        strokeColor:css('--ink'),outlineColor:css('--line'),drawingColor:css('--acc'),highlightColor:css('--warn'),drawingWidth:6,
+        onLoadCharDataError:()=>fail('Không tải được nét của chữ này. Kiểm tra mạng rồi thử lại.')});
+    }catch(e){fail('Không mở được ô viết.');return}
+    const quiz=()=>w.quiz({showHintAfterMisses:ctx.mode==='trace'?1:3,markStrokeCorrectAfterMisses:5,
+      onMistake:()=>{st.miss++},
+      onComplete:()=>{if(gen!==HW.gen||HW.w!==w)return;st.k++;setTimeout(()=>{if(gen===HW.gen&&HW.w===w)step(lib)},650)}});
+    quiz();
+    el('anim').onclick=()=>{if(gen!==HW.gen||HW.w!==w)return;if(ctx.mode==='recall')st.helped=true;try{w.cancelQuiz()}catch(e){}w.animateCharacter({onComplete:()=>{if(gen===HW.gen&&HW.w===w)quiz()}})};
+    el('redo').onclick=()=>{if(gen!==HW.gen||HW.w!==w)return;try{w.cancelQuiz()}catch(e){}quiz()};
+  }
+}
+function hwQuizStart(it){
+  hwRun({root:$('#view'),card:it.card,mode:it.mode,st:it.st,onDone:st=>{
+    const Q=QS.quiz;if(VIEW!=='quiz'||!Q||Q.items[Q.i]!==it)return;
+    if(!Q.answered){Q.answered=true;it.ok=!st.helped&&st.miss<=hanOf(it.card.w).length;markResult(it,it.ok);if(S.settings.autoplay)speak(it.card.w)}
+    feedback(it,it.ok,null);
+  }});
+}
+// Luyện viết nhanh một từ từ mặt sau thẻ ôn (tô theo mẫu, không tính điểm)
+function hwPractice(c){
+  hwStop();
+  const ov=document.createElement('div');ov.className='hwov';
+  ov.innerHTML=`<div class="hwbox" role="dialog" aria-modal="true" aria-label="Luyện viết ${esc(c.w)}"><div class="hwtop"><b class="zh" lang="zh">${esc(c.w)}</b><span class="py">${esc(c.py||'')}</span>${sayBtn(c.w,'sm')}<button class="hwx" type="button" aria-label="Đóng">×</button></div>${hwPadHTML()}</div>`;
+  document.body.appendChild(ov);
+  const keys=e=>{if(e.key==='Escape')close();e.stopPropagation()};
+  const close=()=>{hwStop();ov.remove();window.removeEventListener('keydown',keys,true)};
+  window.addEventListener('keydown',keys,true);
+  ov.addEventListener('click',e=>{if(e.target===ov)close()});
+  ov.querySelector('.hwx').addEventListener('click',close);
+  const run=()=>hwRun({root:ov,card:c,mode:'trace',st:{k:0,miss:0,helped:false},onDone:st=>{
+    const m=ov.querySelector('[data-hw="msg"]');m.innerHTML=`Xong. ${st.miss?`Sai ${st.miss} nét.`:'Không sai nét nào.'} <button class="linkbtn" type="button" data-hw="again">Viết lại cả từ</button>`;
+    m.querySelector('[data-hw="again"]').addEventListener('click',run);
+  }});
+  run();ov.querySelector('.hwx').focus({preventScroll:true});
+}
+
 function makeItem(kind,c,L){
   if(kind==='ltype')return{kind,card:c};
   if(kind==='tone'||kind==='ltone')return{kind,card:c,opts:toneOpts(c,kind==='ltone')};
+  if(kind==='write')return{kind,card:c,mode:UI.wmode,st:{k:0,miss:0,helped:false}};
   const key=kind==='word'?(x=>x.w):kind==='fill'?(x=>x.ex&&/\[.+?\]/.test(x.ex)?surface(x):''):(x=>x.m);
   const correct=key(c),all=DECKS[L];
   const pool=[...shuffle(all.filter(x=>x.topic===c.topic&&x.id!==c.id)),...shuffle(all.filter(x=>x.topic!==c.topic))];
@@ -480,9 +558,10 @@ function startRound(view){
   else{
     let deck=filtered(L);if(kind==='fill')deck=deck.filter(c=>/\[.+?\]/.test(c.ex||''));
     if(kind==='tone'||kind==='ltone')deck=deck.filter(c=>toneOpts(c,kind==='ltone'));
-    const seen=deck.filter(c=>rec(L,c));
-    let picks=shuffle(seen).slice(0,10);
-    if(picks.length<10)picks=picks.concat(shuffle(deck.filter(c=>!rec(L,c))).slice(0,10-picks.length));
+    if(kind==='write')deck=deck.filter(c=>hanOf(c.w).length);
+    const N=kind==='write'?5:10,seen=deck.filter(c=>rec(L,c));
+    let picks=shuffle(seen).slice(0,N);
+    if(picks.length<N)picks=picks.concat(shuffle(deck.filter(c=>!rec(L,c))).slice(0,N-picks.length));
     items=shuffle(picks).map(c=>makeItem(kind,c,L));
   }
   QS[view]=items.length?{view,lang:L,items,i:0,score:0,wrong:[],answered:false,done:false}:{empty:true,lang:L};
@@ -490,7 +569,7 @@ function startRound(view){
 function viewQuiz(){
   const view=VIEW,L=S.lang,v=$('#view');let Q=QS[view];
   if(Q&&Q.lang!==L)Q=QS[view]=null;
-  const isL=view==='listen';
+  const isL=view==='listen';hwStop();
   if(!Q||Q.empty){
     const types=isL?LTYPES:QTYPES,cur=qkind(view,L);
     const keys=Object.keys(types).filter(k=>typeOk(types,k,L));
@@ -504,11 +583,13 @@ function viewQuiz(){
       <div class="types" role="radiogroup">${keys.map(k=>`<button class="type" role="radio" data-k="${k}" aria-pressed="${k===cur}" aria-checked="${k===cur}"><span class="radio"></span><span><b>${types[k].t}</b><small>${types[k].d}</small></span></button>`).join('')}</div>
       ${cur==='para'||cur==='lpair'?'':`<div class="toolbar" style="margin-top:0">${topicSelect(L)}</div>`}
       ${Q&&Q.empty?'<p class="msg no">Chủ đề này chưa có đủ từ cho dạng bài này. Hãy chọn chủ đề khác.</p>':''}
-      <p class="muted small">${cur==='lpair'?'Mỗi lượt 10 câu, lấy ngẫu nhiên từ bảng cặp thanh dễ nhầm bên dưới.':`Mỗi lượt 10 câu, ưu tiên những từ bạn đã học. ${isL?'':'Từ trả lời sai sẽ được đưa vào phần ôn thẻ ngay.'}`}</p>
+      ${cur==='write'?`<div class="seg wseg" role="group" aria-label="Mức luyện viết"><button type="button" data-wm="trace" aria-pressed="${UI.wmode==='trace'}"><b>Tô theo mẫu</b><small>Có chữ mờ để viết đè lên</small></button><button type="button" data-wm="recall" aria-pressed="${UI.wmode==='recall'}"><b>Viết nhớ</b><small>Chỉ có pinyin và nghĩa</small></button></div>`:''}
+      <p class="muted small">${cur==='lpair'?'Mỗi lượt 10 câu, lấy ngẫu nhiên từ bảng cặp thanh dễ nhầm bên dưới.':cur==='write'?'Mỗi lượt 5 từ, ưu tiên những từ bạn đã học. Từ nào sai quá 1 nét mỗi chữ, hoặc phải xem cách viết khi Viết nhớ, sẽ được đưa vào phần ôn thẻ. Lần đầu viết một chữ cần có mạng.':`Mỗi lượt 10 câu, ưu tiên những từ bạn đã học. ${isL?'':'Từ trả lời sai sẽ được đưa vào phần ôn thẻ ngay.'}`}</p>
       <button class="btn" id="startQ">Bắt đầu</button>${TONE_KINDS.has(cur)?TONE_TIPS+(cur==='lpair'?pairTable():''):''}`;
     $$('[data-goset]').forEach(b=>b.addEventListener('click',()=>{VIEW='settings';render();window.scrollTo(0,0)}));
     $$('.type').forEach(b=>b.addEventListener('click',()=>{if(isL)UI.ltype=b.dataset.k;else UI.qtype[L]=b.dataset.k;QS[view]=null;viewQuiz()}));
     bindTopic(()=>{QS[view]=null;viewQuiz()});
+    $$('[data-wm]').forEach(b=>b.addEventListener('click',()=>{UI.wmode=b.dataset.wm;viewQuiz()}));
     $('#startQ').addEventListener('click',()=>{startRound(view);viewQuiz();const q=QS[view];if(q&&!q.empty&&q.items[0].kind[0]==='l')speak(q.items[0].card.w,L)});
     return;
   }
@@ -517,7 +598,7 @@ function viewQuiz(){
     const msg=p>=0.9?'Rất tốt! Bạn nắm chắc nhóm từ này.':p>=0.7?'Khá ổn. Xem lại những câu sai bên dưới nhé.':'Hãy ôn lại các từ bên dưới rồi làm lại.';
     const wrongCards=Q.wrong.filter(it=>it.card);
     v.innerHTML=`<div class="score">${Q.score}<span>/${n}</span></div><p>${msg}</p>
-      ${Q.wrong.length?`<h3 style="margin-top:20px">Cần xem lại</h3><ul class="misslist">${Q.wrong.map(it=>it.card?`<li><b class="${fc(L)}">${esc(it.card.w)}</b>${TONE_KINDS.has(it.kind)?`<span class="py">${esc(it.card.py)}</span>`:''}<span class="muted">${esc(it.card.m)}</span></li>`:`<li><span>${esc(it.opts.find(o=>o.ok).t)}</span></li>`).join('')}</ul>`:''}
+      ${Q.wrong.length?`<h3 style="margin-top:20px">Cần xem lại</h3><ul class="misslist">${Q.wrong.map(it=>it.card?`<li><b class="${fc(L)}">${esc(it.card.w)}</b>${TONE_KINDS.has(it.kind)||it.kind==='write'?`<span class="py">${esc(it.card.py)}</span>`:''}<span class="muted">${esc(it.card.m)}</span></li>`:`<li><span>${esc(it.opts.find(o=>o.ok).t)}</span></li>`).join('')}</ul>`:''}
       <div class="btns"><button class="btn" id="again">Làm lượt mới</button>${!isL&&wrongCards.some(it=>rec(L,it.card))?'<button class="btn ghost" id="toReview">Ôn lại từ sai</button>':''}<button class="btn ghost" id="changeType">Đổi dạng bài</button></div>`;
     $('#again').addEventListener('click',()=>{startRound(view);viewQuiz();const q=QS[view];if(q&&!q.empty&&q.items[0].kind[0]==='l')speak(q.items[0].card.w,L)});
     const tr=$('#toReview');if(tr)tr.addEventListener('click',()=>{R.built=false;VIEW='review';render()});
@@ -529,11 +610,13 @@ function viewQuiz(){
   if(it.kind==='meaning')prompt=`<p class="ask">Nghĩa của từ này là gì?</p><div class="qword ${fc(L)}" lang="${L}">${esc(c.w)}${sayBtn(c.w)}</div>${L==='en'&&c.pos?`<p class="hint" style="margin-top:6px"><i>${esc(c.pos)}</i></p>`:''}`;
   else if(it.kind==='word')prompt=`<p class="ask">Từ nào có nghĩa là</p><div class="qmean">${esc(c.m)}</div>`;
   else if(it.kind==='fill')prompt=`<p class="ask">Chọn từ thích hợp cho chỗ trống</p><div class="qsent ${fc(L)}" lang="${L}">${blankOut(c.ex)}</div>${c.exv?`<p style="text-align:left;margin:10px 0 0"><button class="linkbtn" id="hintBtn">Xem nghĩa của câu</button></p><p class="exv" id="hintTxt" hidden style="text-align:left;margin-top:6px">${esc(c.exv)}</p>`:''}`;
+  else if(it.kind==='write')prompt=`<p class="ask">${it.mode==='trace'?'Tô theo chữ mờ, viết đúng thứ tự nét':'Viết từ có pinyin và nghĩa này'}</p><div class="qmean py">${esc(c.py)}${sayBtn(c.w,'sm')}</div><p class="hint" style="margin-top:6px">${esc(c.m)}</p>`;
   else if(it.kind==='tone')prompt=`<p class="ask">Chọn pinyin có dấu thanh đúng</p><div class="qword zh" lang="zh">${esc(c.w)}</div><p class="hint" style="margin-top:6px">${esc(c.m)}</p>`;
   else if(it.kind==='para')prompt=`<p class="ask">Câu gốc (band 5). Cách viết lại nào tốt nhất?</p><div class="qsent" lang="en">${esc(it.prompt)}</div>`;
   else prompt=`<p class="ask">${{lchoose:'Nghe và chọn nghĩa đúng',ltype:'Nghe và gõ lại từ bạn nghe được',ltone:'Nghe và chọn pinyin có dấu thanh đúng',lpair:'Nghe và chọn từ bạn nghe được'}[it.kind]}</p><div class="play"><button class="playbtn" type="button" data-say="${esc(c.w)}" aria-label="Phát lại">${ICON_PLAY}</button><button class="linkbtn" type="button" data-say="${esc(c.w)}" data-slow="1">Nghe chậm</button></div>`;
   let answers='';
-  if(it.kind==='ltype')answers=`<div class="typed"><input class="inp" id="typed" lang="${L}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${L==='ko'?'Gõ bằng bàn phím tiếng Hàn':L==='zh'?'Gõ chữ Hán hoặc pinyin (không cần dấu)':'Gõ từ tiếng Anh'}" aria-label="Câu trả lời"><button class="btn" id="checkT">Kiểm tra</button></div>`;
+  if(it.kind==='write')answers=`<div class="hwwrap">${hwPadHTML()}</div>`;
+  else if(it.kind==='ltype')answers=`<div class="typed"><input class="inp" id="typed" lang="${L}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${L==='ko'?'Gõ bằng bàn phím tiếng Hàn':L==='zh'?'Gõ chữ Hán hoặc pinyin (không cần dấu)':'Gõ từ tiếng Anh'}" aria-label="Câu trả lời"><button class="btn" id="checkT">Kiểm tra</button></div>`;
   else{
     const optKr=L!=='en'&&(it.kind==='word'||it.kind==='fill'),optPy=it.kind==='tone'||it.kind==='ltone';
     answers=`<div class="opts">${it.opts.map((o,i)=>`<button class="opt ${optKr?fc(L):''}${optPy?' py':''}" data-i="${i}" ${optKr?`lang="${L}"`:''}><span class="n">${i+1}</span><span>${o.h||esc(o.t)}</span></button>`).join('')}</div>`;
@@ -542,6 +625,7 @@ function viewQuiz(){
     <div class="qcard">${prompt}</div>${answers}<div id="fb"></div>`;
   $$('.opt').forEach(b=>b.addEventListener('click',()=>answer(+b.dataset.i)));
   const hb=$('#hintBtn');if(hb)hb.addEventListener('click',()=>{$('#hintTxt').hidden=false;hb.hidden=true});
+  if(it.kind==='write')hwQuizStart(it);
   const ti=$('#typed');
   if(ti){
     ti.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();Q.answered?nextQ():checkTyped()}});
@@ -554,6 +638,7 @@ function feedback(it,ok,typed){
   let body='';
   if(it.kind==='para')body=`<p>${esc(it.why)}</p>`;
   else body=`<p><b class="${fc(L)}" lang="${L}" style="font-size:18px">${esc(c.w)}</b> ${sayBtn(c.w,'sm')}</p><p>${esc(c.m)}</p>${metaLine(c,L)}${exBlock(c,L)}`;
+  if(it.kind==='write')body=`<p class="muted small">${it.st.helped?'Đã xem cách viết. ':''}${it.st.miss?`Sai ${it.st.miss} nét.`:'Không sai nét nào.'}</p>`+body;
   if(it.set)body+=`<p class="muted small" style="margin-top:4px">So sánh với</p><ul class="cmp">${it.set.filter(x=>x!==c).map(x=>`<li>${sayBtn(x.w,'sm')}<b class="zh" lang="zh">${esc(x.w)}</b><span class="py">${esc(x.py)}</span><span class="muted">${esc(x.m)}</span></li>`).join('')}</ul>`;
   if(typed!=null&&!ok)body=`<p class="muted small">Bạn gõ: ${esc(typed)||'(trống)'}</p>`+body;
   $('#fb').innerHTML=`<div class="fb ${ok?'':'no'}"><span class="verdict">${ok?'Chính xác':'Chưa đúng'}</span>${body}</div><div class="btns"><button class="btn" id="nextQ">${last?'Xem kết quả':'Câu tiếp theo'} <kbd>Enter</kbd></button></div>`;

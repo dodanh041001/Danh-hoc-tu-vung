@@ -61,8 +61,8 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Biểu tượng, manifest, font: dùng bản đã lưu, chưa có thì tải và lưu lại.
-  if (url.origin === location.origin || /(^|\.)fonts\.(googleapis|gstatic)\.com$/.test(url.hostname)) {
+  // Biểu tượng, manifest, font, bộ viết chữ Hán (jsDelivr, đã ghim phiên bản): dùng bản đã lưu, chưa có thì tải và lưu lại.
+  if (url.origin === location.origin || /(^|\.)fonts\.(googleapis|gstatic)\.com$/.test(url.hostname) || url.hostname === 'cdn.jsdelivr.net') {
     e.respondWith(
       caches.match(req).then(hit => hit || fetch(req).then(res => {
         if (res.ok || res.type === 'opaque') { const cp = res.clone(); caches.open(CACHE).then(c => c.put(req, cp)); }
