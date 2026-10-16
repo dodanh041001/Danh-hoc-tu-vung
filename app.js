@@ -735,10 +735,10 @@ const BOOKS={
       units:()=>typeof KIIP_UNITS!=='undefined'?KIIP_UNITS:[],ids:n=>BOOK[n]||[],from:'bookFrom',to:'bookTo',defTo:13,
       pages:n=>{const p=n<=9?12+10*(n-1):112+10*(n-10);return[p,p+9]},
       note:n=>n===10?'Hết phần 1. Sách có bài ôn tập 1 (bài 1–9) ở trang 102.':'',endNote:'Sách có bài ôn tập 2 (bài 10–18) ở trang 202.'},
-  zh:{name:'发展汉语 初级综合 I',sub:'发展汉语 初级综合 I (Developing Chinese). Hiện có bài 1–15; danh sách từ lấy từ phần 生词总表 của sách',
-      units:()=>typeof ZH_UNITS!=='undefined'?ZH_UNITS:[],ids:n=>ZBOOK[n]||[],from:'zhFrom',to:'zhTo',defTo:15,
-      pages:n=>[ZH_PAGES[n],ZH_PAGES[n+1]-1],
-      note:()=>'',endNote:'Sau bài 15, sách có phần tổng kết ngữ pháp 语言点小结（一）về câu hỏi ở trang 171.'}
+  zh:{name:'发展汉语 初级综合 I',sub:'发展汉语 初级综合 I (Developing Chinese). Hiện có bài 1–23; danh sách từ lấy từ phần 生词总表 của sách',
+      units:()=>typeof ZH_UNITS!=='undefined'?ZH_UNITS:[],ids:n=>ZBOOK[n]||[],from:'zhFrom',to:'zhTo',defTo:23,
+      pages:n=>[ZH_PAGES[n],(typeof ZH_PEND!=='undefined'&&ZH_PEND[n])||ZH_PAGES[n+1]-1],
+      note:n=>({16:'Trước bài này, sách có phần tổng kết ngữ pháp 语言点小结（一）về câu hỏi ở trang 171.',21:'Trước bài này, sách có phần tổng kết ngữ pháp 语言点小结（二）về các mẫu câu thường dùng ở trang 231.'}[n]||''),endNote:'Bài 24–30 sẽ được bổ sung sau.'}
 };
 const BK={unit:{ko:null,zh:null}};
 const curBook=()=>BOOKS[S.lang];
