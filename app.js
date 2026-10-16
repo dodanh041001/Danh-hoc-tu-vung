@@ -132,15 +132,28 @@ const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==
 const sysMode=L=>VPREF[L]==='__system__'||(!VPREF[L]&&IS_IOS);
 function voiceFor(L){if(sysMode(L))return null;const list=voicesFor(L);if(!list.length)return null;const p=VPREF[L];if(p){const f=list.find(v=>v.voiceURI===p);if(f)return f}return list[0]}
 const voiceIsGood=v=>!!v&&GOOD_RE.test(v.name);
+/* Chống mất âm đầu. Hai nguyên nhân hay gặp (nhất là iPhone và tai nghe Bluetooth):
+   1) gọi speak() ngay sau cancel() làm câu mới bị cắt đầu → chỉ cancel khi đang đọc, rồi chờ một chút;
+   2) loa hoặc tai nghe "ngủ" khi im lâu, mất vài trăm mili giây đầu để bật lại → đọc trước một tiếng
+      với âm lượng 0 để đánh thức, rồi mới đọc từ thật. Tắt được trong Cài đặt (lưu riêng trên từng máy). */
+const SPK={seq:0,end:0,cx:0},WARM_TXT={ko:'음',en:'um',zh:'嗯'},WARM_IDLE=1500;
+const warmOn=()=>VPREF._warm!==0;
+// Dừng giọng đang đọc (nếu có) và ghi lại thời điểm, để lần đọc sau chờ đủ lâu
+function hush(){if(!HAS_TTS)return false;try{if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();SPK.cx=Date.now();return true}}catch(e){}return false}
 function speak(text,L,rate){
   if(!HAS_TTS||!text)return;L=L||S.lang;
-  try{
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(strip(text)),v=voiceFor(L);
-    u.lang=v?v.lang:LCODE[L];if(v)u.voice=v;
-    u.rate=rate||S.settings.rate;u.pitch=1;
-    speechSynthesis.speak(u);
-  }catch(e){}
+  const seq=++SPK.seq,busy=hush();
+  const go=()=>{
+    if(seq!==SPK.seq)return; // bấm liên tục: chỉ đọc lần bấm cuối
+    try{
+      const v=voiceFor(L),mk=t=>{const u=new SpeechSynthesisUtterance(t);u.lang=v?v.lang:LCODE[L];if(v)u.voice=v;u.pitch=1;return u};
+      const u=mk(strip(text));u.rate=rate||S.settings.rate;
+      u.onend=u.onerror=()=>{SPK.end=Date.now()};
+      if(warmOn()&&!busy&&Date.now()-SPK.end>WARM_IDLE){const w=mk(WARM_TXT[L]||'um');w.volume=0;w.rate=1.5;speechSynthesis.speak(w)}
+      speechSynthesis.speak(u);
+    }catch(e){}
+  };
+  const wait=150-(Date.now()-SPK.cx);if(wait>0)setTimeout(go,wait);else go();
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(b)speak(b.dataset.say,b.dataset.lang,b.dataset.slow?0.6:0)});
 
@@ -269,8 +282,8 @@ function render(){
   renderHeader();renderView();
 }
 function renderView(){({review:viewReview,quiz:viewQuiz,listen:viewQuiz,book:viewBook,list:viewList,settings:viewSettings})[VIEW]()}
-$$('.lang button').forEach(b=>b.addEventListener('click',()=>{if(S.lang===b.dataset.l)return;S.lang=b.dataset.l;S.sAt=Date.now();R.built=false;save();if(HAS_TTS)speechSynthesis.cancel();render();window.scrollTo(0,0)}));
-$$('.tabs button').forEach(b=>b.addEventListener('click',()=>{VIEW=b.dataset.v;if(HAS_TTS)speechSynthesis.cancel();render();window.scrollTo(0,0)}));
+$$('.lang button').forEach(b=>b.addEventListener('click',()=>{if(S.lang===b.dataset.l)return;S.lang=b.dataset.l;S.sAt=Date.now();R.built=false;save();hush();render();window.scrollTo(0,0)}));
+$$('.tabs button').forEach(b=>b.addEventListener('click',()=>{VIEW=b.dataset.v;hush();render();window.scrollTo(0,0)}));
 $('#sync').addEventListener('click',()=>{if(SY.ref)pull();else if(gistOn())gistSync();else{VIEW='settings';render();const el=$('#syncSec');if(el)el.scrollIntoView()}});
 
 function topicSelect(L){
@@ -752,6 +765,8 @@ function viewSettings(){
   </section>
   <section class="set"><h3>Giọng đọc</h3>
     ${LANGS.map(L=>`<div class="vrow"><label for="v-${L}">Giọng ${LNAME[L]}</label><div class="vsel"><select class="sel" id="v-${L}"></select><button class="say" type="button" data-say="${esc(VSAMPLE[L])}" data-lang="${L}" aria-label="Nghe thử">${ICON_SAY}</button></div><p class="vq" id="vq-${L}"></p></div>`).join('')}
+    <label class="line">Chống mất âm đầu<input type="checkbox" id="sWarm"${warmOn()?' checked':''}></label>
+    <p class="muted small" style="margin:0 0 6px">Dùng khi đầu từ hay bị mất, thường gặp trên iPhone hoặc với tai nghe Bluetooth. Từ sẽ phát trễ hơn một chút. Nếu nghe thấy tiếng “ừm” trước mỗi từ thì tắt mục này đi.</p>
     <label class="line">Tốc độ đọc<select class="sel" id="sRate">${[[0.8,'Chậm'],[0.9,'Hơi chậm'],[1,'Tự nhiên']].map(([x,t])=>`<option value="${x}"${x===s.rate?' selected':''}>${t}</option>`).join('')}</select></label>
     <details class="tips"><summary>Cách có giọng đọc tự nhiên hơn</summary>
       <p>Trang này dùng giọng đọc có sẵn trên thiết bị, nên chất lượng tùy vào giọng bạn đã cài. Giọng có dấu ★ là giọng chất lượng cao.</p>
@@ -771,6 +786,7 @@ function viewSettings(){
   $('#sNew').addEventListener('change',e=>{s.newPerDay=+e.target.value;touch()});
   $$('[data-dir]').forEach(b=>b.addEventListener('click',()=>{s.dir=b.dataset.dir;touch();viewSettings()}));
   $('#sAuto').addEventListener('change',e=>{s.autoplay=e.target.checked;touch()});
+  $('#sWarm').addEventListener('change',e=>{VPREF._warm=e.target.checked?1:0;saveVPref();SPK.end=0;speak(VSAMPLE[S.lang],S.lang)});
   $('#sRate').addEventListener('change',e=>{s.rate=+e.target.value;touch();speak(VSAMPLE[S.lang],S.lang)});
   LANGS.forEach(L=>{const sel=$('#v-'+L);if(sel)sel.addEventListener('change',()=>{VPREF[L]=sel.value;saveVPref();renderVoiceInfo();speak(VSAMPLE[L],L)})});
   $('#reset').addEventListener('click',()=>{
