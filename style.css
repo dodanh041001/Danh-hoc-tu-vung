@@ -308,3 +308,13 @@ input[type="checkbox"]{width:20px;height:20px;accent-color:var(--acc)}
 .hwtop .py{color:var(--muted)}
 .hwx{margin-left:auto;border:0;background:none;font-size:28px;line-height:1;color:var(--muted);padding:2px 6px}
 .hwchars svg{display:block}
+/* Cỡ chữ trên thẻ ôn + chữ Hán vẽ nét */
+body[data-zsize="l"] .card:not(.done) .grid:not(.long) .cell{--s:min(clamp(60px,20vw,96px),calc((100vw - 80px)/var(--n,1)))}
+body[data-zsize="xl"] .card:not(.done) .grid:not(.long) .cell{--s:min(clamp(72px,26vw,128px),calc((100vw - 80px)/var(--n,1)))}
+.cell{position:relative}
+.cell.hwon{color:transparent}
+.cellhw{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.cellhw svg{display:block}
+.card .grid[lang="zh"]{cursor:pointer}
+.frow{display:flex;gap:10px;justify-content:center}
+.set .seg3{grid-template-columns:repeat(3,1fr)}

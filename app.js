@@ -273,6 +273,7 @@ function renderHeader(){
   $('#stats').innerHTML=`<div class="stat due"><b>${due}</b><span>cần ôn</span></div><div class="stat"><b>${newLeft}</b><span>từ mới còn lại</span></div><div class="stat"><b>${streak()}</b><span>ngày liên tiếp</span></div><div class="stat"><b>${known}<em class="of">/${DECKS[L].length}</em></b><span>đã nhớ</span></div>`;
 }
 function render(){
+  document.body.dataset.zsize=S.settings.zsize||'l';
   if(!document.querySelector('.hwov'))hwStop();
   if(VIEW==='book'&&S.lang==='en')VIEW='review';
   $('.tabs [data-v="book"]').hidden=S.lang==='en';
@@ -307,7 +308,7 @@ function buildQueue(){
 }
 function counts(){const L=S.lang;let n=0,l=0,r=0;for(const c of [R.cur,...R.queue]){if(!c)continue;const x=rec(L,c);if(!x)n++;else if(x.i<1)l++;else r++}return{n,l,r}}
 function wordVisual(c,L){
-  if(L!=='en'){const ch=[...c.w];return `<div class="grid${ch.length>6?' long':''}" lang="${L}" aria-label="${esc(c.w)}">${ch.map(x=>x===' '?'<span class="cell sp"></span>':`<span class="cell" aria-hidden="true">${esc(x)}</span>`).join('')}</div>`}
+  if(L!=='en'){const ch=[...c.w];return `<div class="grid${ch.length>6?' long':''}" style="--n:${ch.length}" lang="${L}" aria-label="${esc(c.w)}">${ch.map(x=>x===' '?'<span class="cell sp"></span>':`<span class="cell" aria-hidden="true">${esc(x)}</span>`).join('')}</div>`}
   return `<div class="sheet" lang="en"><span class="eword">${esc(c.w)}</span>${c.pos?`<span class="pos">${esc(c.pos)}</span>`:''}</div>`;
 }
 function metaLine(c,L){
@@ -339,12 +340,13 @@ function viewReview(){
     return;
   }
   const c=R.cur,dir=S.settings.dir,k=counts(),r=rec(L,c),now=Date.now();
+  const zb=L==='zh'&&hanOf(c.w).length?penBtn():'';
   const front=dir==='fwd'
-    ?`${wordVisual(c,L)}${sayBtn(c.w)}`
+    ?`${wordVisual(c,L)}${zb?`<div class="frow">${sayBtn(c.w)}${zb}</div>`:sayBtn(c.w)}`
     :`<div class="vn-front">${esc(c.m)}</div><p class="hint">Từ ${LNAME[L]} là gì?</p>`;
   let back='';
   if(R.flipped){
-    back=`<div class="back">${dir==='rev'?`<div style="display:flex;flex-direction:column;align-items:center;gap:10px">${wordVisual(c,L)}${sayBtn(c.w)}</div>`:`<div class="meaning">${esc(c.m)}</div>`}${metaLine(c,L)}${exBlock(c,L)}${L==='zh'&&hanOf(c.w).length?'<p style="margin:0"><button class="linkbtn" type="button" id="hwOpen">Luyện viết từ này</button></p>':''}</div>`;
+    back=`<div class="back">${dir==='rev'?`<div style="display:flex;flex-direction:column;align-items:center;gap:10px">${wordVisual(c,L)}${zb?`<div class="frow">${sayBtn(c.w)}${zb}</div>`:sayBtn(c.w)}</div>`:`<div class="meaning">${esc(c.m)}</div>`}${metaLine(c,L)}${exBlock(c,L)}${L==='zh'&&hanOf(c.w).length?'<p style="margin:0"><button class="linkbtn" type="button" id="hwOpen">Luyện viết từ này</button></p>':''}</div>`;
   }
   const actions=R.flipped
     ?`<div class="grades" role="group" aria-label="Bạn nhớ từ này thế nào?">${['Quên','Khó','Được','Dễ'].map((t,g)=>`<button class="g${g}" data-g="${g}">${t}<small>${fmtIvl(schedule(r,g,now).d-now)}</small></button>`).join('')}</div>`
@@ -355,6 +357,7 @@ function viewReview(){
   const f=$('#flip');if(f)f.addEventListener('click',flip);
   const ho=$('#hwOpen');if(ho)ho.addEventListener('click',()=>hwPractice(c));
   $$('.grades button').forEach(b=>b.addEventListener('click',()=>grade(+b.dataset.g)));
+  if(L==='zh')zhCard(c);
   if(!R.flipped&&dir==='fwd'&&S.settings.autoplay)speak(c.w,L);
 }
 function flip(){if(!R.cur||R.flipped)return;R.flipped=true;viewReview();if(S.settings.dir==='rev'&&S.settings.autoplay)speak(R.cur.w);const g=$('.grades button.g2');if(g)g.focus({preventScroll:true})}
@@ -548,6 +551,49 @@ function hwPractice(c){
     m.querySelector('[data-hw="again"]').addEventListener('click',run);
   }});
   run();ov.querySelector('.hwx').focus({preventScroll:true});
+}
+
+/* ---------- Thẻ ôn tiếng Trung: vẽ thứ tự nét trong ô chữ ---------- */
+const ZA={gen:0,key:null};
+const ICON_PEN='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
+const penBtn=()=>`<button class="say" type="button" data-zreplay aria-label="Xem lại thứ tự nét" title="Xem lại thứ tự nét">${ICON_PEN}</button>`;
+const zanimOn=()=>S.settings.zanim!==false&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Thay chữ in trong các ô bằng chữ Khải từ dữ liệu nét; animate=true thì vẽ lần lượt từng nét, từng chữ.
+function zhGrid(grid,animate){
+  const gen=++ZA.gen;
+  const cells=[...grid.querySelectorAll('.cell')].filter(x=>{if(!x.dataset.ch)x.dataset.ch=x.textContent;return /\p{Script=Han}/u.test(x.dataset.ch)});
+  if(!cells.length)return;
+  hwLoad().then(lib=>{
+    if(gen!==ZA.gen||!grid.isConnected)return;
+    const css=n=>getComputedStyle(document.body).getPropertyValue(n).trim();
+    let i=0;
+    const items=cells.map(cell=>{
+      const old=cell.querySelector('.cellhw');if(old)old.remove();
+      const box=document.createElement('span');box.className='cellhw';box.setAttribute('aria-hidden','true');cell.appendChild(box);
+      const sz=Math.max(24,Math.floor(cell.clientWidth)),it={w:null,bad:false};
+      try{it.w=lib.create(box,cell.dataset.ch,{width:sz,height:sz,padding:Math.round(sz*.07),showCharacter:!animate,showOutline:animate,
+        strokeColor:css('--ink'),outlineColor:css('--line'),strokeAnimationSpeed:1.3,delayBetweenStrokes:220,
+        onLoadCharDataSuccess:()=>cell.classList.add('hwon'),
+        onLoadCharDataError:()=>{it.bad=true;box.remove();cell.classList.remove('hwon');if(animate&&items[i-1]===it)next()}})}
+      catch(e){it.bad=true;box.remove()}
+      return it;
+    });
+    const next=()=>{
+      if(gen!==ZA.gen||!grid.isConnected||i>=items.length)return;
+      const it=items[i++];if(it.bad||!it.w)return next();
+      it.w.animateCharacter({onComplete:()=>setTimeout(next,300)});
+    };
+    if(animate)next();
+  }).catch(()=>{});
+}
+function zhCard(c){
+  const g=$('.card .grid');if(!g)return;
+  const first=ZA.key!==c.id;
+  if(first&&zanimOn()){ZA.key=c.id;zhGrid(g,true)}
+  else if(window.HanziWriter||zanimOn())zhGrid(g,false);
+  const replay=()=>{ZA.key=c.id;zhGrid(g,true)};
+  g.addEventListener('click',replay);
+  $$('[data-zreplay]').forEach(b=>b.addEventListener('click',replay));
 }
 
 function makeItem(kind,c,L){
@@ -858,6 +904,8 @@ function viewSettings(){
     <label class="line">Số từ mới mỗi ngày (mỗi ngôn ngữ)<select class="sel" id="sNew">${[5,10,15,20,30].map(n=>`<option${n===s.newPerDay?' selected':''}>${n}</option>`).join('')}</select></label>
     <div style="padding:8px 0">Mặt trước của thẻ<div class="seg"><button data-dir="fwd" aria-pressed="${s.dir==='fwd'}">Ngoại ngữ → Việt</button><button data-dir="rev" aria-pressed="${s.dir==='rev'}">Việt → Ngoại ngữ</button></div></div>
     <label class="line">Tự đọc từ khi hiện thẻ<input type="checkbox" id="sAuto"${s.autoplay?' checked':''}></label>
+    <div style="padding:8px 0">Cỡ chữ trên thẻ (tiếng Hàn, tiếng Trung)<div class="seg seg3">${[['m','Vừa'],['l','Lớn'],['xl','Rất lớn']].map(([k,t])=>`<button data-zs="${k}" aria-pressed="${(s.zsize||'l')===k}">${t}</button>`).join('')}</div></div>
+    <label class="line">Vẽ thứ tự nét chữ Hán khi hiện thẻ<input type="checkbox" id="sZanim"${s.zanim!==false?' checked':''}></label>
   </section>
   <section class="set"><h3>Giọng đọc</h3>
     ${LANGS.map(L=>`<div class="vrow"><label for="v-${L}">Giọng ${LNAME[L]}</label><div class="vsel"><select class="sel" id="v-${L}"></select><button class="say" type="button" data-say="${esc(VSAMPLE[L])}" data-lang="${L}" aria-label="Nghe thử">${ICON_SAY}</button></div><p class="vq" id="vq-${L}"></p></div>`).join('')}
@@ -881,6 +929,8 @@ function viewSettings(){
   const touch=()=>{S.sAt=Date.now();save();R.built=false;renderHeader()};
   $('#sNew').addEventListener('change',e=>{s.newPerDay=+e.target.value;touch()});
   $$('[data-dir]').forEach(b=>b.addEventListener('click',()=>{s.dir=b.dataset.dir;touch();viewSettings()}));
+  $$('[data-zs]').forEach(b=>b.addEventListener('click',()=>{s.zsize=b.dataset.zs;document.body.dataset.zsize=s.zsize;touch();viewSettings()}));
+  $('#sZanim').addEventListener('change',e=>{s.zanim=e.target.checked;touch()});
   $('#sAuto').addEventListener('change',e=>{s.autoplay=e.target.checked;touch()});
   $('#sWarm').addEventListener('change',e=>{VPREF._warm=e.target.checked?1:0;saveVPref();SPK.end=0;speak(VSAMPLE[S.lang],S.lang)});
   $('#sRate').addEventListener('change',e=>{s.rate=+e.target.value;touch();speak(VSAMPLE[S.lang],S.lang)});
