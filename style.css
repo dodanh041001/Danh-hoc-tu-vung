@@ -307,3 +307,4 @@ input[type="checkbox"]{width:20px;height:20px;accent-color:var(--acc)}
 .hwtop .zh{font-size:24px}
 .hwtop .py{color:var(--muted)}
 .hwx{margin-left:auto;border:0;background:none;font-size:28px;line-height:1;color:var(--muted);padding:2px 6px}
+.hwchars svg{display:block}

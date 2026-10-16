@@ -488,17 +488,27 @@ const hwPadHTML=()=>`<div class="hwchars" data-hw="chars"></div><div class="hwpa
 // ctx: {root, card, mode:'trace'|'recall', st:{k,miss,helped}, onDone(st)}
 function hwRun(ctx){
   const root=ctx.root,el=k=>root.querySelector(`[data-hw="${k}"]`),st=ctx.st,chars=hanOf(ctx.card.w),gen=++HW.gen;
-  const pad=el('pad'),msg=el('msg');
-  const paint=()=>{el('chars').innerHTML=chars.map((ch,i)=>`<span class="${i===st.k?'hw-cur':i<st.k?'hw-done':''}" lang="zh">${i<st.k||ctx.mode==='trace'?esc(ch):'?'}</span>`).join('')};
+  const pad=el('pad'),msg=el('msg'),css=n=>getComputedStyle(document.body).getPropertyValue(n).trim();
+  // Ô chữ phía trên vẽ bằng chính dữ liệu nét (kiểu chữ Khải, giống chữ trong ô viết).
+  // Khi thư viện chưa tải xong thì tạm hiện chữ in, tải xong sẽ thay.
+  el('chars').innerHTML=chars.map(ch=>`<span lang="zh" aria-label="${esc(ch)}"></span>`).join('');
+  const chips=[...el('chars').children];
+  const paint=lib=>chips.forEach((sp,i)=>{
+    sp.className=i===st.k?'hw-cur':i<st.k?'hw-done':'';
+    if(!(i<st.k||ctx.mode==='trace')){sp.textContent='?';return}
+    if(sp.dataset.g)return;
+    if(!lib){sp.textContent=chars[i];return}
+    sp.textContent='';sp.dataset.g='1';
+    try{lib.create(sp,chars[i],{width:28,height:28,padding:1,showOutline:false,strokeColor:css('--ink'),onLoadCharDataError:()=>{sp.textContent=chars[i]}})}catch(e){sp.textContent=chars[i]}
+  });
   const fail=t=>{if(gen!==HW.gen)return;msg.innerHTML=`${t} <button class="linkbtn" type="button" data-hw="retry">Thử lại</button>`;el('retry').addEventListener('click',()=>hwRun(ctx))};
-  paint();
+  paint(window.HanziWriter);
   if(!window.HanziWriter){pad.innerHTML='';msg.textContent='Đang tải bộ viết chữ…'}
   hwLoad().then(lib=>{if(gen===HW.gen)step(lib)}).catch(()=>fail('Chưa tải được bộ viết chữ. Lần đầu dùng cần có mạng.'));
   function step(lib){
-    paint();
+    paint(lib);
     if(st.k>=chars.length){ctx.onDone(st);return}
     pad.innerHTML='';msg.textContent='';
-    const css=n=>getComputedStyle(document.body).getPropertyValue(n).trim();
     const size=Math.max(200,Math.min(320,Math.floor(pad.clientWidth||300)));
     // Nét vẽ dày khoảng 6,5% cạnh ô, gần bằng nét chữ mẫu (ô 300px → nét khoảng 20px)
     let w;
