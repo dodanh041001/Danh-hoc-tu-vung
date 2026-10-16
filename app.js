@@ -489,7 +489,7 @@ const hwPadHTML=()=>`<div class="hwchars" data-hw="chars"></div><div class="hwpa
 function hwRun(ctx){
   const root=ctx.root,el=k=>root.querySelector(`[data-hw="${k}"]`),st=ctx.st,chars=hanOf(ctx.card.w),gen=++HW.gen;
   const pad=el('pad'),msg=el('msg');
-  const paint=()=>{el('chars').innerHTML=chars.map((ch,i)=>`<span class="${i===st.k?'cur':i<st.k?'done':''}" lang="zh">${i<st.k||ctx.mode==='trace'?esc(ch):'?'}</span>`).join('')};
+  const paint=()=>{el('chars').innerHTML=chars.map((ch,i)=>`<span class="${i===st.k?'hw-cur':i<st.k?'hw-done':''}" lang="zh">${i<st.k||ctx.mode==='trace'?esc(ch):'?'}</span>`).join('')};
   const fail=t=>{if(gen!==HW.gen)return;msg.innerHTML=`${t} <button class="linkbtn" type="button" data-hw="retry">Thử lại</button>`;el('retry').addEventListener('click',()=>hwRun(ctx))};
   paint();
   if(!window.HanziWriter){pad.innerHTML='';msg.textContent='Đang tải bộ viết chữ…'}
@@ -500,10 +500,11 @@ function hwRun(ctx){
     pad.innerHTML='';msg.textContent='';
     const css=n=>getComputedStyle(document.body).getPropertyValue(n).trim();
     const size=Math.max(200,Math.min(320,Math.floor(pad.clientWidth||300)));
+    // Nét vẽ dày khoảng 6,5% cạnh ô, gần bằng nét chữ mẫu (ô 300px → nét khoảng 20px)
     let w;
     try{
       w=HW.w=lib.create(pad,chars[st.k],{width:size,height:size,padding:12,showCharacter:false,showOutline:ctx.mode==='trace',
-        strokeColor:css('--ink'),outlineColor:css('--line'),drawingColor:css('--acc'),highlightColor:css('--warn'),drawingWidth:6,
+        strokeColor:css('--ink'),outlineColor:css('--line'),drawingColor:css('--acc'),highlightColor:css('--warn'),drawingWidth:Math.round(size*.065),
         onLoadCharDataError:()=>fail('Không tải được nét của chữ này. Kiểm tra mạng rồi thử lại.')});
     }catch(e){fail('Không mở được ô viết.');return}
     const quiz=()=>w.quiz({showHintAfterMisses:ctx.mode==='trace'?1:3,markStrokeCorrectAfterMisses:5,
